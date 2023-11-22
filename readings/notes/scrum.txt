@@ -1,0 +1,592 @@
+SDLC 
+ software development life cycle
+ 
+ product planning
+ technical rqmt analysis
+ specs
+ design
+ coding
+ software testing
+ release
+ product support
+
+ software testing in the waterfall model
+  unit testing
+  system testing
+  acceptance testing
+
+ for the QA block box approach is the most frequently applied
+
+ other qa activities and focus areas
+  focus on defect prevention
+  focus on defect removal
+  focus on defect containment
+
+ quality gates inspection review, etc.
+  from rqmt & specification
+  to    design
+  to     coding
+  to      testing
+  to       release & support
+
+ roles in agile
+ scrum master
+  a scrum master is a team leader and facilitator who helps the team members
+  to follow agile practices so that they can meet their committments. the
+  responsibilities of a scrum master are as follows:
+   - to enable close co-operation between all roles and functions
+   - to remove any blocks
+   - to shield the team from any disturbances
+   - to work with the organization to track the progress and processes of the
+     company
+   - to ensure that agile inspect & adapt processes are leveraged properly
+     which includes:
+      daily stand-ups
+      planned meetings, and
+      to facilitates team meeting and decision-making process
+
+ product owner
+  a product owner is the one who drives the product from business perspective.
+  the responsibilities or a product owner are as follow:
+   to define the rqmts and prioritize their values
+   to determine the release date and contents
+   to take an active role in iteration planning and release planning meetings
+   to ensure that team is working on the most valued rqmt
+   to represent the voice of the customer
+   to accept the user stories that meet the definition of done and defined
+    acceptance criteria
+
+ cross functional team
+  every agile team should be a self-sufficient team with 5 to 9 team members
+  and an average experience ranging from of 6 to 10 years. typically, an 
+  agile team comprises of 3 to 4 developer, 1 tester, 1 technical, 1 product
+  owner and 1 scrum master
+
+ product owner and scrum master are considered to be a part of team interface,
+ whereas other members are part of technical interface.
+
+ how an agile team plans its work?
+ an agile team works in iterations to deliver user stories where each iteration
+ is of 10 to 15 days. each user story is planned based on its backlog priori
+ tization and size. the team user its capacity - how many hours are available
+ with team to work on tasks - to decide how much scope they have plan.
+
+ point
+ a point defines how much a team can commit. a point usually refers to 8 hours.
+ each story is estimated in points.
+
+ capacity
+ capacity defines how much an individual can commit. capacity is estimated
+ in hours.
+
+ what is a user story?
+ a user story is a requirement which defines what is required by the user
+ as functionality. a user story can be in two forms:
+  as a <user role> i want <functionality> so that <business value>
+  in order to <business value> as a <user role> i want <functionality>
+
+ relationship of user stories and tasks
+  user story talks about what is to be done. it defines what a user needs
+  task talks about how it is to be done. it defines how a functionality
+   is to be implemented
+  stories are impplemented by tasks. each story is a collection of tasks
+  use story is divided into tasks when it is planned in current iteration.
+  tasks are estimated in hours, typically from 2 to 12 hours
+  stories are validated using acceptance tests.
+
+ when a story is done
+ the team decides what done means. the criteria may be:
+  all tasks (development, testing) are completed
+  all acceptance tests are running and are passed.
+  no defects is open
+  product owner has accepted the story
+  deliverable to the end-user
+
+ what is acceptance criteria?
+ criteria defines the functionality, behavior, and performance required by a
+ feature so tha it can be accepted by the products owner. it defines what is
+ to be done so that the developer knows when a user story is complete.
+
+ how the requirements are defined?
+ requirements are defined as:
+  a user story
+  with acceptance criteria, and
+  tasks to implement the story 
+
+----------------
+scrum defintion
+scrum is a framework within which people can address complex adaptive problems,
+while productively and creatively deliverying products of the highest possible
+value.
+scrum is a process framework that has been used to manage complex product
+development since the early 1990s. 
+scrum is not a process or technique for building products; rather, it is a
+framework within which you can employ various processes and techniques.
+scrum makes clear the relative efficacy of your product management and 
+development practices so that you can improve.
+the scrum framework consist of scrum teams and their associated roles, events,
+artifacts, and rules. each component within the framework serves a specific
+purpose and is essential to scrums success and usage
+the rules of scrum bind together the events, roles, and artifacts, governing
+the relationship and interaction between them. the rules of scrum are described
+throughout this turorial.
+
+note: across the industry, there are misconceptions that scrum means no documentation,
+scrum team consists of only developers, and so on. it is not entirely so,
+we will give clarifications on these in later sections.
+
+scrum process framework
+				  daily scrum meeting		release
+				sprint (2 to 4 weeks to) 	working product increment
+	product features
+	assigned to sprint
+		sprint 						sprint review
+		backlog
+
+			prio product features		sprint
+			product backlog			retrospective
+
+in scrum, the prescribed events are used to create regularity. all events are
+time-boxed events, such that every event has maximum duration. the events are
+described more elaborately in the subsequent chapters.
+
+sprint
+the heart of scrum is a sprint, a time-box of two weeks or one month during a
+potentially releasable product increment is created. a new sprint starts 
+immediately afte the conclusion of the previous sprint. sprints consists of the
+sprint planning, daily scrums, the development work, the sprint review, and
+the sprint retrospective.
+ in sprint planning, the work to be performed in the sprint is planned collaboratively
+  by the scrum team
+ the daily scrum meeting is a 15-minute time-boxed event for the scrum team
+  to synch the activities and create a plan for that day
+ a sprint review is held at the end of the sprint to inspect the increment and
+  make changes to the product backlog, if needed.
+ the sprint retrospective occurs after the sprint review and prior to the next
+  sprint planning. in this meeting, the scrum team is to inspect itself and 
+  create a plan for improvements to be enabled during the subsequent sprint.
+
+conclusion
+scrum is a process framework that defines certain rules, events, and roles to
+bring in regularity. however, it can be adapted to any organization, based on
+needs, provided the basic scrum rules are not violated.
+
+the scrum team consists of three roles, namely a scrum master, a product owner,
+and the team.
+
+scrum master
+ the scrum master (sometimes written as the scrum master, although the official
+ term has no space after "scrum") is the keeper of the scrum process. he/she
+ is responsible for:
+  making the process run smoothly
+  removing obstacles that impact productively
+  organizing and facilitating the critical meetings
+
+product owner
+ the product owner is responsible for maximizing the value of the product and
+ the work of the team. how this is done may vary widely across organizations,
+ scrum teams, and individuals.
+ the product owner is the sole person responsible for managing the product backlog.
+ product backlog management includes:
+  expressing product backlog items clearly
+  ordering the product backlog items to best achieve goals and missions
+  optimizing the value of the work the team performs.
+  ensuring that the product backlog is visible, transparent, and clear to all,
+   and shows what the team will work or further.
+  ensuring that the team understands items in the product backlog to the level
+   needed.
+
+ the product owner may do the above work, or have the team do it. however, the
+ product owner remains accountable for these tasks.
+
+ the product owner is one person, not a committee. the product owner may represent
+ the desire of a committee in the product backlog, but those wanting to change
+ the product backlog item's priority must address the product owner.
+
+ for the product owner to succeed, the entire organization must respect his or
+ or her decisions. the product owner's decisions are visible in the content and 
+ ordering of the product backlog. no one is allowed to tell the team to work from
+ a different set of requirements, and the team is not allowed to act on what anyone
+ else says. this is ensured by scrummaster.
+
+the team
+ the team is self-organizing and cross-functional. that means the team comprises
+ of analyst, designers, developers, testers, etc. as appropriate and as relevant
+ to the project.
+
+ some people in the industry refer to this team as development team. however, such
+ a reference is leading to controversy that the team can have only developerse
+ and no other roles. it is an obvious understanding that it is only a misconception.
+ to develop a software product, we require all the roles and that is the essence
+ of scrum - the team will function in collaboration. cross-functional teams
+ have all compentencies needed to accomplish the work without depending on others
+ not part of the team, and thus time and effort can be saved. the team model
+ in scrum is designed to optimize flexibility, creativity, and productivity.
+
+ optimal team size is small enough to remain nimble and large enough to complete
+ significant work within a sprint. the team size should be kept in the range
+ from 5-9 people, if possible. fewer than 5 members descrease interaction and
+ results in smaller productivity gains. having more than 9 members requires too
+ much coordination.
+
+ the scrum team works together closely, on a daily basis, to ensure the smooth
+ flow of information and the quick resolution of issues. the scrum team delivers
+ product iteratively and incrementally, maximizing opportunities for feedback.
+ incremental deliveries of a complete product ensure a potentially useful version
+ of working product is always available.
+
+scrummaster is a trained responsible person, who renders services as described below:
+ scrummaster services to the product owner
+ the scrummaster serves the product owner in several ways, including:	
+  finding techniques for effective product backlog management
+  helping the scrum team understand the need for clear and concise product
+   backlog items.
+  understanding product planning in an empirical environment
+  ensuring that the product owner knows how to arrange the product backlog to 
+   maximize value.
+  understanding and practicing agility
+  facilitating scrum events as needed.
+
+ scrummaster services to the scrum team
+  the scrummaster serves the scrum team in several ways, including:
+   coaching the scrum team in self-organization and cross-functionality
+   helping the scrum team to create high-value products
+   removing impediments to the scrum teams progress
+   facilitating scrum events as requested or needed
+   coaching the scrum team in organizational environements in which scrum is
+    not yet fully adopted and understood..
+
+ scrummaster services to the organization
+  the scrummaster serves the organizational in several ways, including:
+   leading and coaching the organization in its scrum adoption
+   planning scrum implementations within the organization
+   help employees and stakeholders understand and enact scrum and empirical
+    product development
+   causing change that increases the productivity of the scrum team
+   working with other scrummaster to increase the effectiveness of the application
+    of scrum in the organization
+
+
+scrum events
+ scrum process framework can be viewed by means of a sequence of events and the
+ corresponding artifacts. the scrum events are time-boxed events. that means, in 
+ a project, every scrum events has a predefined maximum duration. these events
+ enable transparency on the project progress to tall who are involved in the 
+ project. the vital events of scrum are:
+  the sprint
+  the sprint planning
+  daily scrum meetings
+  the sprint review
+  the sprint retrospective
+
+ sprint
+  during a sprint, a workign product increment is developed. it is usually two
+  weeks or one month, and this duration remains constant for all the sprint
+  in the project.
+  we cannot have varying duration for the different sprints in a project. a new
+  sprint starts immediately after the conclusion of the previous sprint.
+  the sprint goals is an objection set for the sprint. it provides to the team
+  on why it is building the increment. it is created during the sprint planning
+  meeting. the scope of the sprint is clarified and re-negoatiated between the
+  product owner and the team as more about the requirements is learned. thus,
+  each sprint is associated with it, a definition of what is to be built, a design
+  and the flexible plan that will guide building it, the development work, and 
+  the resultant product increment.
+  a sprint should be cancelled if the sprint goal becomes obsolete. this might
+  occur if the organization changes directino or if market or technology condition
+  change. a sprint can be cancelled only by product owner, though others have
+  an influence on the same.
+  due to the short duration nature of sprint, cancellation during a sprint rarely
+  makes sense. as the sprint cancellations consume resources, for getting re-
+  organized into another sprint, they are very uncommon.
+  if a sprint is cancelled, and part of the work produced during the sprint
+  is potentially releasable, the product owner typically accepts it. all the
+  incomplete sprint backlog items are put back into the product backlog.
+
+ sprint planning
+  the work to be performed in the sprint is planned in the sprint planning meeting.
+  sprint planning meeting is of duration of maximum of four hours for 2 weeks
+  sprint and 8 hours for 1 month sprint. it is responsible of the scrum master
+  to ensure that the meeting takes place and that all the required attendees
+  are present and understand the purpose of the scheduled meeting. the scrum
+  master moderates the meeting to monitor the sustenance of discussion and closure
+  on time.
+  
+  sprint planning focuses on the following 2 questions:
+   what needs to be and can be delivered in the sprint increment?
+   how will the work needed for the execution of sprint be achieved?
+
+  the inputs to this meeting are:
+   the product backlog
+   the latest product increment
+   projected capacity of the team during the sprint
+   past performance of the team
+
+  the scrum team discusses the functionality that can be developed during the sprint.
+  product owner provides clarification on the product backlog items. the team
+  selects the items from the product backlog for the sprint, as they are the
+  best to assess what they can accomplist in the sprint. the team comprises of
+  analysts, designers, developers, and testers. the work is carried out in a
+  collaborative fashion, thus minimizing re-work.
+
+  the scrum team then comes up with the sprint goal. the sprint goal is an objective
+  that provides guidance to the team on why it is building the prodcut increment.
+  the team then decides how it will build the selected functionality into workin
+  product increment during the sprint. the product backlog itesm selected for
+  this sprint plus the plan for delivering item is call the sprint backlog.
+
+  work duirng a sprint is estimated during sprint planning and may be or varying
+  size and/or effort. by the end of the sprint planning meeting, the work is
+  divided into tasks of duration of one day or less. this is to enable the ease
+  of work allocation, and tracking the completion. if the team realizes that it
+  has too much or too little work, it can renegotiate the selected product backlog
+  items with the product owner.
+
+  the team may also invite others (not part of scrum team) to attend the sprint
+  planning meeting to obtain technical or domarin advice or help in estimation.
+
+ daily scrum meeting
+  the daily scrum meeting is a 15-minutes meeting for the team, conducted daily
+  to quickly understand the work since the last daily scrum meeting and create
+  a plan for the next 24 hours. this meeting is also referred  to as daily stand
+  up meeting.
+
+  the daily scrum meeting is held at the same time and same place every day to
+  reduce complexity.
+
+  during the meeting, each team member explains:
+   what did he do yesterday that helped the team meet the sprint goal?
+   what will he do today to help the team meet the sprint goal?
+   does he see any impediments that prevent him or the team from meeting the sprint
+    goal?
+
+  daily scrum is mistaken to be a status tracking event, though, in fact, it is
+   a planning event.
+
+  the input to the meeting should be how the team is doing  toward meeting the
+   sprint goal, and the output should be a new or revised plan that optimizes the
+   the team efforts in meeting the sprint goal.
+
+  through the scrum, the team may meet immediately after the daily scrum meeting,
+   for any detailed discussions, or to re-plan the reset of the sprint work.
+
+  following are the benifits of daily scrum meetings:
+   improve communication within the team
+   identify impedements, if any, in order to facilitate an early removal of the
+    same, so as to minimize impact on the sprint.
+   improve the team's level of knowledge.
+
+ sprint review
+  a sprint review is held at the end of every sprint. during the sprint review,
+  a presentation of the increment that is getting released is reviewed. in this
+  meeting, the scrum team and the stakeholders collaborate to understand what
+  was done in the sprint based on that, and any changes to the product backlog
+  during the sprint, the attendees arrive at the next steps required that could
+  optimize value. thus, the objective of sprint review is to obtain feedback
+  and progress unitedly.
+
+  the sprint review is normally held for 2 hours for 2 weeks sprints and for 
+  4 hours for 1 month sprints.
+
+  the scrum master ensures that: 
+   the meeting takes place
+   the participants understand the purpose
+   the meeting is focused on the required agenda and is completed within the
+    required duration
+
+  the sprint reveiew includes the ff aspects:
+   attendees include the scrum team and key stakeholders, as invited by the product
+    owner.
+   the product owner explains what product backlog items have been completed
+    during the sprint and what has not been completed
+   the team discusses what went well during the sprint, what problems it ran
+    into, and how those problemes were solved.
+   the team demonstrates the work that is has completed and answers questions,
+    if any, about the increment. 
+   the entire group then discusses on what to do next. thus, the sprint review
+    provides valueble input to sprint planning of the subsequent sprint.
+   the scrum team then reviews the timeline, budget, potential capabilities, and
+    marketplace for the next anticipated release of the product increment.
+   the outcome of the sprint review is an updated product backlog, which defines
+    the probable product backlog items for the next sprint.
+
+
+ sprint retrospective
+  the sprint retrospective occurs after the sprint review and prior to the next
+  sprint planning. this is usually a 1 hour meeting for 2 week duration sprints
+  and a 3 hour meeting for 1 month duration sprints.
+
+  the purpose of the sprint retrospective is to:
+   combine the learning from the last sprint, with regards to people, relationship,
+    process, and tools.
+   identify the major items that wen well and potential improvements.
+   creation of a plan for implementing improvements to increase product quality
+
+  the sprint retrospective is an opportunity for the scrum team to inrospect and
+  improve within the scrum process framework so as to make the next sprint
+  outcome more effective.
+
+
+  scrum artifacts provide key information that the scrum team and the stakeholders
+  need to be aware of for understanding the product development, the activities
+  done, and the activities being planned in the project. the ff artifacts in
+  scrum process framework:
+   product backlog
+   sprint backlog
+   burn-down chart
+   increment
+
+  these are the minimum required artifacts in a scrum project and project artifacts
+  are not limited by these.
+
+  product backlog
+   the product backlog is an ordered lsit of features that are needed as part
+   of the end product and it is the single source of requirements for any changes
+   to be made to the product. 
+
+   the product backlog lists all features, functions, requirements, enhancements,
+   and fixes that constitute the changes to be made to the product in future
+   releases. product backlog items have the attributes of a description, order,
+   estimate, and value. these items are normally termed as user stories. the
+   product backlog, including its content, availability, and ordering.
+
+   a product backlog is an evolving artifacct. the earliest version of it may
+   contain only initially known and best understood requirements. the product
+   backlog gets developed as the product, and environment in which it will be used,
+   progress. the product backlog constantly changes to incorporate what is required
+   to make it effective. as long as a product exists, its product backlog also
+   exists.
+
+   as the product being build is used and gains value, the product backlog becomes
+   a larget and more exhaustive list. changes in business requirements, market
+   conditions, or technology, cause changes in the product backlog, making it
+   a live artifact.
+
+   product backlog refinement means adding detail, estimates, and priority
+   order to the product backlog items. this is an ongoing process performed
+   by the product owner and the team. the scrum team decides how and when refinement
+   is to be done.
+
+   product backlog items can be updated at any time by the product owner or at
+   the product owner's discretion.
+
+   higher-ordered product backlog items are usually clearer and more detailed
+   than lower ordered ones. more precise estimates are made based on the greater
+   clarity and increase detail. the lower the order, the lesser is the details.
+
+   product backlog items that may likely  be the candidate requirements for the
+   upcoming sprint are refined so that these items can be developed during the
+   sprint. product backlog items that can be developed by the team within one
+   sprint are deemed t obe ready for selection in a sprint planning meeting.
+
+   sprint backlog
+    the sprint backlog is the set of product backlog items selected for the
+    sprint, plus a plan for delivering the product increment and realizing the
+    sprint goal.
+
+    the sprint backlog is a forecast by the team about what functionality will
+    be made available in the next increment and the work needed to deliver
+    that functionality as a working product increment.
+
+    the sprint backlog is a plan with enough detail that can be understood but
+    the team to track in the daily scrum. the team modifies the sprint backlog
+    throughout the sprint, and the sprint backlog emerges during the sprint.
+    this emergence occurs as the team works through the plan and learn more about
+    the work needed to achieve the sprint goal.
+
+    as new work is required, the team adds it to the sprint backlog. as work is
+    performed or completed, the estimated remaining work is updated. when 
+    elements of the plan are deemed unnecessary, they are removed. only the team
+    can change its sprint backlog during a sprint. the sprint backlog is a highly
+    visible, real-time picture of the work that the team plans to accomplish
+    during the sprint, and it belongs solely to the team.
+
+
+  increment
+   the increment is the sum of all the product backlog items completed during
+   a sprint combined with the increment of all previous sprints. at the end
+   of a sprint, the new increment must be a working condition regardless of 
+   whether the product owner decides to actually release t.
+
+   the scrum team needs to have consensus on what is considered to be an increment
+   this varies significantly per scrum team, but, team members must have a shared
+   understanding of what it means for work to be complete. this is used to assess
+   when work is complete on the product increment.
+
+   the same understanding guides the team in knowing how many product backlog
+   items it can select during a sprint planning. the purpose of each sprint
+   is to deliver increments of potentially releasable functionality.
+
+   teams deliver an increment of product functionality every sprint. this increment
+   is useable, so a product owner may choose to release it immediately. if the
+   understanding of an increment is part of the of the conventions, standards,
+   or guidelines of the development organization, all scrum teams must follow
+   it as a minimum. if it is not a convention of the development organization 
+   organization, the scrum team must define a definition of increment appropriate
+   for the product.
+  
+   each increment is additiona to all prior increments and thoroughly tested,
+   ensuring that all increments work product.
+ 
+   each increment is additive to all prior increments and thoroughly tested,
+   ensuring that all increments work together.
+
+   as scrum teams mature, it is expected that their definitions of increments
+   expands to include more stringent criteria for higher quality. any one
+   product should have a definition of increment that is a standard for any 
+   work done on it.
+
+
+  sprint burn-down chart
+   at any point in time in a sprint, the total work remaining in the sprint 
+   backlog can be summed. the team tracks this total work remaining for every 
+   daily scrum to project the likelihood of achieving the sprint goal. by 
+   tracking the remaining work throughout the sprint, the team can manage its
+   progress.
+
+   sprint burn-down chart is a practice for trending the work expended by the
+   scrum team. this has been proven to be a useful technique in monitoring
+   the sprint progress towards the sprint goal.
+
+   the product owner tracks this total work remaining at least every sprint
+   review. the product owner compares this amount with work remaining at previous
+   sprint reviews to assess progress toward completing the projected work by 
+   the desired time for the goal. this information is shared with all stakeholders.
+
+
+
+
+
+ ..
+
+  as you have understood, the user stories are commonly used to describe the 
+  product features and will form part of the scrum artifacts - product backlog
+  and sprint backlog.
+
+  user stories
+   in software development, the product features play a crucial role. it is the
+   features that the user ultimately likes to use in the final product. they
+   are known as requirements in the general terminology. the software development
+   project success lies in understanding the user requirements accurately and
+   appropriately, and then implementing them in the final product. thus, requirement
+   or product features need to be thoroughly known to the development project
+   team.
+
+   in 1999, kent beck came up with a term user stories for the product features.
+   he described that a user story is narrated from user perspective regarding
+   what he or she wants to have rather that what system can do for him. thus,
+   the view changed from product to user completely and user stories de facto
+   standard for requirements in all agile frameworks.
+
+   in scrum project, the product backlog is a list of user stories. these user
+   stories are prioritized and taken in the sprint backlog in the sprint planning
+   meeting.
+
+   estimation is also based on user stories and the size of the product is estimated
+   in user story points.
+
+   the user story structure
+    the user story structure is as follows:
+          
+
+

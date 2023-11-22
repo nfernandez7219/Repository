@@ -1,0 +1,17 @@
+a. increase the number sets by 1/2.
+d. high associative cache will have lower miss rate, 
+so its faster
+g. lower miss rate due to high associativity
+j. sets will be associated to more blocks 
+
+b. also high associative by 1/2
+e. high number of sets will have lower miss rate,
+so its faster
+h. high number of sets will hae lower miss rate, faster
+k. sets will be associated to more blocks, so its faster
+
+c. word offset will decrease
+f. performance will decrease because the association will only get half due block size
+i. higher number of misses due to half block size being fetch from the main memory
+l. higher misses due to lower block size, map to the same cache location is 
+the same

@@ -1,0 +1,16 @@
+
+you have to use luci api to save/get the configuration
+
+how to build openwrt
+how to flash openwrt
+
+DD-WRT gamit ng linksys
+
+problem with luci, installs too many dependencies, and cluttering a router with things that we'll hardly ever use, is not the best use of the very limited storage
+space available in most routers
+
+dd-wrt, kalaban ng openwrt
+
+while openwrt can be managed completely using ssh and the terminal, the luci webui makes many administration tasks easier. 
+
+uHTTPd web server, configured for use with LuCI

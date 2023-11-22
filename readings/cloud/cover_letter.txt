@@ -1,0 +1,265 @@
+With more than 20 years experience in embedded firmware development in different CPU's, different tools and different interfaces, I think I am the right guy you are looking for. I wish you may call me to discuss in details all my experiences. regards, nathaniel.
+
+
+main.c
+module_init(mlx4_init); ------------------------->
+mlx4_init <-------------------------
+ mlx4_verify_params
+ create_singlethread_workqueue
+ pci_register_driver(&mlx_driver) ------------------------->
+
+static struct pci_driver mlx4_driver = { <-------------------------
+ .name		= DRV_NAME,
+ .id_table	= mlx4_pci_table,
+ .probe		= mlx4_init_one, ------------------------->
+ .shutdown	= mlx4_shutdown, 
+ .remove	= mlx4_remove_one,
+ .driver.pm	= &mlx4_pm_ops,
+ .err_handler	= &mlx4_err_handler,
+};
+
+mlx4_verify_params
+ log_num_vlan < 0 or > 7
+ use_prio
+
+mlx4_init_one <-------------------------
+ devlink_alloc(&mlx4_devlink_ops) ----->
+ devlink_params_register
+ mlx4_devlink_set_params_init_values
+ __mlx4_init_one
+ pci_save_state
+ devlink_set_features
+ devlink_register
+
+static const struct devlink_ops mlx4_devlink_ops = { <-----
+	.port_type_set	= mlx4_devlink_port_type_set,
+	.reload_actions = BIT(DEVLINK_RELOAD_ACTION_DRIVER_REINIT),
+	.reload_down	= mlx4_devlink_reload_down,
+	.reload_up	= mlx4_devlink_reload_up,
+}; 
+
+ devlink_priv
+ kzalloc
+ pci_set_drvdata
+ devlink_params_register
+ __mlx4_init_one
+  mlx4_pci_enable_device
+  pci_resource_flags
+  pci_request_regions (per bar)
+   request_region
+   pci_request_start
+   pci_resource_len
+ pci_save_state
+  pci_set_master
+   dma_set_max_seg_size - allow large up to the firmware limit of 1gb
+ extended_func_num 
+ devlink_set_feature
+ devlink_register
+ dma_set_max_seg_size
+
+ mlx4_load_one
+  mlx4_get_ownership
+  mlx4_cmd_init
+   ioremap(pci_resource_start
+   dma_pool_create
+  mlx4_init_fw
+   mlx4_load_fw
+   # detect if this device is a virtual function
+    mlx4_alloc_icm
+    mlx4_MAP_FA
+    mlx4_RUN_FW
+  mlx4_init_fw
+   mlx4_is_slave
+   mlx4_QUERY_FW
+   mlx4_load_fw
+   mlx4_MOD_STAT_CFG
+  mlx4_is_master
+   mlx4_check_dev_cap
+   mlx4_enable_sriov
+  mlx4_init_hca
+   mlx4_is_slave
+   mlx4_dev_cap
+   mlx4_get_phys_port_id
+    mlx4_alloc_cmd_mailbox
+     mlx4_cmd_mailbox
+      mailbox = kmalloc
+      mailbox->buf = dma_pool_zalloc
+    mlx4_cmd_box
+   mlx4_init_icm
+    mlx4_INIT_HCM
+   mlx4_INIT_HCA
+    MLX4_PUT(param->log_num_pqs)
+   mlx4_query_func
+    MLX4_GET(FUNC_BUS_OFFSET)
+    MLX4_GET(FUNC_DEVICE_OFFSET)
+    MLX4_GET(FUNC_FUNCTION_OFFSET)
+   mlx4_QUERY_HCA
+   mlx4_slave_cap
+    MLX4_GET(param->global_caps)
+   mlx4_QUERY_ADAPTER
+    MLX4_GET(adapter->inta_pin)
+    get_board_id( 
+   mlx4_config_dev_retreival
+    mlx4_CONFIG_DEV__get 
+ mlx4_init_port_info
+ mlx4_enable_msi_x
+ mlx4_setup_hca
+
+struct mlx4_cmd_mailbox {
+ void        *buf;
+ dma_addr_t  dma;
+};
+------------------------------------------------------------------------------
+
+en_main.c
+module_init(mlx4_en_init) ------------------------->
+ mlx4_en_init <-------------------------
+  mlx4_en_verify_params
+  mlx4_en_init_ptysethtool_map
+  mlx4_register_interface(&mlx4_en_interface); -------------------------> 
+   mlx4_is_mfunc
+   mlx4_add_device
+
+static struct mlx4_interface mlx4_en_interface = { <-------------------------
+	.add		= mlx4_en_add,
+	.remove		= mlx4_en_remove,
+	.event		= mlx4_en_event, ------------------------->
+	.get_dev	= mlx4_en_get_netdev,
+	.protocol	= MLX4_PROT_ETH,
+	.activate	= mlx4_en_activate, ------------------------->
+};
+
+mlx4_en_add
+ kzalloc
+ mlx4_pd_alloc
+ mlx4_uar_alloc
+ ioremap
+ mlx4_mr_alloc
+ mlx4_mr_enable
+ #build device profile according to supplied module parameters
+ mlx4_en_get_profile
+ # configure which ports to start according to module parameters
+ mlx4_foreach_port
+ # set default number of RX rings
+ mlx4_en_set_num_rx_rings
+ # create our own workqueue for reset/multicast tasks
+ # note: we cannot use the shared workqueue because of deadlock
+ # caused by the rtnl lock
+ create_singlethread_workqueue
+
+mlx4_en_event <-------------------------
+ switch case
+ MLX4_DEV_EVENT_PORT_UP
+ MLX4_DEV_EVENT_PORT_DOWN
+  queue_work
+   queue_work_on
+    __queue_work
+     get_work_pool
+     find_worker_executing_work
+
+mlx4_en_activate <-------------------------
+ # create a netdev for each port
+ mlx4_foreach_port
+  mlx4_info
+   mlx4_en_init_netdev
+    alloc_etherdev_mqs
+    netdev_priv
+    mlx4_alloc_hwq_res - allocate page for receive rings
+    mlx4_is_master - initialize netdev entry points
+    netif_set_real_num_tx_queues
+    netif_set_real_num_rx_queues
+
+ # register notifier
+ register_netdevice_notifier
+
+------------------------------------------------------------------------------
+
+en_netdev.c
+ mlx4_en_open/mlx4_en_restart/mlx4_en_change_mtu/mlx4_xdp_set/mlx4_en_reset_config/mlx4_en_alloc_tx_queue_per_tc ---------->
+  mlx4_en_start_port
+   mlx4_en_activate_rx_rings 
+
+mlx4_en_set_features
+ mlx4_en_reset_config
+ 
+
+static const struct net_device_ops mlx4_netdev_ops = {
+	.ndo_open		= mlx4_en_open, <----------
+	.ndo_stop		= mlx4_en_close,
+	.ndo_start_xmit		= mlx4_en_xmit,
+	.ndo_select_queue	= mlx4_en_select_queue,
+	.ndo_get_stats64	= mlx4_en_get_stats64,
+	.ndo_set_rx_mode	= mlx4_en_set_rx_mode,
+	.ndo_set_mac_address	= mlx4_en_set_mac,
+	.ndo_validate_addr	= eth_validate_addr,
+	.ndo_change_mtu		= mlx4_en_change_mtu,
+	.ndo_eth_ioctl		= mlx4_en_ioctl,
+	.ndo_tx_timeout		= mlx4_en_tx_timeout,
+	.ndo_vlan_rx_add_vid	= mlx4_en_vlan_rx_add_vid,
+	.ndo_vlan_rx_kill_vid	= mlx4_en_vlan_rx_kill_vid,
+	.ndo_set_features	= mlx4_en_set_features,
+	.ndo_fix_features	= mlx4_en_fix_features,
+	.ndo_setup_tc		= __mlx4_en_setup_tc,------------------------->
+#ifdef CONFIG_RFS_ACCEL
+	.ndo_rx_flow_steer	= mlx4_en_filter_rfs,
+#endif
+	.ndo_get_phys_port_id	= mlx4_en_get_phys_port_id,
+	.ndo_features_check	= mlx4_en_features_check,
+	.ndo_set_tx_maxrate	= mlx4_en_set_tx_maxrate,
+	.ndo_bpf		= mlx4_xdp,
+};
+
+mlx4_en_open
+ # reset hw statistics and sw counter
+ mlx4_en_clear_stats 
+ mlx4_en_start_port
+ mlx4_en_linkstate
+
+mlx4_en_xmit
+ skb_get_queue_mapping
+  get_real_size
+  # align descriptor to TXBB size
+  # packet is good - grab an index and transmit it
+  # see if we have enough space for whole descriptor TXBB for setting SW 
+  # ownership on next descriptor, if not, use a bounce buffer
+
+ __mlx4_en_setup_tc <-------------------------
+  mlx4_en_alloc_tx_queue_per_tc
+   mlx4_en_start_port
+   mlx4_en_try_alloc_resources
+   mlx4_en_safe_replace_resources
+   mlx4_en_setup_tc
+    INIT_LIST_HEAD 
+    memset
+    mlx4_en_calc_rx_buf
+    mlx4_en_activate_rx_rings
+    mlx4_en_activate_cq
+    mlx4_en_get_cqe
+    mlx4_en_set_cq_moder
+    mlx4_en_arm_cq
+    mlx4_en_get_qp
+    mlx4_en_config_rss_steer
+    mlx4_en_create_drop_qp
+    mlx4_en_activate_cq 
+    mlx4_en_activate_tx_ring
+    configure port
+    set default qp number
+    init port
+    set unicost rx QP to broadcast address
+    attach rx QP to broadcast address
+    must redo promiscuous mode setup
+    schedule multicast task to populate multicast list
+    process all completions if exists to prevent the queues freeing if the are full
+ 
+------------------------------------------------------------------------------
+
+en_rx.c
+ mlx4_en_activate_rx_rings
+  mlx4_en_update_rx_prod_db
+  mlx4_en_init_rx_desc
+  mlx4_en_fill_rx_buffers
+   mlx4_en_prepare_rx_desc
+
+
+
+

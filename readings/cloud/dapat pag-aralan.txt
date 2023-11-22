@@ -1,0 +1,30 @@
+
+dapat pag aralan
+1. j1939 modbus
+   rs485
+2. python
+   file:///D:/backup-from-c-to-d/aral/python/python_tutorial.pdf
+   https://www.w3schools.com/python/default.asp 
+3. c++
+4. nodejs
+5. eclipse cross compiler
+6. opewrt
+7. json
+8. luci
+9. git 
+10. linux
+C:\Users\nats\OneDrive\Desktop\usb-backup\aral\linux commands
+11. spi
+12. twi
+13. pwm
+esp8266
+esp32
+C:\Users\nats\OneDrive\Desktop\usb-backup\aral\bash shell scriptingsocket
+mosquitto server with TLS
+C:\Users\nats\OneDrive\Desktop\usb-backup\aral\excel vba
+C:\Users\nats\OneDrive\Desktop\usb-backup\aral\linux device driver programming
+C:\Users\nats\OneDrive\Desktop\usb-backup\aral\python
+gps
+iot
+
+gcc -O0 -ggdb linux_host_bootloader-app.c -o linuxapp

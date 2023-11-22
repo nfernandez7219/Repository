@@ -1,0 +1,1097 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 /*******************************************************************************\par
+  UART Bootloader Source File\par
+\par
+  File Name:\par
+    bootloader.c\par
+\par
+  Summary:\par
+    This file contains source code necessary to execute UART bootloader.\par
+\par
+  Description:\par
+    This file contains source code necessary to execute UART bootloader.\par
+    It implements bootloader protocol which uses UART peripheral to download\par
+    application firmware into internal flash from HOST-PC.\par
+ *******************************************************************************/\par
+\par
+// DOM-IGNORE-BEGIN\par
+/*******************************************************************************\par
+* Copyright (C) 2019 Microchip Technology Inc. and its subsidiaries.\par
+*\par
+* Subject to your compliance with these terms, you may use Microchip software\par
+* and any derivatives exclusively with Microchip products. It is your\par
+* responsibility to comply with third party license terms applicable to your\par
+* use of third party software (including open source software) that may\par
+* accompany Microchip software.\par
+*\par
+* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER\par
+* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED\par
+* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A\par
+* PARTICULAR PURPOSE.\par
+*\par
+* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,\par
+* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND\par
+* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS\par
+* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE\par
+* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN\par
+* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,\par
+* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.\par
+ *******************************************************************************/\par
+// DOM-IGNORE-END\par
+\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+// Section: Include Files\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+\par
+#include "definitions.h"\par
+#include <device.h>\par
+\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+// Section: Type Definitions\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+\par
+#define FLASH_START             (0UL)\par
+#define FLASH_LENGTH            (1048576UL)\par
+#define PAGE_SIZE               (512UL)\par
+#define ERASE_BLOCK_SIZE        (8192UL)\par
+#define PAGES_IN_ERASE_BLOCK    (ERASE_BLOCK_SIZE / PAGE_SIZE)\par
+\par
+#define BOOTLOADER_SIZE         8192\par
+\par
+#define APP_START_ADDRESS       (0x2000UL)\par
+\par
+#define GUARD_OFFSET            0\par
+#define CMD_OFFSET              2\par
+#define ADDR_OFFSET             0\par
+#define SIZE_OFFSET             1\par
+#define DATA_OFFSET             1\par
+#define CRC_OFFSET              0\par
+\par
+#define CMD_SIZE                1\par
+#define GUARD_SIZE              4\par
+#define SIZE_SIZE               4\par
+#define OFFSET_SIZE             4\par
+#define CRC_SIZE                4\par
+#define HEADER_SIZE             (GUARD_SIZE + SIZE_SIZE + CMD_SIZE)\par
+#define DATA_SIZE               ERASE_BLOCK_SIZE\par
+\par
+#define WORDS(x)                ((int)((x) / sizeof(uint32_t)))\par
+\par
+#define OFFSET_ALIGN_MASK       (~ERASE_BLOCK_SIZE + 1)\par
+#define SIZE_ALIGN_MASK         (~PAGE_SIZE + 1)\par
+\par
+#define BTL_GUARD               (0x5048434DUL)\par
+\par
+#define SIGNATURE1              (0xAA55FADE)\par
+#define SIGNATURE2              (0x55AAC0DE)\par
+\par
+enum\par
+\{\par
+    BL_CMD_UNLOCK       = 0xa0,\par
+    BL_CMD_DATA         = 0xa1,\par
+    BL_CMD_VERIFY       = 0xa2,\par
+    BL_CMD_RESET        = 0xa3,\par
+    BL_CMD_BKSWAP_RESET = 0xa4,\par
+\};\par
+\par
+enum\par
+\{\par
+    BL_RESP_OK          = 0x50,\par
+    BL_RESP_ERROR       = 0x51,\par
+    BL_RESP_INVALID     = 0x52,\par
+    BL_RESP_CRC_OK      = 0x53,\par
+    BL_RESP_CRC_FAIL    = 0x54,\par
+\};\par
+\par
+struct binary_header \{\par
+        uint32_t sig1;\par
+        uint32_t sig2;\par
+        uint32_t bin_size;\par
+        uint32_t crc32;\par
+\};\par
+\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+// Section: Global objects\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+\par
+static uint32_t input_buffer[WORDS(OFFSET_SIZE + DATA_SIZE)];\par
+\par
+static uint32_t flash_data[WORDS(DATA_SIZE)];\par
+static uint32_t flash_addr          = 0;\par
+\par
+static uint32_t unlock_begin        = 0;\par
+static uint32_t unlock_end          = 0;\par
+\par
+static uint8_t  input_command       = 0;\par
+\par
+static bool     packet_received     = false;\par
+static bool     flash_data_ready    = false;\par
+\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+// Section: Bootloader Local Functions\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+\par
+/* Function to Generate CRC using the device service unit peripheral on programmed data */\par
+static uint32_t crc_generate(void)\par
+\{\par
+    uint32_t addr = unlock_begin;\par
+    uint32_t size = unlock_end - unlock_begin;\par
+    uint32_t crc  = 0;\par
+\par
+    PAC_PeripheralProtectSetup (PAC_PERIPHERAL_DSU, PAC_PROTECTION_CLEAR);\par
+\par
+    DSU_CRCCalculate (addr, size, 0xffffffff, &crc);\par
+\par
+    PAC_PeripheralProtectSetup (PAC_PERIPHERAL_DSU, PAC_PROTECTION_SET);\par
+\par
+    return crc;\par
+\}\par
+\par
+/* Function to receive application firmware via UART/USART */\par
+static void input_task(void)\par
+\{\par
+    static uint32_t ptr             = 0;\par
+    static uint32_t size            = 0;\par
+    static bool     header_received = false;\par
+    uint8_t         *byte_buf       = (uint8_t *)&input_buffer[0];\par
+    uint8_t         input_data      = 0;\par
+\par
+    if (packet_received == true)\par
+    \{\par
+        return;\par
+    \}\par
+\par
+    if (SERCOM0_USART_ReceiverIsReady() == false)\par
+    \{\par
+        return;\par
+    \}\par
+\par
+    input_data = SERCOM0_USART_ReadByte();\par
+\par
+    /* Check if 100 ms have elapsed */\par
+    if (SYSTICK_TimerPeriodHasExpired())\par
+    \{\par
+        header_received = false;\par
+    \}\par
+\par
+    if (header_received == false)\par
+    \{\par
+        byte_buf[ptr++] = input_data;\par
+\par
+        if (ptr == HEADER_SIZE)\par
+        \{\par
+            if (input_buffer[GUARD_OFFSET] != BTL_GUARD)\par
+            \{\par
+                SERCOM0_USART_WriteByte(BL_RESP_ERROR);\par
+            \}\par
+            else\par
+            \{\par
+                size            = input_buffer[SIZE_OFFSET];\par
+                input_command   = (uint8_t)input_buffer[CMD_OFFSET];\par
+                header_received = true;\par
+            \}\par
+\par
+            ptr = 0;\par
+        \}\par
+    \}\par
+    else if (header_received == true)\par
+    \{\par
+        if (ptr < size)\par
+        \{\par
+            byte_buf[ptr++] = input_data;\par
+        \}\par
+\par
+        if (ptr == size)\par
+        \{\par
+            ptr = 0;\par
+            size = 0;\par
+            packet_received = true;\par
+            header_received = false;\par
+        \}\par
+    \}\par
+\par
+    SYSTICK_TimerRestart();\par
+\}\par
+\par
+/* Function to process the received command */\par
+static void command_task(void)\par
+\{    \par
+    uint32_t i;\par
+\par
+    if (BL_CMD_UNLOCK == input_command)\par
+    \{\par
+        uint32_t begin  = (input_buffer[ADDR_OFFSET] & OFFSET_ALIGN_MASK);\par
+\par
+        uint32_t end    = begin + (input_buffer[SIZE_OFFSET] & SIZE_ALIGN_MASK);\par
+\par
+        if (end > begin && end <= (FLASH_START + FLASH_LENGTH))\par
+        \{\par
+            unlock_begin = begin;\par
+            unlock_end = end;\par
+            SERCOM0_USART_WriteByte(BL_RESP_OK);          \par
+        \}\par
+        else\par
+        \{\par
+            unlock_begin = 0;\par
+            unlock_end = 0;\par
+            SERCOM0_USART_WriteByte(BL_RESP_ERROR);\par
+        \}\par
+    \}\par
+    else if (BL_CMD_DATA == input_command)\par
+    \{\par
+        flash_addr = (input_buffer[ADDR_OFFSET] & OFFSET_ALIGN_MASK);\par
+\par
+        if (unlock_begin <= flash_addr && flash_addr < unlock_end)\par
+        \{\par
+            for (i = 0; i < WORDS(DATA_SIZE); i++)\par
+                flash_data[i] = input_buffer[i + DATA_OFFSET];\par
+\par
+            flash_data_ready = true;\par
+\par
+            SERCOM0_USART_WriteByte(BL_RESP_OK);\par
+        \}\par
+        else\par
+        \{\par
+            SERCOM0_USART_WriteByte(BL_RESP_ERROR);\par
+        \}\par
+    \}\par
+    else if (BL_CMD_VERIFY == input_command)\par
+    \{\par
+        uint32_t crc        = input_buffer[CRC_OFFSET];\par
+        uint32_t crc_gen    = 0;\par
+\par
+        crc_gen = crc_generate();\par
+        \par
+        if (crc == crc_gen)\par
+            /* host and bootloader is about to end */\par
+            /* need to reset sram[0][1] state here to run the application on the next cycle */            \par
+            SERCOM0_USART_WriteByte(BL_RESP_CRC_OK);\par
+        else\par
+            SERCOM0_USART_WriteByte(BL_RESP_CRC_FAIL);\par
+    \}\par
+    else if (BL_CMD_BKSWAP_RESET == input_command)\par
+    \{\par
+        SERCOM0_USART_WriteByte(BL_RESP_OK);\par
+\par
+        while(SERCOM0_USART_TransmitComplete() == false);\par
+\par
+        NVMCTRL_BankSwap();\par
+    \}\par
+    else if (BL_CMD_RESET == input_command)\par
+    \{\par
+        SERCOM0_USART_WriteByte(BL_RESP_OK);\par
+\par
+        while(SERCOM0_USART_TransmitComplete() == false);\par
+\par
+        NVIC_SystemReset();\par
+    \}\par
+    else\par
+    \{\par
+        SERCOM0_USART_WriteByte(BL_RESP_INVALID);\par
+    \}\par
+\par
+    packet_received = false;\par
+\}\par
+\par
+/* Function to program received application firmware data into internal flash */\par
+static void flash_task(void)\par
+\{\par
+    uint32_t addr       = flash_addr;\par
+    uint32_t page       = 0;\par
+    uint32_t write_idx  = 0;\par
+\par
+    // Lock region size is always bigger than the row size\par
+    NVMCTRL_RegionUnlock(addr);\par
+\par
+    while(NVMCTRL_IsBusy() == true)\par
+        input_task();\par
+\par
+    /* Erase the Current sector */\par
+    NVMCTRL_BlockErase(addr);\par
+\par
+    /* Receive Next Bytes while waiting for erase to complete */\par
+    while(NVMCTRL_IsBusy() == true)\par
+        input_task();\par
+\par
+    for (page = 0; page < PAGES_IN_ERASE_BLOCK; page++)\par
+    \{\par
+        NVMCTRL_PageWrite(&flash_data[write_idx], addr);\par
+\par
+        while(NVMCTRL_IsBusy() == true)\par
+            input_task();\par
+\par
+        addr += PAGE_SIZE;\par
+        write_idx += WORDS(PAGE_SIZE);\par
+    \}\par
+\par
+    flash_data_ready = false;\par
+\}\par
+\par
+unsigned long crc32(unsigned long inCrc32, const void *buf, size_t bufLen) \{\par
+        static const unsigned long crcTable[256] = \{\par
+         0x00000000,0x77073096,0xEE0E612C,0x990951BA,0x076DC419,0x706AF48F,0xE963A535,\par
+         0x9E6495A3,0x0EDB8832,0x79DCB8A4,0xE0D5E91E,0x97D2D988,0x09B64C2B,0x7EB17CBD,\par
+         0xE7B82D07,0x90BF1D91,0x1DB71064,0x6AB020F2,0xF3B97148,0x84BE41DE,0x1ADAD47D,\par
+         0x6DDDE4EB,0xF4D4B551,0x83D385C7,0x136C9856,0x646BA8C0,0xFD62F97A,0x8A65C9EC,\par
+         0x14015C4F,0x63066CD9,0xFA0F3D63,0x8D080DF5,0x3B6E20C8,0x4C69105E,0xD56041E4,\par
+         0xA2677172,0x3C03E4D1,0x4B04D447,0xD20D85FD,0xA50AB56B,0x35B5A8FA,0x42B2986C,\par
+         0xDBBBC9D6,0xACBCF940,0x32D86CE3,0x45DF5C75,0xDCD60DCF,0xABD13D59,0x26D930AC,\par
+         0x51DE003A,0xC8D75180,0xBFD06116,0x21B4F4B5,0x56B3C423,0xCFBA9599,0xB8BDA50F,\par
+         0x2802B89E,0x5F058808,0xC60CD9B2,0xB10BE924,0x2F6F7C87,0x58684C11,0xC1611DAB,\par
+         0xB6662D3D,0x76DC4190,0x01DB7106,0x98D220BC,0xEFD5102A,0x71B18589,0x06B6B51F,\par
+         0x9FBFE4A5,0xE8B8D433,0x7807C9A2,0x0F00F934,0x9609A88E,0xE10E9818,0x7F6A0DBB,\par
+         0x086D3D2D,0x91646C97,0xE6635C01,0x6B6B51F4,0x1C6C6162,0x856530D8,0xF262004E,\par
+         0x6C0695ED,0x1B01A57B,0x8208F4C1,0xF50FC457,0x65B0D9C6,0x12B7E950,0x8BBEB8EA,\par
+         0xFCB9887C,0x62DD1DDF,0x15DA2D49,0x8CD37CF3,0xFBD44C65,0x4DB26158,0x3AB551CE,\par
+         0xA3BC0074,0xD4BB30E2,0x4ADFA541,0x3DD895D7,0xA4D1C46D,0xD3D6F4FB,0x4369E96A,\par
+         0x346ED9FC,0xAD678846,0xDA60B8D0,0x44042D73,0x33031DE5,0xAA0A4C5F,0xDD0D7CC9,\par
+         0x5005713C,0x270241AA,0xBE0B1010,0xC90C2086,0x5768B525,0x206F85B3,0xB966D409,\par
+         0xCE61E49F,0x5EDEF90E,0x29D9C998,0xB0D09822,0xC7D7A8B4,0x59B33D17,0x2EB40D81,\par
+         0xB7BD5C3B,0xC0BA6CAD,0xEDB88320,0x9ABFB3B6,0x03B6E20C,0x74B1D29A,0xEAD54739,\par
+         0x9DD277AF,0x04DB2615,0x73DC1683,0xE3630B12,0x94643B84,0x0D6D6A3E,0x7A6A5AA8,\par
+         0xE40ECF0B,0x9309FF9D,0x0A00AE27,0x7D079EB1,0xF00F9344,0x8708A3D2,0x1E01F268,\par
+         0x6906C2FE,0xF762575D,0x806567CB,0x196C3671,0x6E6B06E7,0xFED41B76,0x89D32BE0,\par
+         0x10DA7A5A,0x67DD4ACC,0xF9B9DF6F,0x8EBEEFF9,0x17B7BE43,0x60B08ED5,0xD6D6A3E8,\par
+         0xA1D1937E,0x38D8C2C4,0x4FDFF252,0xD1BB67F1,0xA6BC5767,0x3FB506DD,0x48B2364B,\par
+         0xD80D2BDA,0xAF0A1B4C,0x36034AF6,0x41047A60,0xDF60EFC3,0xA867DF55,0x316E8EEF,\par
+         0x4669BE79,0xCB61B38C,0xBC66831A,0x256FD2A0,0x5268E236,0xCC0C7795,0xBB0B4703,\par
+         0x220216B9,0x5505262F,0xC5BA3BBE,0xB2BD0B28,0x2BB45A92,0x5CB36A04,0xC2D7FFA7,\par
+         0xB5D0CF31,0x2CD99E8B,0x5BDEAE1D,0x9B64C2B0,0xEC63F226,0x756AA39C,0x026D930A,\par
+         0x9C0906A9,0xEB0E363F,0x72076785,0x05005713,0x95BF4A82,0xE2B87A14,0x7BB12BAE,\par
+         0x0CB61B38,0x92D28E9B,0xE5D5BE0D,0x7CDCEFB7,0x0BDBDF21,0x86D3D2D4,0xF1D4E242,\par
+         0x68DDB3F8,0x1FDA836E,0x81BE16CD,0xF6B9265B,0x6FB077E1,0x18B74777,0x88085AE6,\par
+         0xFF0F6A70,0x66063BCA,0x11010B5C,0x8F659EFF,0xF862AE69,0x616BFFD3,0x166CCF45,\par
+         0xA00AE278,0xD70DD2EE,0x4E048354,0x3903B3C2,0xA7672661,0xD06016F7,0x4969474D,\par
+         0x3E6E77DB,0xAED16A4A,0xD9D65ADC,0x40DF0B66,0x37D83BF0,0xA9BCAE53,0xDEBB9EC5,\par
+         0x47B2CF7F,0x30B5FFE9,0xBDBDF21C,0xCABAC28A,0x53B39330,0x24B4A3A6,0xBAD03605,\par
+         0xCDD70693,0x54DE5729,0x23D967BF,0xB3667A2E,0xC4614AB8,0x5D681B02,0x2A6F2B94,\par
+         0xB40BBE37,0xC30C8EA1,0x5A05DF1B,0x2D02EF8D\par
+        \};\par
+        unsigned long crc32;\par
+        unsigned char *byteBuf;\par
+        size_t i;\par
+\par
+        /** accumulate crc32 for buffer **/\par
+        crc32 = inCrc32 ^ 0xFFFFFFFF;\par
+        byteBuf = (unsigned char *)buf;\par
+        for (i = 0; i < bufLen; i++) \{\par
+                crc32 = (crc32 >> 8) ^ crcTable[(crc32 ^ byteBuf[i]) & 0xFF];\par
+        \}\par
+        return crc32 ^ 0xFFFFFFFF;\par
+\}\par
+\par
+/* binary header must be located somewhere within the first 8k of application\par
+ * firmware */\par
+struct binary_header *find_binary_header(void)\par
+\{\par
+    uint32_t *start = (uint32_t *)(APP_START_ADDRESS);\par
+    uint32_t *end = start + (ERASE_BLOCK_SIZE/sizeof(uint32_t));\par
+    struct binary_header *hdr = NULL;\par
+\par
+    //static const char print_report[] = "finding binary header\\r\\n";\par
+    //static const char print_found[] = "found!\\r\\n";\par
+    //static const char print_not_found[] = "not found!\\r\\n";\par
+    //static const char size_is[] = "size is: ";\par
+    //static const char checksum_is[] = "checksum is: ";\par
+    //SERCOM0_USART_Write((char *)print_report, sizeof(print_report));\par
+\par
+    \par
+    for ( ; (start-1) < end; start++) \{\par
+        if (start[0] == SIGNATURE1 && start[1] == SIGNATURE2) \{\par
+            hdr = (struct binary_header *)start;\par
+\par
+            //SERCOM0_USART_Write((char *)print_found, sizeof(print_found));\par
+#if 0\par
+            /* report size */\par
+            //SERCOM0_USART_Write((char *)size_is, sizeof(size_is));\par
+            SERCOM0_USART_WriteByte((int)(hdr->bin_size >> 0) & 0xFF);\par
+            SERCOM0_USART_WriteByte((int)(hdr->bin_size >> 8) & 0xFF);\par
+            SERCOM0_USART_WriteByte((int)(hdr->bin_size >> 16) & 0xFF);\par
+            SERCOM0_USART_WriteByte((int)(hdr->bin_size >> 24) & 0xFF);\par
+            SERCOM0_USART_Write("\\r\\n", 2);\par
+\par
+            /* report checksum */\par
+            //SERCOM0_USART_Write((char *)checksum_is, sizeof(checksum_is));\par
+            SERCOM0_USART_WriteByte((int)(hdr->crc32 >> 0) & 0xFF);\par
+            SERCOM0_USART_WriteByte((int)(hdr->crc32 >> 8) & 0xFF);\par
+            SERCOM0_USART_WriteByte((int)(hdr->crc32 >> 16) & 0xFF);\par
+            SERCOM0_USART_WriteByte((int)(hdr->crc32 >> 24) & 0xFF);\par
+            SERCOM0_USART_Write("\\r\\n", 2);\par
+#endif\par
+            return hdr;\par
+            \par
+            break;\par
+        \}\par
+    \}\par
+    //SERCOM0_USART_Write((char *)print_not_found, sizeof(print_not_found));\par
+    return hdr;\par
+\}\par
+\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+// Section: Bootloader Global Functions\par
+// *****************************************************************************\par
+// *****************************************************************************\par
+\par
+void run_Application(void)\par
+\{\par
+    uint32_t msp            = *(uint32_t *)(APP_START_ADDRESS);\par
+    uint32_t reset_vector   = *(uint32_t *)(APP_START_ADDRESS + 4);\par
+    uint8_t *start;\par
+    uint8_t *end;\par
+    struct binary_header *hdr;\par
+    uint8_t *tmp;\par
+    uint32_t checksum = 0;\par
+    uint16_t nvm_status;\par
+\par
+    if (msp == 0xffffffff)\par
+    \{\par
+        return;\par
+    \}\par
+\par
+    /* there is firmware, but header signature was not found... this might\par
+     * mean the signature was corrupted, so we treat the entire firmware also\par
+     * as corrupted. boot into bootloader mode instead of loading the firmware.\par
+     */\par
+    if (!(hdr = find_binary_header())) \{\par
+        return;\par
+    \}\par
+\par
+    start = (uint8_t *)(APP_START_ADDRESS);\par
+    end = start + hdr->bin_size;\par
+    tmp = (uint8_t *)hdr;\par
+    \par
+    /* compute the initial checksum, skip the header and continue computing the \par
+     * checksum until we are done with the entire firmware. */\par
+    checksum = crc32(checksum, start, (size_t)(tmp - start));\par
+    tmp = tmp + sizeof(struct binary_header);\par
+    checksum = crc32(checksum, tmp, (size_t)(end - tmp));\par
+\par
+#if 0\par
+    //static char const checksum_computed[] = "computed checksum is: ";\par
+    //SERCOM0_USART_Write((char *)checksum_computed, sizeof(checksum_computed));\par
+    SERCOM0_USART_WriteByte((checksum >> 0) & 0xFF);\par
+    SERCOM0_USART_WriteByte((checksum >> 8) & 0xFF);\par
+    SERCOM0_USART_WriteByte((checksum >> 16) & 0xFF);\par
+    SERCOM0_USART_WriteByte((checksum >> 24) & 0xFF);\par
+    SERCOM0_USART_Write("\\r\\n", 2);\par
+\par
+\par
+        static char const checksum_matched[] = "checksums matched! booting firmware...\\r\\n";\par
+    static char const checksum_not_matched[] = "checksums did not match...\\r\\n";\par
+\par
+    if (hdr->crc32 == checksum) \{\par
+        SERCOM0_USART_Write((char *)checksum_matched, sizeof(checksum_matched));\par
+    \} else \{\par
+        SERCOM0_USART_Write((char *)checksum_not_matched, sizeof(checksum_not_matched));\par
+    \}\par
+#endif\par
+ \par
+    //static char const sumcheck[] = "sumcheck : ";\par
+//    SERCOM0_USART_Write((char *)sumcheck, sizeof(sumcheck));\par
+    /* now we compare if checksums match. if they do, continue with the \par
+     * rest of normal bootup process. */\par
+    \par
+    if (checksum != hdr->crc32) \{\par
+        /* if they don't match, then we see if we can bootup failsafe firmware. \par
+         * if we are booting from copy A (BankA), then switch to copy B (BankB)\par
+         */\par
+        nvm_status  = NVMCTRL_StatusGet();\par
+        if ((nvm_status & (NVMCTRL_STATUS_AFIRST_Msk)) != 0) \{\par
+            /* bank swap and system reset */\par
+            //static char const BankSwap[] = "BankSwap...\\r\\n";\par
+            //SERCOM0_USART_Write((char *)BankSwap, sizeof(BankSwap));\par
+            //while(1);                        \par
+            NVMCTRL_BankSwap();\par
+                        \par
+        \} else \{\par
+            /* if we are booting from copy B (BankB) and we still encounter \par
+             * checksum mismatch, then we encountered a gross error in our setup.\par
+             * both copy A and the failsafe copy B are corrupted. we go back to\par
+             * bootloader mode.\par
+             * \par
+             * maybe we can also light up a red LED to signal this gross error \par
+             * here??\par
+             */\par
+            // led_assert();\par
+            return;\par
+        \}\par
+    \}\par
+\par
+    __set_MSP(msp);\par
+    asm("bx %0"::"r" (reset_vector));\par
+\}\par
+\par
+/* bootloading algorithm:\par
+ * \par
+ * the bootloader first checks if there is an actual firmware to load in offset\par
+ * 0x2000. it does this mainly by checking if the block at 0x2000 is erased or\par
+ * not. if it is erased, then there is really no reason to load anything and \par
+ * bootloader will simply just continue booting itself. \par
+ *\par
+ * if it is not erased, then there is firmware to load. but bootloader now has\par
+ * to check if firmware instructed it to go into bootloader mode. it does this\par
+ * by checking for a predefined pattern in the RAM space.\par
+ * \par
+ * firmware triggers a bootup to bootloader mode by writing a predefined pattern\par
+ * to the RAM space and issuing a soft reset.\par
+ */\par
+bool __WEAK bootloader_Trigger(void)\par
+\{\par
+    uint32_t *entry_point = (uint32_t *)APP_START_ADDRESS;\par
+    static uint32_t *sram = (uint32_t *)BTL_TRIGGER_RAM_START;\par
+\par
+    /* if there is nothing to load... continue booting up bootloader */\par
+    /* check application @ 0x2000 if blank, if so then bootloader */\par
+    if (entry_point[0] == 0xFFFFFFFF) \{\par
+        return true;    /* bootloader */\par
+    \}\par
+\par
+    /* if we reach here, there is firmware to load... so check if firmware\par
+     * instructed us to go into bootloader mode or not. */\par
+    /* check signature located in sram, initially blank */\par
+    if ((sram[0] == TRIGGER_SIGNATURE0) &&\par
+        (sram[1] == TRIGGER_SIGNATURE1)) \par
+    \{\par
+        sram[0] = 0x00000000;\par
+        sram[1] = 0x00000000;\par
+        return true;    /* bootloader */\par
+    \}\par
+\par
+    return false;\par
+\}\par
+\par
+void bootloader_Tasks(void)\par
+\{\par
+    while (1)\par
+    \{\par
+        input_task();\par
+\par
+        if (flash_data_ready)\par
+            flash_task();\par
+        else if (packet_received)\par
+            command_task();\par
+    \}\par
+\}\par
+\par
+bootloader\par
+\par
+\par
+\par
+#include <fcntl.h>\par
+#include <stdio.h>\par
+#include <unistd.h>\par
+#include <stdint.h>\par
+#include <termios.h>\par
+#include <sys/ioctl.h>\par
+//#include "Bootloader.h"\par
+ \par
+#define BL_CMD_UNLOCK\tab\tab     0xa0\par
+#define BL_CMD_DATA\tab\tab         0xa1\par
+#define BL_CMD_VERIFY\tab\tab     0xa2\par
+#define BL_CMD_RESET\tab\tab     0xa3\par
+#define BL_CMD_BNKSWAP_RESET\tab 0xa4\par
+   \par
+#define BL_RESP_OK\tab\tab     0x50\par
+#define BL_RESP_ERROR\tab\tab 0x51\par
+#define BL_RESP_INVALID\tab\tab 0x52\par
+#define BL_RESP_CRC_OK\tab\tab 0x53\par
+#define BL_RESP_CRC_FAIL\tab 0x54\par
+\par
+#define BL_GUARD\tab\tab     0x5048434D\par
+#define ERASE_SIZE\tab\tab     8192\par
+//#define ERASE_SIZE\tab\tab     256\par
+#define BOOTLOADER_SIZE\tab\tab 2048\par
+\par
+#define MAX_FLASH_SIZE          (1*1024*1024)   /* 1 MB */\par
+#define MAX_BOOTLOADER_SIZE     (8*1024)        /* 8Kb */\par
+#define MAX_BIN                 ((MAX_FLASH_SIZE - MAX_BOOTLOADER_SIZE) >> 1)\par
+\par
+//devices = \{"SAME7X" : [8192, 8192]\}\par
+\par
+int\tab   open_serial_port(const char *device, uint32_t baudrate);\par
+int\tab   write_port(int fd, uint8_t *buffer, size_t size);\par
+ssize_t\tab   read_port(int fd, uint8_t *buffer, size_t size);\par
+void\tab   crc32_tab_gen();\par
+uint32_t  crc_32(uint8_t *data, int size);\par
+uint32_t  check_option(int opt);\par
+\par
+static char binmap[MAX_BIN];\par
+uint32_t    crc_table[256];\par
+\par
+\par
+// Opens the specified serial port, sets it up for binary communication,\par
+// configures its read timeouts, and sets its baud rate.\par
+// Returns a non-negative file descriptor on success, or -1 on failure.\par
+int open_serial_port(const char * device, uint32_t baud_rate)\par
+\{\par
+    struct termios options;\par
+\par
+    int fd = open(device, O_RDWR | O_NOCTTY);\par
+\par
+    if (fd == -1)\par
+    \{\par
+        perror(device);\par
+        return -1;\par
+    \}\par
+ \par
+    // Flush away any bytes previously read or written.\par
+    int result = tcflush(fd, TCIOFLUSH);\par
+    if (result)\par
+    \{\par
+        perror("tcflush failed");  // just a warning, not a fatal error\par
+    \}\par
+\par
+    // Get the current configuration of the serial port.\par
+    result = tcgetattr(fd, &options);\par
+    if (result)\par
+    \{\par
+        perror("tcgetattr failed");\par
+        close(fd);\par
+        return -1;\par
+    \}\par
+\par
+    // Turn off any options that might interfere with our ability to send and\par
+    // receive raw binary bytes.\par
+    options.c_iflag &= ~(INLCR | IGNCR | ICRNL | IXON | IXOFF);\par
+    options.c_oflag &= ~(ONLCR | OCRNL);\par
+    options.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);\par
+    options.c_cflag &= ~(CRTSCTS);\par
+    options.c_cflag &= (CREAD | CLOCAL);\par
+    options.c_cflag &= ~(IXON | IXOFF | IXANY);\par
+\par
+\par
+    // Set up timeouts: Calls to read() will return as soon as there is\par
+    // at least one byte available or when 100 ms has passed.\par
+    options.c_cc[VTIME] = 10;\par
+    options.c_cc[VMIN] = 10;\par
+\par
+    // This code only supports certain standard baud rates. Supporting\par
+    // non-standard baud rates should be possible but takes more work.\par
+    switch (baud_rate)\par
+    \{\par
+        case 4800:   cfsetospeed(&options, B4800);   break;\par
+        case 9600:   cfsetospeed(&options, B9600);   break;\par
+        case 19200:  cfsetospeed(&options, B19200);  break;\par
+        case 38400:  cfsetospeed(&options, B38400);  break;\par
+        case 115200: cfsetospeed(&options, B115200); break;\par
+        default:\par
+            fprintf(stderr,\par
+                    "warning: baud rate %u is not supported, using 9600.\\n",\par
+                    baud_rate);\par
+                    cfsetospeed(&options, B9600);\par
+            break;\par
+    \}\par
+\par
+    cfsetispeed(&options, cfgetospeed(&options));\par
+\par
+    result = tcsetattr(fd, TCSANOW, &options);\par
+\par
+    if (result)\par
+    \{\par
+        perror("tcsetattr failed");\par
+        close(fd);\par
+        return -1;\par
+    \}\par
+\par
+    return fd;\par
+\}\par
+ \par
+// Writes bytes to the serial port, returning 0 on success and -1 on failure.\par
+int write_port(int fd, uint8_t * buffer, size_t size)\par
+\{\par
+    ssize_t result = write(fd, buffer, size);\par
+    \par
+    if (result != (ssize_t)size)\par
+    \{\par
+        perror("failed to write to port");\par
+        return -1;\par
+    \}\par
+\par
+    return 0;\par
+\}\par
+ \par
+// Reads bytes from the serial port.\par
+// Returns after all the desired bytes have been read, or if there is a\par
+// timeout or other error.\par
+// Returns the number of bytes successfully read into the buffer, or -1 if\par
+// there was an error reading.\par
+ssize_t read_port(int fd, uint8_t * buffer, size_t size)\par
+\{\par
+    size_t received = 0;\par
+    while (received < size)\par
+    \{\par
+        ssize_t r = read(fd, buffer + received, size);\par
+        if (r < 0)\par
+        \{\par
+            perror("failed to read from port");\par
+            return -1;\par
+        \}\par
+        if (r == 0)\par
+        \{\par
+            // Timeout\par
+            break;\par
+        \}\par
+\par
+        received += r;\par
+    \}\par
+ \par
+    return received;\par
+\} \par
+\par
+void crc32_tab_gen()\par
+\{\par
+    uint32_t result;\par
+    uint32_t value;\par
+    int a, b;\par
+\par
+    for (a = 0; a < 256; a++) \{\par
+        value = a;\par
+\par
+        for (b = 0; b < 8; b++) \{\par
+            if (value & 1) \{    \par
+                value = (value >> 1) ^ 0xedb88320;\par
+            \}\par
+            else \{\par
+                value = value >> 1;\par
+            \}\par
+        \}\par
+             \par
+        crc_table[a] = value;  \par
+    \}  \par
+\}\par
+\par
+uint32_t crc_32(uint8_t *data, int size)\par
+\{\par
+    uint32_t crc;\par
+    int      i;\par
+    uint8_t  d;\par
+   \par
+    crc = 0xffffffff;\par
+\par
+    for (i = 0; i < size; i++) \par
+    \{\par
+        d = data[i];\par
+        crc = crc_table[(crc ^ d) & 0xff] ^ (crc >> 8);\par
+    \}\par
+\par
+    return crc;\par
+\}\par
+\par
+uint32_t check_option(int opt)\par
+\{\par
+    uint32_t addr;\par
+#if 0\par
+    switch (opt) \{\par
+        case 'a':\par
+            if ((optarg % 1024) != 0) \par
+\tab\tab\tab\{\par
+                printf("invalid address \\n");\par
+            \}  \par
+            else \par
+\tab\tab\tab\{\par
+                addr = optarg;\par
+            \}\par
+            break;\par
+\par
+        case 's':\par
+            break;\par
+        case 'c':\par
+            break;\par
+        default:\par
+            printf("not in option\\n");\par
+            return 1;\par
+    \}\par
+#endif\par
+\tab addr = 0x2000;\par
+    return addr;\par
+\}\par
+\par
+\par
+int get_size(FILE *fp)\par
+\{\par
+\tab int size;\par
+\par
+\tab fseek(fp, 0, SEEK_END);\par
+\tab size = ftell(fp);\par
+\tab fseek(fp, 0,  SEEK_SET);\par
+\par
+\tab return size;\par
+\}\par
+\par
+uint8_t send_request(int port, uint8_t cmd, uint32_t datasize, \par
+\tab\tab\tab\tab\tab  uint32_t addr, uint32_t fsize, uint8_t *data)\par
+\{\par
+\tab\par
+\tab uint8_t\tab  databuff[ERASE_SIZE * 2] , buffer[1];\par
+\tab uint32_t length;\par
+\tab int\tab\tab  i, j, k, l, tries=3;\par
+\par
+\par
+\tab /* BL_GUARD */\par
+\tab databuff[0] = (BL_GUARD >> 0) & 0xff;\par
+\tab databuff[1] = (BL_GUARD >> 8) & 0xff;\par
+\tab databuff[2] = (BL_GUARD >> 16)& 0xff;\par
+\tab databuff[3] = (BL_GUARD >> 24)& 0xff;\par
+\par
+\tab /* datasize */\par
+\tab databuff[4] = (datasize >> 0) & 0xff;\par
+\tab databuff[5] = (datasize >> 8) & 0xff;\par
+\tab databuff[6] = (datasize >> 16)& 0xff;\par
+\tab databuff[7] = (datasize >> 24)& 0xff;\par
+\par
+\tab /* Command */\par
+\tab databuff[8] = (cmd >> 0) & 0xff;\par
+/*\tab databuff[9] = (cmd >> 8) & 0xff;\par
+\tab databuff[10] = (cmd >> 16) & 0xff;\par
+\tab databuff[11] = (cmd >> 24) & 0xff;*/\par
+\par
+\tab /* address or crc or reset*/\par
+\tab databuff[9] = (addr >> 0) & 0xff;\par
+\tab databuff[10] = (addr >> 8) & 0xff;\par
+\tab databuff[11] = (addr >> 16) & 0xff;\par
+\tab databuff[12] = (addr >> 24) & 0xff;\par
+\par
+\tab if (cmd == BL_CMD_UNLOCK)\par
+\tab\{\par
+\par
+\tab\tab /* file size */\par
+\tab\tab databuff[13] = (fsize >> 0) & 0xff;\par
+\tab\tab databuff[14] = (fsize >> 8) & 0xff;\par
+\tab\tab databuff[15] = (fsize >> 16) & 0xff;\par
+\tab\tab databuff[16] = (fsize >> 24) & 0xff;\par
+\par
+\tab\tab length = 17;\par
+\tab\}\par
+\tab else if (cmd == BL_CMD_DATA)\par
+\tab\{\par
+\tab\tab k = 13;\par
+\tab\tab databuff[k];\par
+\par
+\tab\tab for (l = 0; l < ERASE_SIZE + 13; l++)\par
+\tab\tab\{\par
+\tab\tab\tab databuff[k] = data[l];\par
+\tab\tab\tab k++;\par
+\tab\tab\}\par
+\par
+\tab\tab length = ERASE_SIZE + 13;\par
+\tab\}\par
+\tab else if (cmd == BL_CMD_VERIFY)\par
+\tab\{\par
+\tab\tab length = 13;\tab\par
+\tab\}\par
+\tab else\par
+\tab\{\par
+\tab\tab /* BL_CMD_RESET */\par
+        printf("reset\\n");\par
+\tab\tab for (k = 9; k < 25; k++)\par
+\tab\tab\{\par
+\tab\tab\tab databuff[k] = 0;\par
+\tab\tab\}\par
+\par
+\tab\tab length = 25;\par
+\tab\}\par
+\par
+\tab write_port(port, databuff, length);\tab\par
+\par
+\par
+\tab for (i = 0; i < tries; i++)\par
+\tab\{\par
+\tab\tab read_port(port, buffer, 1);\par
+\par
+\tab\tab if (buffer[0] == 0)\par
+\tab\tab\{\par
+\tab\tab\tab printf("no response received, retrying.. %d\\n", i);\par
+\tab\tab\tab // fake delay\par
+\tab\tab\tab while (j < 1000000)\par
+\tab\tab\tab\{\par
+\tab\tab\tab\tab j++;\par
+\tab\tab\tab\}\par
+\tab\tab\}\par
+\tab\tab else\par
+\tab\tab\{\par
+\tab\tab\tab return buffer[0];\par
+\tab\tab\}\par
+\tab\}\par
+\par
+\tab return 0;\par
+\}\par
+\par
+int update_sequence(int port, uint32_t addr, uint32_t bin_size,\par
+\tab\tab\tab\tab\tab uint8_t *binmap, uint32_t crc)\par
+\{\par
+    uint8_t  blocks[16][ERASE_SIZE], blk[ERASE_SIZE];\par
+    int\tab      i, p, q, j, m, k, l, resp;\par
+    uint32_t address;\par
+\par
+\par
+    printf("Unlocking...\\n");\par
+\par
+    /* send Command Unlock */\par
+    resp = send_request(port, BL_CMD_UNLOCK, 8, addr, bin_size, 0);\par
+\par
+    if (resp != BL_RESP_OK)\par
+    \{\par
+        printf("invalid response code %x. check file size and addr are correct\\n", resp);\par
+    \tab return 1;\par
+    \}\par
+\par
+    /* create data blocks of ERASE_SIZE each */\tab\tab\tab\par
+    q = 0;\par
+    j = bin_size/ERASE_SIZE;\par
+    for (p = 0; p < j; p++)\par
+    \{\par
+        for (i = 0; i < ERASE_SIZE; i++)\par
+\tab     \{\par
+\tab         blocks[p][i] = binmap[q];\tab\par
+\tab         q++;\par
+\tab     \}\tab\tab\tab\tab\par
+    \}\par
+\par
+    address = addr;\par
+\par
+    // enumerate\par
+    m = 0;\par
+\tab\par
+    for (k = 0; k < p; k++)\par
+    \{\par
+        for (l = 0; l < ERASE_SIZE; l++)\par
+\tab     \{\par
+\tab         blk[m] = blocks[k][l]; \par
+\tab         m++;\tab\tab\tab\tab\tab\par
+\tab     \}\par
+\par
+\tab     send_request(port, BL_CMD_DATA, ERASE_SIZE + 4, address, 0, blk);\par
+\tab     address += ERASE_SIZE;\par
+\tab     m = 0;\par
+\par
+\tab     if (resp != BL_RESP_OK)\par
+\tab     \{\par
+\tab         printf("invalid response code %x \\n", resp);\par
+\tab         return 1;\par
+\tab     \}\par
+    \}\par
+\par
+    printf("verification...\\n");\par
+\par
+    /* send verification command */\par
+    resp = send_request(port, BL_CMD_VERIFY, 4, crc, 0, 0);\par
+\par
+    if (resp == BL_RESP_CRC_OK)\par
+    \{\par
+        printf("success.. \\n");\par
+    \}\par
+    else\par
+    \{\par
+        printf("...fail (statis = %x)\\n", resp);\par
+\tab     return 1;\par
+    \}\par
+\par
+    // no bank swap, it is for testin only\par
+\par
+    printf("rebooting...\\n");\par
+    /* reset */\par
+    resp = send_request(port, BL_CMD_RESET, 16, 16, 0, 0); \par
+\par
+    if (resp == BL_RESP_OK)\par
+    \{\par
+        printf("Reboot Done!\\n");\par
+    \}\par
+    else\par
+    \{\par
+        printf("...Reset fail (status %x)\\n", resp);\par
+\tab     return 1;\par
+    \}\tab\tab\tab\par
+\par
+    return 0;\par
+\}\par
+\par
+int main(int argc, char *argv[])\par
+\{\par
+    FILE     *fp;\par
+    int      port, opt, optval, bin_size, retval;\par
+    uint32_t crc32, crc, addr;\par
+    uint8_t  binmap[MAX_BIN], buffer[1];\par
+\par
+\par
+    const char * device = "/dev/ttyUSB0";\par
+    //const char * device = "/dev/ttyS0";\par
+    //const char * device = "/dev/tty0";\par
+    uint32_t baud_rate = 115200;\par
+ \par
+    port = open_serial_port(device, baud_rate);\par
+   \par
+    if (port < 0) \{\par
+        return 1;\par
+    \}\par
+       \par
+    //opt = getopt(argc, argv, "asc"); /* addr, swbnk, comm */\par
+    fp = fopen(argv[1], "r");\par
+\par
+    //addr = check_option(opt);\par
+\par
+    addr = 0x2000;\tab  /* firmware A location */\par
+    //addr = 0x80000;  /* bootloader B location */\par
+    //addr = 0x82000;  /* firmware B location */\par
+\par
+\par
+    bin_size = get_size(fp);\par
+    fread(binmap, 1, bin_size, fp);\par
+\par
+    while ((bin_size % ERASE_SIZE) > 0)\par
+    \{\tab\par
+        binmap[bin_size] = 0xff;\par
+\tab     bin_size++;\par
+    \}\par
+\par
+    crc32_tab_gen();\par
+    crc = crc_32(binmap, bin_size);\par
+\par
+    while (1)\par
+    \{\par
+        //printf("Waiting for device Firmware Update Signal\\n");\par
+\par
+        /* give way to exit the program */\par
+        /*if (getchar() == 'x') \{  \par
+            fclose(fp);  \par
+            close(port); \par
+            return 0;\par
+        \}*/\par
+       \par
+        /* Check Signal for Firmware Update, wait for letter U */\par
+        //read_port(port, buffer, 1);\par
+\par
+        //if (buffer[0] == 0x55) \par
+\tab     //\{\par
+\tab         //printf("Firmware Updating...\\n");\par
+\par
+\tab         retval = update_sequence(port, addr, bin_size, binmap, crc);\par
+\tab         if (retval != 0)\par
+\tab         \{  \par
+\tab             printf("Firmware Update Error!..\\n");\par
+\tab\tab         fclose(fp);\par
+\tab\tab         close(port);\par
+\tab\tab         return 1;\par
+\tab         \}             \par
+\tab     //\}\par
+    \}\par
+\par
+    fclose(fp);\par
+    close(port);\par
+\par
+    return 0;\par
+\}\par
+\par
+\par
+\par
+}
+ 

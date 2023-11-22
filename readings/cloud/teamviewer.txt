@@ -1,0 +1,52 @@
+
+
+BAR0 1MB
+
+Memory Map for firmware
+0x0000_0000 2GB - SDRAM for Zynq MPSOC
+0xa000_0000 1MB - BRAM for XDMA for mailbox
+0xa010_0000 1MB - BRAM for BAR0 (mimic mlx4 mem space)
+0xa020_0000 64KB - Descriptor for XDMA
+
+595863036 nats_tv
+resnics20202
+
+volatile int *bar0ptrl
+bar0ptr = (volatile int *)0xa0100000;
+bar0ptr[0] = 0x12345678; // be replace by the version number
+bar0ptr[1] = 0x9abcdef0; // be replace by the content that should 
+                            be in offset 4
+
+for mailbox structure, the memory address is 0xa000_0000
+
+
+
+poweroff using ui http://172.16.71.212:16992/tokenexp.htm --> internet browser
+remote control --> turn pwoer off
+ssh bill@172.16.71.162 resnics2020
+
+reload fpga using vivado
+program device
+click program
+
+sudo reboot sa server 162, weait 1 min
+sudo su
+
+	//*BAR0_FWREV_PTR = 0x10001900;
+	//*BAR0_FWSUB_PTR = 0x70170500;
+
+/ c000_0000 - c000_ffff - 64k - dma data
+// c001_0000 - c001_ffff - 64k - bar0
+// c002_0000 - c002_ffff - 64k - xdma regs
+// c003_0000 - c003_003f - 64B - dsc byp
+
+#define BAR0_BASE_ADDR         0xc0010000
+#define BAR0_FWREV_PTR         ((volatile int *)(BAR0_BASE_ADDR + 0x00))
+#define BAR0_FWSUB_PTR         ((volatile int *)(BAR0_BASE_ADDR + 0x04))
+
+[bill@z420-02 ~]$ sudo su
+[sudo] password for bill:
+[root@z420-02 bill]# echo 1 > /sys/bus/pci/devices/0000:05:00.0/remove
+bash: /sys/bus/pci/devices/0000:05:00.0/remove: No such file or directory
+[root@z420-02 bill]# echo 1 > /sys/bus/pci/rescan
+[root@z420-02 bill]#

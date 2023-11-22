@@ -1,0 +1,101 @@
+git push -u origin coding _exam
+gitk --all
+git commit
+git status
+git checkout -b coding _exam
+cat .git/config
+git config --local user.email "nfernandez7219@gmail.com"
+git config --local user.name "nfernandez"
+git add parsing/parse_packet/test_module/
+git add parsing/parse_packet/runn_all_test.sh
+git add parsing/parse_packet/parse_packet/
+git add parsing/parse_packet/.vs
+gcc
+ceedling module:create[test]
+cd test_project/
+cd test_project
+ceedling test:all
+ceedling test
+ceedling
+ceedling module:create[test]
+ceedling new test_project
+gem install ceedling
+git clone git@github.com:nfernandez7219/json/json-app.git
+cd json/
+mkdir json
+
+
+guard datasize command data0 .. datan
+4      4        1      4        4  
+
+git push -u publish master
+git remote -v 
+git remote add publish git@hgithub.com:nfernandez7219/bootloader.git
+git remote -a 
+git status
+git push origin master 
+gitk --all
+git commit
+git config --local user.mail "dev@dev.com"
+git config --local user.name "dev"
+git status
+git add firmware/src/config/default/harmony-manifest-success.yml
+git status
+git add firmware/src/config/default/.mhc/*
+git add firwmware/src/config/default/bootloader.c
+git add firmware/bootloader.X/nbproject/private/configuration.xml
+git add firmware/bootloader.X/nbproject/configuration.xml
+git add firmwaare/bootloader.X/nbproject/Package-default.bash
+git add firmware/bootloader.X/nbproject/Makefile-*
+git add firmware/src/config/default/peripheral/
+git clone git@github.com:nielacuna/bootloader.git
+git clone https://github.com/Microchip-MPLAB-Harmony/bootloader.git
+
+git merge origin/master
+git fetch origin
+git push publish master 
+git commit
+git status
+git add .gitignore
+vim .gitignore
+git rm -rf  firmware/test_boot_loader_app.X/nbproject/Package-default.bash
+git rm -rf firmware/test/boot_loader_app.X/nbproject/Makefile-variables.mk
+git diff firmware/test_loader_app.X/nbproject/configurations.xml
+git merge publish/master
+gitk --all
+git fetch publish
+git checkout -- .
+git checkout -b master publish/master
+git branch -D master
+git checkout publish/master
+git remote -v
+git publish origin
+git push origin master
+git diff --cached
+git add fimware/src/config/default/initialization.c
+git push -u publish master
+clear
+git push publish master git@github.com:nfernandez27219/test_boot_loader.git
+git remote add publish git@github.com:nfernandez7219/test_bootloader.git
+git push -u origin master
+git push publish master
+git commit -m "new apps"
+git add .
+git init
+git push 
+git config --global user.name "dev"
+git config --global user.email "nfernandez7219@gmail.com
+
+
+cd bootload+hostapp/
+git init
+git config --local user.name "dev"
+git config --local user.email "dev@dev.com"
+git remote and publish git@github.com:nfernandez7219/hostapp.git
+git remote -v
+git status
+git add boatloader_hostapp.c
+git commit
+git status
+gitk --all
+git push publish master

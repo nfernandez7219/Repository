@@ -1,0 +1,18 @@
+mainwindow - change
+file
+ exit 
+option
+ shortcut
+help walang laman
+
+toolbar
+ icon
+ function
+
+tree view
+ read/decode fw
+
+--------------------
+blockrock
+ln -s /home/william/nats/230702/dev src
+cp -rp /home/william/workspace/rsnic_app

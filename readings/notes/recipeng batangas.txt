@@ -1,0 +1,262 @@
+apritadang batangas
+pork kasing laki ng hotdog
+hotdog
+patatas carrots 
+atay
+sibuyas bawang
+toyo paminta
+butter or mantikilya
+tamoto sauce tomato paste
+pine apple 220
+bell pepper red green
+
+
+marinate
+pork 
+lagyan ng toyo
+pine apple
+paminta
+isama na rin ang atay
+
+
+gisa
+1 mantikilya
+2 bawang
+3 sibuyas
+4 tomato sauce 220
+5. lagay marinated lahat, takpan
+6. pag malambot na ilagay ang patatas at carrots
+7. after 5min ilagay ang bell pepper
+8. after 2 min ilagay ang hotdog
+9. lagyan ng tomato paste 2 kutsara
+10. intaying lumabot ang pork at lumapot ang sabaw, end
+
+
+binut ohan (adobong batangas)
+spare ribs
+toyo 
+suka
+liver spread
+laurel
+paminta
+juice 220
+red b pepper
+
+timplahan pork 
+..ng toyo suka kalahating tasa
+paminta
+marinate
+
+1. mantika
+2. bawang
+3. sibuyas
+4. marinated ilagay lahat, takpan
+5. buksan haluin at takpan ulit
+6. pag iga na, lagyan ng juice bilang sabaw
+7. dagdagan ng isat kalahating tasa ng tubig
+8. pag medyo malambot na, lagyan ng liver spread
+9. ilagay na ang patatas at laurel, takpan
+10. pag malambot na ang patatas add b pepper
+11. paigahin ng unti at ok na
+
+sinatomas (kalderubo)
+pork ribs kasim na may taba
+bawang 
+sibuyas
+juice
+paminta
+toyo
+suka
+ketchup
+laurel
+pickles
+margarine
+liverspread
+b pepper
+green peas
+
+marinate least 1hr
+pork ribs
+toyo suka kalahating tasa
+sukas
+paminta
+pickels
+
+pork kasim lagyan ng asin, then haluin
+
+sangkutsahin ang kasim
+1. mantika
+2. kasim
+3. tanggalin pag golden brown na, itabi
+
+gisa
+1. tirang mantika add margarine
+2. bawang 
+3. sibuyas
+4. ilagay ang marinated, lahat
+5. takpan gang lumambot ang karne at maiga
+6. ilagay ang golden brown na kasim
+7. pine apple 220
+8. tubig mga 2 cups, takpan
+9. patatas at carrots
+10. b pepper, laurel, l spread, takpan
+11. green peas at 2-3 spoon ketchup
+12. palambutin sa mahinang apoy
+13. palaputin at paigahin ng unti then ayos na
+
+estopadong
+buong manok adobo cut
+saging saba
+bawang sibuyas
+star anis
+brown sugar
+pineaple
+
+marinate atleast 1hr
+lagyan toyo ang manok 
+pineapple juice
+pamintang buo
+
+prito ang saging gang golden brown
+itabi
+
+gisa
+1. mantika
+2. bawang
+3. sibuyas
+4. manok walang sabaw sankutsa
+5. pag medyo konti na lang ang tubig lagyan ng star anis at laurel
+6. ilagay ang juice sa marinate
+7. kalahating tasa ng brown sugar, halo then takpan
+8. ilagay na ang saging 
+9. palambutin wag ubusin ang sabaw, sayang
+
+igado
+pork kasim
+pork liver strips
+green peas
+b pepper
+sibuyas bawang
+carrot strips
+paminta
+toyo 
+suka
+
+marinate
+pork kasim
+paminta
+toyo kalahating tasa
+
+sangkutsa ang atay
+1. mantika
+2. lagyan ng asin ang atay
+3. atay
+
+gisa
+1. mantika
+2. bawang at sibuyas 
+3. marinated, lahat, takpan
+4. pag kumulo saka haluin, takpan
+5. haluin ulit, add tubig kalahatin tasa
+6. suka 1/3 suka, wag haluin, takpan
+7. add atay, carrots, green peas, takpan
+8. pakuluin gang maluto ang gulay
+9. add b pepper
+10. palambutin na lang at goods na
+
+pata hamunado
+pine apple chunk
+pine apple juice
+b sugar
+bawang sibuyas
+toyo
+
+marinate
+pata
+toyo
+pine apple juice 220
+syrup ng pine apple chunk
+brown sugar 1 cup
+pamintang buo
+haluin 
+
+gisa
+1. mantika
+2. bawang sibuyas
+3. marinated include sabaw, halu then takip
+4. halu then add laurel, takpan, add ng tubig kung kailangan
+5. ad pinyam then halo, takpan
+6. palambutin then ok na
+
+kare kareng pata
+pata 
+bawang 
+pork cubes
+asin
+alamang
+rice flour
+giniling na mani
+achuete powder
+talong
+pechay puso ng sabing
+
+pakuluan ang pata at palambutin
+asin
+lagyan ng tubig
+pork cubes 2
+pag malambot na, salain ang sabaw
+
+blanch ang gulay
+tubig lagyan ng asin
+unahin ang sitaw
+talong, pechay 
+puso ng saging
+
+gisa
+1. mantika
+2. bawang 
+3. mama sita pakulay 
+4. giniling na mani
+5. rice flour 1/3
+6. kalbo ng pata
+7. halulin para matunaw mani at flour
+8. ilagay pata
+9. gulay
+
+
+in the code, i found 
+
+looks 
+fs
+mkey
+mlnx
+
+grab the code
+put in mkey.c mkey.h
+what api to use to implement
+
+pattern need to use
+
+sqrq.c
+sqrq.h
+
+marvin create an api will go to srq.c .h
+all command 
+
+qp need to split in two receive and transmit
+send qn and send rq
+
+wqe going up to qsfp
+bottom part is the receive side
+
+get the code in rsnic app source
+
+doc need
+
+
+
+
+
+
+
+

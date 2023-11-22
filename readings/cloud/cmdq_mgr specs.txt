@@ -1,0 +1,38 @@
+        number of qp number of wqe 
+	wqe[8]
+	freelist of wqe
+		qp[8]	queue controller, segregate
+		qp[0] --> need one freelist for wqe		capable of containing multiple queue request
+		qp[1] --> need one freelist for wqe
+		qp[2] --> need one freelist for wqe
+		qp[7] --> need one freelist for wqe
+	freelist
+		wqe max 256 insert it into freelist	- available ready to use queue
+every cmd needs to insert to qp head
+
+pcbs - one element, initially this all the pcbs are inside ready to use (freelist)
+when the work request comes in we will borrow one pcb
+based from the qp of the work request, that pcb will be inserted to the qp
+once that pcb is done, already performed the task it need to do, then it will return to the return
+
+there is another command like congestion manager, the congestion manager can tell the device to stop all the process (pcb) that 
+belongs to that qp
+process control manager will not perform task from the qp
+
+this is the reason why we segregate the pcb in every qp, so that the pm know what pcb can be performed
+
+another queue mgr
+pcb has can have 2 node, 1st node tells which it belong
+the 2nd node tells its position to be processed
+
+trying to line up, using stop light like red, green, yellow
+
+dma - wait for the callback, thats the reason why we need 
+
+based from the pcb there is func pointer to know which process is need to continue
+
+
+
+
+	wqe for qp 1
+    ongoing process

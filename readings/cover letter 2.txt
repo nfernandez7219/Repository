@@ -1,0 +1,37 @@
+With more than 20 years of experience in embedded firmware development in different CPUs, different tools, and different interfaces. I think I am the right guy you are looking for for your project. I wish you may call me to discuss the details on my cellphone or using skype (nats1945).
+
+best regards,
+Nathaniel Fernandez
+
+I don't have a direct experience with the problem like loading and speed optimization, what i can support is read the specs related to loading and optimization before i can recommend. what I did so far in OpenWrt is to modify the source code and configuration and update the Uci.
+
+
+sercom0
+pa04
+pa05
+
+esp32 arduino lora mqtt
+xml
+
+mplab x 
+
+tcp/ip
+networking
+connection
+
+unix shell script
+bitbucket
+
+https://github.com/nielacuna/json-app/blob/master/test/wireless.json
+https://github.com/nfernandez7219/json-app
+https://www.youtube.com/watch?v=HGOBQPFzWKo
+https://www.w3schools.com/Js/js_json_parse.asp
+https://www.youtube.com/watch?v=_uQrJ0TkZlc&t=20755s
+https://www.youtube.com/watch?v=7YS6YDQKFh0
+https://www.youtube.com/watch?v=kqtD5dpn9C8
+https://www.youtube.com/watch?v=YwIX8w9i2DM
+https://www.tutorialspoint.com/python3/python_further_extensions.htm
+https://www.tutorialspoint.com/execute_python3_online.php
+http://www.throwtheswitch.org/articles/2015/10/13/unit-testing-embedded-c-with-ceedling
+https://dmitryfrank.com/articles/unit_testing_embedded_c_applications
+http://www.electronvector.com/blog/getting-started-with-ceedling-creating-a-new-project

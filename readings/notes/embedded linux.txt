@@ -1,0 +1,31 @@
+khvtfhde
+v29kvat3
+
+$ file helloworld
+print type of file
+
+$ arm-cortex_a8-linux-gnueabihf-gcc --version
+
+To find how it was configured, use -v:
+$ arm-cortex_a8-linux-gnueabihf-gcc -v
+
+You can print out the range of architecture-specific options available using --
+target-help, as follows:
+$ arm-cortex_a8-linux-gnueabihf-gcc --target-help
+
+$ arm-cortex_a8-linux-gnueabihf-gcc -mcpu=cortex-a5 helloworld.c \
+-o helloworld
+
+You can see the location of the default sysroot by using -print-sysroot:
+$ arm-cortex_a8-linux-gnueabihf-gcc -print-sysroot
+/home/chris/x-tools/arm-cortex_a8-linux-gnueabihf/arm-cortex_a8-linux-gnueabihf/sysroot
+
+$ arm-cortex_a8-linux-gnueabihf-gcc myprog.c -o myprog -lm
+You can verify which libraries have been linked in this or any other program by
+using the readelf command:
+$ arm-cortex_a8-linux-gnueabihf-readelf -a myprog | grep "Shared library"
+0x00000001 (NEEDED) Shared library: [libm.so.6]
+0x00000001 (NEEDED) Shared library: [libc.so.6]
+
+check contains
+ls /sys/devices

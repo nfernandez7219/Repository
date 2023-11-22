@@ -1,0 +1,8 @@
+1) what git repository do you want to transfer your codebase - github? gitlab?
+2) credentials for git repository:
+	2.1) what name will be using for developer? -> git config user.name "name"
+	2.2) what email will be using? -> git config user.email "email@address.com"
+3) credentials to access subversion repository.
+
+note that subversion "history" will not be migrated. instead the current state of the lastest branch will be commited as one single initial commit.
+

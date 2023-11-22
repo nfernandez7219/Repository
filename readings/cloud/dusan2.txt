@@ -1,0 +1,69 @@
+dusan
+
+digital tv linux, partially in kernel mostly in user space
+2 parts to be developed in linux
+ transmit csg
+ receive dsa
+
+for dsa key functionality is timestamping of arriving digital packets by 
+ gps timestamps - epoch and then multiplex them deteministically
+
+they have digital tv solution written in kernel, erlang, javascript
+where it would be good to fit in
+
+they can provide with book explaining ditital tv standard and technologies  
+
+entire working configuration is like this:
+source of traffic via lan (ip packets) > i[ encapsulator [mpeg ts] 
+ > modulator [L band] > optisat s2 receiver > lan (ip packets)
+
+https://dektec.com/downloads/SDK/#linux
+i will give you later my ssh key,
+can i ask something for clarification?
+right now, we are studying how this project is going to work, base on analysis, we are going to concentrate on dektec board.
+1. can i ask for the system or block diagram so we can visualize how the system is working
+2. based from your attempt i think the error is during your registration of your driver the the linux system, and the initialization maybe is the cause of crashing.
+3. with your experience, we go back to the basic of checking the dvb
+    how to properly register it.
+4. we downloaded the dektec linux sdk DekTec Drivers and SDKs to see how to properly use the dektec
+5. in your previous email you said that you can give this  (MPEG TS packet are 188 bytes long packets with 4 byte header described in ISO 13818
+   standard (we can send you some version)
+6. we believe that we can do it, i will just keep you updated
+
+
+dusan
+Here are short notes of what we discussed to follow
+
+Steps:
+
+1) Technical Understanding of solution - google drive + explanations, Redmine account
+
+2) 2-3 full time programmers for 9 months
+
+3) Understanding Technical requirements (real-time processing) GPS PCIe receiver
+    Existing source code Framework C/C++, Erlang, Javascript
+4) Analysis
+    Decide what programming languages to use, Erlang, C#, Rast etc.
+    enhance existing code or write from scratch (if so which modules)
+    
+4) Price to be agreed
+
+https://redmine.maindatainc.com/
+We have created an account for you in our project management system (Redmine).
+Login: Nathan
+PW: Nathan!!17982
+
+I have uploaded document to google drive - Lot
+you can also watch webinar:
+https://dvb.org/news/dvb-sis-published-as-etsi-technical-standard/
+
+
+We can contract directly  - so you will avoid 20% Upwork provision and It will be long term.
+We need find a mutually acceptable price to cooperate.
+
+I suggest 12 Eur/hour what equals to 14,4 Eur/hour via Upworks.
+
+With 22 working days x 8 hours = 176 hours x 12 = 2112 Eur/month
+
+
+

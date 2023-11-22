@@ -1,0 +1,122 @@
+
+you will use yocto project to build a reference embedded OS called Poky
+
+build host packages
+ you must install essential host packages on your build host.
+the ff command installs the host packages based on an ubuntu distro.
+
+use git to clone Poky
+ once you complete the setup instructins for your machine, you need to get
+a copy of the Poky repo on your build host. use the ff commands to clone
+the Poky repo.
+
+for more options and information about accessing yocto project related repo,
+see the location yocto project source files sectin in the yocto project devt 
+tasks manual
+
+building your image
+use the ff steps to build your image. the build process creates an entire
+linux distro, including the toolchain, from source.
+
+1. initialize the build environment:
+
+
+what i wish i'd known about yocto project
+yocto workflow
+1. fetch - get the source code
+2. extract - unpack the sources
+3. patch - apply patches for bug fixes and new capability
+4. configure - set up your environment specs
+5. build - compile and link
+6. install - copy files to target directions
+7. package - bundle files for installation
+
+during "fetch", there may be an inability to find code. during "extract",
+there is likely an invalid zip or something similatr. in other words,
+the function of a particular part of the workflow gives you an idea of
+what might be going wrong.
+
+figure here.
+
+8. known that you can generate a dependency graph and learn how to do it
+9. here's how you decode "magic" folder names in tmp/work
+10. you can build more than just images
+11. an ambiguous definition: package vs recipe
+    a recipe contains instruction the build system uses to create packages.
+    recipes and packages are the difference between the front end and the
+    result of the build process.
+
+    as mentioned, the build system takes the recipe and creates packages from
+    the recipe's instructions. the resulting packages are related to the one
+    thing the recipe is building but are different parts (packages) of
+    the build (i.e. the main package, the doc package, the debug symbols 
+    package, the separate utilities package, and so forth). the build system
+    system splits out the packages so that you don't need to install the 
+    packages you don't want or need, which is advantageous because you are 
+    building for small devices when developing for embedded and IoT.
+
+12. you will want to learn about and known what't packages in the root filesystem
+13. create your own image recipe
+    there are a number of ways to create your own image recipe. we suggest
+    you create your own image recipe as opposed to appending an existing
+    recipe. it is trivial and easy to write an image recipe. again, do not try to 
+    appending to an existing image recipe. create your own and do it right
+    from the start.
+14. Finally, here is a list of the basic skills you will need as a systems 
+    developer. You must be able to:
+
+deal with corporate proxies
+
+add a package to an image
+
+understand the difference between a recipe and package
+
+build a package by itself and why that’s useful
+
+find out what packages are created by a recipe
+
+find out what files are in a package
+
+find out what files are in an image
+
+add an ssh server to an image (enable transferring of files to target)
+
+know the anatomy of a recipe
+
+know how to create and use layers
+
+find recipes (with the OpenEmbedded Layer index)
+
+understand difference between machine and distro settings
+
+find and use the right BSP (machine) for your hardware
+
+find examples of distro features and know where to set them
+
+understanding the task pipeline and executing individual tasks
+
+understand devtool and how it simplifies your workflow
+
+improve build speeds with shared downloads and shared state cache
+
+generate and understand a dependency graph
+
+generate and understand BitBake environment
+
+build an Extensible SDK for applications development
+
+15. Depending on what you primary interests are with the Yocto Project, you 
+could consider any of the following reading:
+
+Look Through the Yocto Project Development Tasks Manual: This manual contains procedural information grouped to help you get set up, work with layers, customize images, write new recipes, work with libraries, and use QEMU. The information is task-based and spans the breadth of the Yocto Project. See the Yocto Project Development Tasks Manual.
+
+Look Through the Yocto Project Application Development and the Extensible Software Development Kit (eSDK) manual: This manual describes how to use both the standard SDK and the extensible SDK, which are used primarily for application development. The Using the Extensible SDK also provides example workflows that use devtool. See the section Using devtool in Your SDK Workflow for more information.
+
+Learn About Kernel Development: If you want to see how to work with the kernel and understand Yocto Linux kernels, see the Yocto Project Linux Kernel Development Manual. This manual provides information on how to patch the kernel, modify kernel recipes, and configure the kernel.
+
+Learn About Board Support Packages (BSPs): If you want to learn about BSPs, see the Yocto Project Board Support Package Developer’s Guide. This manual also provides an example BSP creation workflow. See the Board Support Packages (BSP) — Developer’s Guide section.
+
+Learn About Toaster: Toaster is a web interface to the Yocto Project’s OpenEmbedded build system. If you are interested in using this type of interface to create images, see the Toaster User Manual.
+
+Have Available the Yocto Project Reference Manual: Unlike the rest of the Yocto Project manual set, this manual is comprised of material suited for reference rather than procedures. You can get build details, a closer look at how the pieces of the Yocto Project development environment work together, information on various technical details, guidance on migrating to a newer Yocto Project release, reference material on the directory structure, classes, and tasks. The Yocto Project Reference Manual also contains a fairly comprehensive glossary of variables used within the Yocto Project.
+    

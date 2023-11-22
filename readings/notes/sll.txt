@@ -1,0 +1,199 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+struct node *sll_h2cwait;
+struct node *sll_c2hwait;
+
+void createnodelist(int numofnodes);
+void insertnodeatendoflist(int nodedata);
+void displaynodelist();
+void deletefirstnode();
+
+void initnode()
+{
+    int idx;
+    struct node *newnode;
+    struct node *tempnoderd;
+    struct node *tempnodewr;
+    
+    sll_h2cwait = (struct node*)malloc(sizeof(struct node));
+    tempnoderd = sll_h2cwait;
+
+    sll_c2hwait = (struct node*)malloc(sizeof(struct node));
+    tempnodewr = sll_c2hwait;
+    
+    for (idx=0; idx < 16; idx++)
+    {
+        newnode = (struct node*)malloc(sizeof(struct node));
+        if (newnode == NULL)
+        {
+            // no memory to be allocated
+            while(1);
+        }
+        else
+        {
+            newnode->data = 0xBEEFDEAD;
+            newnode->next = NULL;
+            
+            sll_h2cwait->next = newnode;
+            sll_h2cwait = sll_h2cwait->next;
+            
+            sll_c2hwait
+        }
+    }
+}
+
+int main()
+{
+//    printf("Hello World");
+    int numberofnodes;
+    int nodedata;
+    
+    //printf("input the number of nodes: ");
+    //scanf("%d", &numberofnodes);
+    
+    
+    initnode();
+    
+    //createnodelist(numberofnodes);
+    //printf("\ndata entered in the list are : \n");
+    displaynodelist();
+    
+    //printf("\ninput data to insert at the end of the list : ");
+    //scanf("%d", &nodedata);
+    
+    //insertnodeatendoflist(nodedata);
+    //printf("\ndata after inserted in the list are : ");
+    //displaynodelist();
+    
+    deletefirstnode();
+    
+    printf("\ndata after deletion of first node : \n");
+    displaynodelist();
+
+    return 0;
+}
+
+void createnodelist(int numofnodes)
+{
+    struct node *newnode;
+    struct node *tempnode;
+    int nodedata;
+    int nodectr;
+    
+    firstnode = (struct node *) malloc(sizeof (struct node));
+    
+    if (firstnode == NULL)
+    {
+        printf("memory can not be allocated.");
+    }
+    else
+    {
+        printf("input data for node 1 : ");
+        scanf("%d", &nodedata);
+        
+        firstnode->data = nodedata;
+        firstnode->next = NULL;
+        
+        tempnode = firstnode;
+        
+        for (nodectr = 2; nodectr <= numofnodes; nodectr++)
+        {
+            newnode = (struct node *) malloc(sizeof(struct node));
+            if (newnode == NULL)
+            {
+                printf("memory can not be allocated. ");
+                break;
+            }
+            else
+            {
+                printf("input data for node %d : ", nodectr);
+                scanf("%d", &nodedata);
+                newnode->data = nodedata;
+                newnode->next = NULL;
+                
+                tempnode->next = newnode;
+                tempnode = tempnode->next;
+            }
+        }
+    }
+}
+
+void insertnodeatendoflist(int nodedata)
+{
+    struct node *newnode;
+    struct node *tempnode;
+    
+    newnode = (struct node *)malloc(sizeof(struct node));
+    
+    if (newnode == NULL)
+    {
+        printf("memory can not be allocated.");
+    }
+    else
+    {
+        newnode->data = nodedata;
+        newnode->next = NULL;
+        
+        tempnode = firstnode;
+        
+        while(tempnode->next != NULL)
+        {
+            tempnode = tempnode->next;
+        }
+        
+        tempnode->next = newnode;
+    }
+}
+
+void displaynodelist()
+{
+    struct node *tempnode;
+    
+    if (firstnode == NULL)
+    {
+        printf("no data found in the empty list.");
+    }
+    else
+    {
+        tempnode = firstnode;
+        
+        while(tempnode != NULL)
+        {
+            printf("data = %d\n", tempnode->data);
+            tempnode = tempnode->next;
+        }
+    }
+}
+
+void deletefirstnode()
+{
+    struct node *temp;
+    
+    if (firstnode == NULL)
+    {
+        printf("there are no node in the list.");
+    }
+    else
+    {
+        temp = firstnode;
+        firstnode = firstnode->next;
+        
+        printf("\ndata of node 1 which is being deleted is : %d\n", temp->data);
+        free(temp);
+    }
+}

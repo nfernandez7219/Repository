@@ -1,0 +1,53 @@
+1. kernel source code for OPTISAT    2. sw documentation    3. optisat manual
+4. optisat s2/s receiver           5. currently using 2.64
+
+1. short term need is to make optisat worked in 1 of 2 satellite input board
+2. 2 version w/c is differ by compile settings
+   1. focused at tv services reception and multiplexing
+   2. address to satallite internet
+
+task is to make satellite internet version workable
+1. while TBSD satellite board is using S2API module requires min kernel 
+   version 3.10. S2API contains dvb_net.c which performs MPE decapsulation
+ 
+   MPE decapsulation is taking IP packets out of incoming MPEG TS stream (satellite stream)
+
+   output of MPE decapsulation are IP packet which are entering TCP/IP stack
+
+   TBSD has open source driver:   https://github.com/tbsdtv/linux_media/wiki
+   we used this board   https://www.tbsdtv.com/products/tbs6902-dvb-s2-dual-tuner-pcie-card.html
+
+   please analyze what is needed to be make in this solution to make it working
+
+2. dektec board can work with current old kernel. it has proprietary driver.
+   (we are distributor of dektec so can communicate directly)
+
+   we use this satellite board  https://www.dektec.com/products/PCIe/DTA-2137C/
+
+   so our first attempt is to make dektec board working, maybe there is just a small
+   part missing namely dvb_net.c is not currently able to read data from dektec board.
+
+   solutions is either to enable dektec board as one of inputs to dvb+net.c or extract
+   MPE decapsulation part of code and apply to dektec output - which is MPEG TS packets
+
+   MPEG TS packet are 188 bytes long packets with 4 byte header described in ISO 13818
+   standard (we can send you some version)
+
+   MPE decapsulation is implemented in dvb_net.c so this is first candidate of inspection
+
+   dvb_net_drv seems to be causing problems as it is not initializing dektec board and it
+   crashes.
+
+     please analyze what is need to be made in this solution to make it working
+     tesing can be done at our side by this setup
+
+   IP Encalsulation>Modulator>OPTISAT[L band coax cable]
+
+   we can provide remote access to 2 different HW setup:
+   1. OPTISAT with TBSD receiver, kernel 5.10 driver installed
+   2. OPTISAT with dektec receiver, kernel 2.64
+
+   first task is basically to verify your work, if you prove to be productive
+   we can move to longer term project
+   first job is to make some modification in kernel code, keeping old 2.64 kernel
+   first approach will be to adopt source under old kernel without porting,  later we may port it look more complex task

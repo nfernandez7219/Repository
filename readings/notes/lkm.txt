@@ -1,0 +1,26 @@
+
+1. kernel modules
+modules are pieces of code that can be loaded and unloaded into the kernel
+upon demand. 
+they extend the functionality of the kernel without the need the reboot the
+the system.
+
+2. how do modules get into the kernel?
+you can see what modules are already loaded into the kernel by running
+lsmod, which gets its information by reading the file /proc/modules
+
+see the linux kernel howto
+
+gcc -I switch
+
+the simplest module hello world
+
+/proc/modules
+cat
+
+
+strace ./hello
+
+$ sudo insmod ./lkm.ko
+
+dmesg utility

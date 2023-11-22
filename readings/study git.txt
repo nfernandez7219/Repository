@@ -1,0 +1,20 @@
+git p146
+upwork
+https://github.com/nfernandez7219/json-app
+
+Are you familiar with OpenWRT?
+
+Please find below my requirement
+- C programming on Linux environment (It will be run on Linux platform)
+- The first part of the application would be parsing JSON data using libcjson 
+and store it using uci using libuci
+ (https://github.com/openwrt/openwrt/tree/openwrt-18.06/package/system/uci), 
+we are using uci to store our configuration so.
+- Write auto build process to build it for cross platform using autotools and Makefile
+Let me know if you have any further question?
+
+
+https://www.upwork.com/ab/jobs/search/details/~017edcdc9472b2c9cc/?q=openwrt&sort=recency
+
+
+I have more than 20 years experience in firmware/software development using c/c++ and assembly language using windows/linux OS. I also have OpenWRT exposure and currently using it for router in india. I hope you can give me a call to discuss in details your requirements or specs. best regards

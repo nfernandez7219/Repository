@@ -1,0 +1,211 @@
+git help <verb>
+git <verb> --help
+man git-<verb>
+
+git help config
+git add -h
+
+basic
+git init
+git clone
+git status
+git add README
+git status -s
+
+ignoring files
+cat .gitignore
+*.[oa]
+*.
+
+git diff
+git diff --staged
+gut diff --cached
+
+git commit
+git commit -m "message"
+git commit -a     --> skip staging? skip git add part
+
+removing files
+to remove a file from git, you have to remove it from your 
+tracked files, remove it from staging area and then commit
+
+rm project.md
+git status
+git rm
+git rm projects.md
+git status
+
+git rm --cached README
+git rm log/\*.log    --> removes all files whose names end with ~.
+
+moving files
+git mv file_from file to
+git mv README.md README
+git status
+
+mv README.md README
+git rm READM.md
+git add README
+
+viewing the commit history
+git log
+
+undoing things
+git commit --amend
+
+unstaging a staged file
+git add *
+git status
+git reset HEAD CONTRIBUTING.md
+git status
+
+unmodifying a modified file
+git checkout --CONTRIBUTING.md
+git status
+
+working w/ remote
+git clone https://
+cd ticgit
+git remote 
+
+git remote -v
+cd grit
+git remote -v
+
+adding remote repo
+weve mentioned and given some demo of how the git clone cmd implicitly
+adds the origin remote for you.
+to add a new remote git repo as a shortname you can reference easily, run git remote add <shortname> <url>:
+git remote 
+git remote add pb https:: (url)
+git remote -v
+origin url (fetch)
+origin url (push
+pb url (fetch)
+pb url (push)
+
+now you can use the string pb on the cmd line in lieu of the whole url
+for example, if you want to fetch all the info that paul has but you dont
+yet have in your repo, you can run git fetch pb:
+
+git fetch pb
+
+fetching and pulling from your remotes
+to get data from your remote projects, you can run:
+git fetch <remote>
+
+the cmd goes out to that remote project and pulls down all the data from that remote prj that you dont have yet. after you do this, after do this
+you should have references to all the branches from that remote, w/c you 
+can merge in or inspect at any time.
+
+if clone a repo, the cmd automatically adds that remote repo under the name
+"origin:. so, git fetch origin fetches any new work that has been pushed
+to that server since you cloned (or last fetched from) it.
+it is impt to note that git fetch cmd only dl the data to your local repo.
+it doesnt automatically merge it w/ any of your work or modify what you're
+currently working on. you have to merge it manually into your work when
+you're ready.
+
+pushing to your remotes
+git push origin master
+
+inspecting a remote
+git remote show origin
+
+renaming and removing remotes
+git remote rename pb paul
+git remote
+origin
+paul
+
+git remote remove paul
+git remote
+origin
+
+once you delete the reference to a remote this way, all remote tracking branhes and config settings associated w/ that remote are also deleted.
+
+tagging 
+git has the ability to tag specific pts in a repo's history as being impt.
+typically, people use this functionality to mark release pts v1.0, v2.0
+and so on. 
+
+listing tags
+git tag
+v1.0
+v2.0
+
+git tag -l "v1.8.5*"
+v1.8.5
+v1.8.5-rc0
+..
+
+creating tag
+
+annotated tags
+
+deleting tags
+
+checking out tags
+if you want to view the versions of files a tag is pointing to, you ca do a git checkout of that tag.
+
+git checkout 2.0.0
+
+git aliases
+
+git branching
+page 63
+
+git on the server
+
+the ssh protocol
+
+generating your ssh public key
+
+setting up the server 
+sudo adduser git
+su git
+cd
+mkdir .ssh
+touch .ssh
+
+git daemon
+next we'll setup a daemon serving repositories using the git protocol. this
+is a common choice for fast, unauthenticated access to your git data.
+
+smart http
+we now have authenticated access through ssh and unauthenticated access
+through git://, but there is also s protocol that can do both at the same
+time.
+
+gitweb
+now that you have basic read/write and read-only access to your project,
+you may want to set up a simple web-based visualizer.
+
+gitlab
+gitweb is pretty simplistic though. if you're looking for more modern, fully featured git server, there are some several open source solutions out there that can install instead. as gitlab is one of the more popular ones, we'll cover installing and using it as an example.
+
+distributed git
+now that you have a remote git repo setup as a focal points for all the developers to share their code, and you're familiar with basic git commands in a local workflow, you'll look at how to utilize some of the distributed workflows that git affords you.
+
+distributed workflows
+
+centralized worflow
+
+integration-manager workflow
+
+github
+is the single largest host for git repo., and is the central point of collaboration for millions od devs and projects.
+
+accoint setup and configuration
+
+ssh access
+
+
+git tools
+
+revision selection
+
+single revisions
+
+short sha-1
+

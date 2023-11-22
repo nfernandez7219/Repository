@@ -1,0 +1,620 @@
+Skip to main content
+Skip to content
+Upwork home
+Search
+
+
+Find Work
+My Jobs
+Reports
+Messages
+
+
+
+Account Settings
+  
+Search
+Search
+Looking for older messages?
+View All Rooms & People
+Sandip Sitapara, Limestone Corp.
+6:05 pm IST
+Embedded Software Developer
+Search this conversation
+Search this conversation
+View Contract Schedule a Meeting
+Today
+Monday, September 27, 2021
+ 2:59 PM
+Sandip Sitapara
+Hello Matthew, can we delay it for 1 hour? Actually, stuck in the traffic due to heavy rain.
+
+ 3:33 PM
+Matthew Nathan Fernandez
+No problem
+
+ 4:05 PM
+Sandip Sitapara
+Hi Matthew, can we start now?
+
+ 
+Are you available for call now?
+
+ 5:09 PM
+Matthew Nathan Fernandez
+Yes
+
+ 5:51 PM
+Matthew Nathan Fernandez
+Hi sandip,
+If you are busy, can we re arrange our on call meeting tomorrow?
+
+ 6:07 PM
+Sandip Sitapara
+I was waiting for you for an hours but didn't get any response so
+
+ 
+let me know if you are available after 1 hour, we can schedule our meeting
+
+ 
+I am not getting offline
+
+ 
+just wait for 10 minutes when you are online
+
+ 6:19 PM
+Matthew Nathan Fernandez
+I am available now, you can call me now
+
+ 6:27 PM
+Sandip Sitapara
+ok, can I start the zoom meeting?
+
+ 
+Are you online?
+
+ 
+Sandip Sitapara created a Zoom meeting
+
+The meeting ended (Duration: 01:58)
+Share feedback about the call quality.
+ 6:55 PM
+Matthew Nathan Fernandez
+Hi sandip i dont zoom in my phone, i not in the house. I have skype my
+account is nats1945
+
+ 
+I also have whatsapp, my number is 09175260312
+
+ 6:58 PM
+Sandip Sitapara
+Ok
+
+ 7:01 PM
+Just sent you the request on skype
+
+Tuesday
+ 12:08 PM
+Matthew Nathan Fernandez
+hi sandip, just message me what time are we going to discuss
+
+ 1:08 PM
+Sandip Sitapara
+Hi Matthew are you available now?
+
+ 
+We can discuss it now only
+
+ 6:15 PM
+Sandip Sitapara sent an offer
+Expert programming skills in embedded C/C++ with software design experience for industrial products
+Experience in developing application on Linux based platforms
+Should be very good in debugging and coding
+
+The candidate should have a good knowledge of C/C++ Application/Firmware programming as well as how to write build process using Makefiles
+
+Languages and Tools
+C/C++
+QT IDE
+GCC compiler
+GNU autotools
+GDB
+
+Rate: $9.00/hr
+Limit: 25 hrs/week
+View details
+ 8:20 PM
+Matthew Nathan Fernandez accepted an offer
+No further question, I already talked to owner of this project and I am ready to implement it and targeted it based on the agreed deadline - oct 5.
+
+View details
+Wednesday
+ 7:24 PM
+Matthew Nathan Fernandez
+hi sandip,
+good evening.
+i have a question.
+
+based on my readings[1], a uic config only uses a tuple. that is, it is
+arranged like so:
+[subsystem].[section].[option]=value
+
+[1] https://docs.onion.io/omega2-docs/intro-to-uci.html
+
+but based on how your JSON1.txt one is arranged, the uci configuration will
+have a maximum of up
+to 6 sections like the one below:
+
+root.wlan_group[0].wlan[0].GuestAccessList[0].whitelistUrl[0].createdBy=Admin
+
+I am not sure how to proceed with this. could you give guidance on how to
+proceed with this?
+
+thanks.
+
+Intro to UCI | Onion Omega2 Documentation
+Documentation for all things Onion and Onion Omega2.
+ 7:27 PM
+hi sandip,
+good evening.
+i have a question.
+
+based on my readings[1], a uic config only uses a tuple. that is, it is arranged like so:
+[subsystem].[section].[option]=value
+
+[1] https://docs.onion.io/omega2-docs/intro-to-uci.html
+
+but based on how your JSON1.txt one is arranged, the uci configuration will have a maximum of up
+to 6 sections like the one below:
+
+root.wlan_group[0].wlan[0].GuestAccessList[0].whitelistUrl[0].createdBy=Admin
+
+I am not sure how to proceed with this. could you give guidance on how to proceed with this?
+
+thanks.
+
+regards,
+
+Intro to UCI | Onion Omega2 Documentation
+Documentation for all things Onion and Onion Omega2.
+Thursday
+ 11:31 AM
+Matthew Nathan Fernandez
+hi sandip
+
+ 6:10 PM
+Sandip Sitapara
+Hi Matthew, I am not feeling well today. So please wait.
+
+ 6:48 PM
+Matthew Nathan Fernandez
+no problem sandip
+
+ 7:10 PM
+Upwork APP
+Matthew Nathan Fernandez added items to Matthew Nathan Fernandez's To-do list:
+autotools for make file due by Oct 1 2021
+uci standard saving due by Sep 30 2021
+use json to parse configuration text file due by Sep 29 2021
+
+ 
+Upwork APP
+Matthew Nathan Fernandez completed items to Matthew Nathan Fernandez's To-do list:
+uci standard saving due by Sep 30 2021
+use json to parse configuration text file due by Sep 29 2021
+
+ 7:13 PM
+Sandip Sitapara
+ wireless 385 bytes 
+ 7:29 PM
+Sandip Sitapara
+ hotspot 883 bytes 
+Yesterday
+ 12:48 PM
+Matthew Nathan Fernandez
+hi sandip, i think i have completed the task. where can i give it to you. maybe you can get it to my private git repository but i am going out of the house to process something, i will be back by 9pm phil time
+
+ 3:24 PM
+Sandip Sitapara
+Hi Matthew, Good to know that. good progress, No problem, Just give me the access to that repository so I can pull it and test.
+
+Today
+ 4:36 PM
+Matthew Nathan Fernandez
+hi sandip, you may get the copy from here https://github.com/nfernandez7219/json-app.git
+
+ 
+here are a few instruction to get you up to speed with the codebase.
+
+ 4:41 PM
+1) initialize the autotools environment by running the autogen.sh "./autogen.sh"
+2) initialize the make system by running ./configure
+3) you can now type make to build the jsonapp.
+4) the binary is located at the src/ directory.
+5) sample json input files are located in test/ directory.
+6) the jsonapp accepts the path to the input json file as parameter. so for example, if you want to test out test/wireless.json just type ./src/jsonapp test/wireless.json
+
+7) you can verify changes/updates made by the jsonapp by running $ uci show wireless
+8) you can also edit test/wireless.json (or any other sample json file inside the test/ directory)
+9) you might need to run it as root since libuci accesses /etc/config which is usually not readable/writable to normal users.
+
+ 5:06 PM
+Upwork APP
+Matthew Nathan Fernandez completed an item to Matthew Nathan Fernandez's To-do list: autotools for make file due by Oct 1 2021
+
+ 7:14 PM
+Sandip Sitapara
+Thanks Matthew
+
+ 
+I will verify and let you know
+
+ 7:51 PM
+Matthew Nathan Fernandez
+ok sandip
+
+ 8:03 PM
+Sandip Sitapara
+just tried to run the binary
+
+ 
+sandip@limestone:/media/sandip/afcbbf5c-f0ac-41b8-9d2f-f4cb7dc98be2src/json-app$ sudo src/jsonapp JSON1.txt
+Segmentation fault (core dumped)
+
+Not sure why core dumped. do you know?
+
+ 
+./configure
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking for style of include used by make... GNU
+checking dependency style of gcc... gcc3
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking json-c/json.h usability... yes
+checking json-c/json.h presence... yes
+checking for json-c/json.h... yes
+checking uci.h usability... yes
+checking uci.h presence... yes
+checking for uci.h... yes
+checking getopt.h usability... yes
+checking getopt.h presence... yes
+checking for getopt.h... yes
+checking libgen.h usability... yes
+checking libgen.h presence... yes
+checking for libgen.h... yes
+checking stdarg.h usability... yes
+checking stdarg.h presence... yes
+checking for stdarg.h... yes
+checking for library containing json_object_from_file... -ljson-c
+checking for library containing uci_alloc_context... -luci
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating src/Makefile
+config.status: executing depfiles commands
+
+ 
+found everything but some issue
+
+ 8:08 PM
+Matthew Nathan Fernandez
+there is a sample json file under test folder, you have to use that
+
+ 
+like this command. $ sudo .src/jsonapp test/wireless.json
+
+ 
+this will be autmatically parse the json file under test/wireless folder and create a uci file under etc/config then save it using uci_commit. you will see this in the code
+
+ 8:10 PM
+Sandip Sitapara
+Ok let me try
+
+ 
+But the format is different
+
+ 
+in a test folder the JSON format is different
+
+ 
+we want to parse it from JSON1.txt
+
+ 8:11 PM
+Matthew Nathan Fernandez
+this is the anticipation format based on json
+
+ 
+after the parsing it will product uci config format
+
+ 
+*produce
+
+ 
+before uci_commit
+
+ 
+what you gave me the other time is the uci config format already so there is no to be parsed
+
+ 8:13 PM
+Sandip Sitapara
+So you generate the wireless.json from the JSON1.text
+
+ 8:13 PM
+Matthew Nathan Fernandez
+yes
+
+ 
+your wireless.txt is already uci config format
+
+ 
+ready to be commit to uci
+
+ 8:14 PM
+Sandip Sitapara
+yes but when I run the jsonapp
+
+ 
+it should read from json1.txt
+
+ 
+and add it to your another intermideate file
+
+ 
+but that test/wireless.json is different
+
+ 8:14 PM
+Matthew Nathan Fernandez
+my task would be to parse json file the commit to uci
+
+ 8:15 PM
+Sandip Sitapara
+yes
+
+ 8:15 PM
+Matthew Nathan Fernandez
+test/wireless.json is supposed to be json file
+
+ 8:15 PM
+Sandip Sitapara
+but the JSON I gave you
+
+ 
+not the JSON you prepare
+
+ 8:15 PM
+Matthew Nathan Fernandez
+we need to parse this file to become uci config format then save to uci
+
+ 
+you gave me a uci config format not json format
+
+ 
+we cannot parse from your json file if you say that so
+
+ 8:16 PM
+Sandip Sitapara
+Ok great
+
+ 8:16 PM
+Matthew Nathan Fernandez
+try use the sample json file under test folder
+
+ 
+and run the program
+
+ 8:16 PM
+Sandip Sitapara
+I don't want that
+
+ 8:16 PM
+Matthew Nathan Fernandez
+you dont want the json file i have created
+
+ 
+you want me to use your file?
+
+ 8:17 PM
+Sandip Sitapara
+no
+
+ 
+I want to parse it from I gave you
+
+ 
+This one
+
+ JSON1.txt 17.41 kB 
+ 8:17 PM
+Matthew Nathan Fernandez
+what parsing do you want
+
+ 
+it is already ready to be commit to uci
+
+ 
+your file is already compliant with the standard of uci
+
+ 8:18 PM
+Sandip Sitapara
+Tell me how you get the data from JSON1.txt?
+
+ 8:18 PM
+Matthew Nathan Fernandez
+we just need to type uci_commit
+
+ 
+then it will be saved to uci
+
+ 8:18 PM
+Sandip Sitapara
+no I don't want that
+
+ 8:19 PM
+Matthew Nathan Fernandez
+can i ask what do you want?
+
+ 8:19 PM
+Sandip Sitapara
+Parse the data from JSON1.txt and apply the wlan section to wireless uci and radius section to hotspot
+
+ 8:20 PM
+Matthew Nathan Fernandez
+ok
+
+ 
+i will change the program if that is what you want
+
+ 8:20 PM
+Sandip Sitapara
+Actually, that is the data coming from our server so want to parse that and apply it to uci
+
+ 
+please
+
+ 8:20 PM
+Matthew Nathan Fernandez
+ok, no problem
+
+ 8:20 PM
+Sandip Sitapara
+We are not using any intermediate file
+
+ 8:21 PM
+Matthew Nathan Fernandez
+ok
+
+ 
+i will inform you the update not later tomorrow afternoon
+
+ 8:22 PM
+Sandip Sitapara
+Thanks Matthew, did you get my requirement or still you're confuse because again it should double work if don't
+
+ 8:22 PM
+Matthew Nathan Fernandez
+i get it now
+
+ 8:22 PM
+Sandip Sitapara
+Ok Thanks
+
+ 8:22 PM
+Matthew Nathan Fernandez
+ok
+
+ 8:22 PM
+Sandip Sitapara
+So let me describe it here again
+
+ 8:23 PM
+Matthew Nathan Fernandez
+ok
+
+ 8:25 PM
+Sandip Sitapara
+"wlans": [{
+
+"createdBy": "Admin",
+
+"lastModifiedBy": null,
+
+"wlanId": 1,
+
+"wlanName": "LSOpen",
+
+"ssidName": "LSOpen",
+
+"status": "Active",
+
+"vlan": 1,
+
+"security": "Open",
+
+"passphrase": "secret",
+
+"radios": "2.5 GHz and 5 GHz",
+
+"createDate": "2021-09-16T09:01:51",
+
+"lastModificationDate": "2021-09-16T09:01:51",
+.....
+This specific above part goes to /etc/config/wireless
+
+ 8:26 PM
+Matthew Nathan Fernandez
+ok
+
+ 8:26 PM
+Sandip Sitapara
+{
+
+"createdBy": "Admin",
+
+"lastModifiedBy": null,
+
+"wlanId": 2,
+
+"wlanName": "LSWPA",
+
+"ssidName": "LSWPA",
+
+"status": "Active",
+
+"vlan": 1,
+
+"security": "WPA2 Preshared Key",
+
+"passphrase": "secret",
+
+"radios": "2.5 GHz and 5 GHz",
+
+"createDate": "2021-09-16T09:08:10",
+
+"lastModificationDate": "2021-09-16T09:08:10",
+
+This is the another wifi-iface section so it should goes to /etc/config/wireless
+
+ 
+Actually, there are two interface if you can see in that JSON1.txt
+
+New Messages
+ 
+wlans
+
+ 8:27 PM
+Matthew Nathan Fernandez
+yes, ok
+
+ 8:27 PM
+Sandip Sitapara
+wait let me write one document for you
+
+ 
+ 
+No file chosen 

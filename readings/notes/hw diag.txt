@@ -1,0 +1,39 @@
+
+software apps
+ connect
+ download diag fw
+  then reset
+
+ parse data in shared mem
+  display test items in tree view
+  display parameter
+  display logs
+
+ usb connection
+  segger command
+   read data to shared mem
+    rr, rw, mr, mw, etc
+   write data to shared mem (test items parameter)
+    rr, rw, mr, mw, etc
+
+ receive test status logs
+  parse data in shared mem
+  display
+
+ input parameters
+  write to shared mem 
+
+firmware diag located in flash
+ after download and reset
+  load bootloader
+  run diag firmware
+   register test items (write to shared mem)
+
+  received execute test
+   loop test
+    read param in shared mem
+    run test
+     write test status to shared mem
+     done?
+     no, loop again
+     yes, done testing

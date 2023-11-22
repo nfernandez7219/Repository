@@ -1,0 +1,1362 @@
+
+
+Mastering Embedded Linux 2nd Edition
+embedded development - the 
+toolchain, bootloader, kernel, and basic utilities found
+in the root file system
+
+project life cycle
+element of embedded linux (board bringup)
+system architecture and design choices
+writing embedded apps
+debugging and optimizing performance
+
+the 4 elements of embedded linux
+toolchain
+ the compiler and other tools needed to create code for your target device
+bootloader
+ the program that initializes the board and loads the linux kernel
+kernel
+ this is the heart of the system, managing system resources and interfacing with hardware
+root filesystem
+ contains the libraries and program that are run once the kernel has completed its init
+
+of course, there is also fifth element, not mentioned here.
+that is the collection of program specific to your embedded
+application which make the device do whatever it is supposed to do, be
+it weight groceries, display movies, control a robot,
+or fly a drone.
+
+open source
+the components of embedded linux are open source. so now is a good
+time to consider what that means, why open source work the way they do,
+and how this affects the often proprietary embedded device you will
+creating from it.
+
+Autotools
+The name Autotools refers to a group of tools that are used as the build system in
+many open source projects. The components, together with the appropriate
+project pages, are:
+GNU Autoconf (https://www.gnu.org/software/autoconf/autoconf.html)
+GNU Automake (https://www.gnu.org/savannah-checkouts/gnu/automake/)
+GNU Libtool (https://www.gnu.org/software/libtool/libtool.html)
+Gnulib (https://www.gnu.org/software/gnulib/)
+
+To configure, build, and install a package for the native operating system, you
+would typically run the following three commands:
+$ ./configure
+$ make
+$ sudo make install
+
+Autotools is able to handle cross development as well. You can influence the
+behavior of the configure script by setting these shell variables:
+CC: The C compiler command
+CFLAGS: Additional C compiler flags
+LDFLAGS: Additional linker flags; for example, if you have libraries in a nonstandard directory <lib dir>, you would add it to the library search path by
+adding -L<lib dir>
+LIBS: Contains a list of additional libraries to pass to the linker; for instance,
+-lm for the math library
+CPPFLAGS: Contains C/C++ preprocessor flags; for example, you would add -
+I<include dir> to search for headers in a non-standard directory <include dir>
+CPP: The C preprocessor to use
+
+All About Bootloaders
+What does a bootloader do?
+In an embedded Linux system, the bootloader has two main jobs: to initialize the
+system to a basic level and to load the kernel. In fact, the first job is somewhat
+subsidiary to the second, in that it is only necessary to get as much of the system
+working as is needed to load the kernel.
+
+The boot sequence
+In simpler times, some years ago, it was only necessary to place the bootloader
+in non-volatile memory at the reset vector of the processor. NOR flash memory
+was common at that time and, since it can be mapped directly into the address
+space, it was the ideal method of storage. The following diagram shows such a
+configuration, with the Reset vector at 0xfffffffc at the top end of an area of
+flash memory. The bootloader is linked so that there is a jump instruction at that
+location that points to the start of the bootloader code:
+
+Phase 1 – ROM code
+In the absence of reliable external memory, the code that runs immediately after
+a reset or power-on has to be stored on-chip in the SoC; this is known as ROM
+code. It is loaded into the chip when it is manufactured, and hence the ROM
+code is proprietary and cannot be replaced by an open source equivalent.
+Usually, it does not include code to initialize the memory controller, since
+DRAM configurations are highly device-specific, and so it can only use Static
+Random Access Memory (SRAM), which does not require a memory
+controller.
+Most embedded SoC designs have a small amount of SRAM on-chip, varying in
+size from as little as 4 KB to several hundred KB:
+
+Phase 2 – secondary program loader
+The SPL must set up the memory controller and other essential parts of the
+system preparatory to loading the Tertiary Program Loader (TPL) into
+DRAM. The functionality of the SPL is limited by the size of the SRAM. It can
+read a program from a list of storage devices, as can the ROM code, once again
+using pre-programmed offsets from the start of a flash device. If the SPL has file
+system drivers built in, it can read well known file names, such as u-boot.img,
+from a disk partition. The SPL usually doesn't allow for any user interaction, but
+it may print version information and progress messages, which you can see on
+the console. The following diagram explains the phase 2 architecture:
+
+Phase 3 – TPL
+Now, at last, we are running a full bootloader, such as U-Boot or BareBox.
+Usually, there is a simple command-line user interface that lets you perform
+maintenance tasks, such as loading new boot and kernel images into flash
+storage, and loading and booting a kernel, and there is a way to load the kernel
+automatically without user intervention.
+The following diagram explains the phase 3 architecture:
+
+Booting with UEFI firmware
+Most embedded x86/x86_64 designs, and some ARM designs, have firmware
+based on the Universal Extensible Firmware Interface (UEFI) standard. You
+can take a look at the UEFI website at http://www.uefi.org/ for more information. The
+boot sequence is fundamentally the same as that described in the preceding
+section:
+
+Moving from bootloader to kernel
+When the bootloader passes control to the kernel it has to pass some basic
+information, which may include some of the following:
+The machine number, which is used on PowerPC, and ARM platforms
+without support for a device tree, to identify the type of the SoC
+Basic details of the hardware detected so far, including at least the size and
+location of the physical RAM, and the CPU clock speed
+The kernel command line
+Optionally, the location and size of a device tree binary
+Optionally, the location and size of an initial RAM disk, called the initial
+RAM file system (initramfs)
+
+Introducing device trees
+If you are working with ARM or PowerPC SoCs, you are almost certainly going
+to encounter device trees at some point. This section aims to give you a quick
+overview of what they are and how they work, but there are many details that are
+not discussed.
+A device tree is a flexible way to define the hardware components of a computer
+system. Usually, the device tree is loaded by the bootloader and passed to the
+kernel, although it is possible to bundle the device tree with the kernel image
+itself to cater for bootloaders that are not capable of loading them separately.
+The format is derived from a Sun Microsystems bootloader known as
+OpenBoot, which was formalized as the Open Firmware specification, which is
+IEEE standard IEEE1275-1994. It was used in PowerPC-based Macintosh
+computers and so was a logical choice for the PowerPC Linux port. Since then, it
+has been adopted on a large scale by the many ARM Linux implementations
+and, to a lesser extent, by MIPS, MicroBlaze, ARC, and other architectures.
+I would recommend visiting https://www.devicetree.org/ for more information
+
+Device tree basics
+The Linux kernel contains a large number of device tree source files in
+arch/$ARCH/boot/dts, and this is a good starting point for learning about device
+trees. There are also a smaller number of sources in the U-boot source code in
+arch/$ARCH/dts. If you acquired your hardware from a third party, the dts file forms
+part of the board support package and you should expect to receive one along
+with the other source files.
+The device tree represents a computer system as a collection of components
+joined together in a hierarchy, like a tree. The device tree begins with a root
+node, represented by a forward slash, /, which contains subsequent nodes
+representing the hardware of the system. Each node has a name and contains a
+number of properties in the form name = "value". Here is a simple example:
+
+The reg property
+The memory and cpu nodes have a reg property, which refers to a range of units in a
+register space. A reg property consists of two values representing the start
+address and the size (length) of the range. Both are written as zero or more 32-bit
+integers, called cells. Hence, the memory node refers to a single bank of memory
+that begins at 0x80000000 and is 0x20000000 bytes long.
+Understanding reg properties becomes more complex when the address or size
+values cannot be represented in 32 bits. For example, on a device with 64-bit
+addressing, you need two cells for each:
+
+Labels and interrupts
+The structure of the device tree described so far assumes that there is a single
+hierarchy of components, whereas in fact there are several. As well as the
+obvious data connection between a component and other parts of the system, it
+might also be connected to an interrupt controller, to a clock source, and to a
+voltage regulator. To express these connections, we can add a label to a node and
+reference the label from other nodes. These labels are sometimes referred to as
+phandles, because when the device tree is compiled, nodes with a reference
+from another node are assigned a unique numerical value in a property called
+phandle. You can see them if you decompile the device tree binary.
+Take as an example a system containing an LCD controller which can generate
+interrupts and an interrupt-controller:
+
+Device tree include files
+A lot of hardware is common between SoCs of the same family and between
+boards using the same SoC. This is reflected in the device tree by splitting out
+common sections into include files, usually with the extension .dtsi. 
+
+Compiling a device tree
+The bootloader and kernel require a binary representation of the device tree, so it
+has to be compiled using the device tree compiler, dtc. The result is a file ending
+with .dtb, which is referred to as a device tree binary or a device tree blob.
+There is a copy of dtc in the Linux source, in scripts/dtc/dtc, and it is also
+available as a package on many Linux distributions. You can use it to compile a
+simple device tree (one that does not use #include) like this:
+
+
+Choosing a bootloader
+U-Boot
+Building U-Boot
+Begin by getting the source code. As with most projects, the recommended way
+is to clone the .git archive and check out the tag you intend to use, which, in this
+case, is the version that was current at the time of writing:
+$ git clone git://git.denx.de/u-boot.git
+$ cd u-boot
+$ git checkout v2017.01
+
+Installing U-Boot
+Installing a bootloader on a board for the first time requires some outside
+assistance. If the board has a hardware debug interface, such as JTAG, it is
+usually possible to load a copy of U-Boot directly into RAM and set it running.
+
+Using U-Boot
+Boot image format
+U-Boot doesn't have a filesystem. Instead, it tags blocks of information with a
+64-byte header so that it can track the contents. You prepare files for U-Boot
+using the mkimage command. Here is a brief summary of its usage:
+
+Loading images
+Usually, you will load images from removable storage, such as an SD card or a
+network. SD cards are handled in U-Boot by the mmc driver. A typical sequence
+to load an image into memory would be:
+U-Boot# mmc rescan
+U-Boot# fatload mmc 0:1 82000000 uimage
+reading uimage
+4605000 bytes read in 254 ms (17.3 MiB/s)
+U-Boot# iminfo 82000000
+## Checking Image at 82000000 ...
+Legacy image found
+Image Name: Linux-3.18.0C
+reated: 2014-12-23 21:08:07 UTC
+Image Type: ARM Linux Kernel Image (uncompressed)
+Data Size: 4604936 Bytes = 4.4 MiB
+Load Address: 80008000
+Entry Point: 80008000
+Verifying Checksum ... OK
+
+Booting Linux
+The bootm command starts a kernel image running. The syntax is:
+bootm [address of kernel] [address of ramdisk] [address of dtb].
+The address of the kernel image is necessary, but the address of ramdisk and dtb
+can be omitted if the kernel configuration does not need them. If there is dtb but
+no initramfs, the second address can be replaced with a dash (-). That would
+look like this:
+U-Boot# bootm 82000000 - 83000000
+
+Automating the boot with U-Boot scripts
+Plainly, typing a long series of commands to boot your board each time it is
+turned on is not acceptable. To automate the process, U-Boot stores a sequence
+of commands in environment variables.
+
+Porting U-Boot to a new board
+
+Board-specific files
+Each board has a subdirectory named board/[board name] or board/[vendor]/[board
+name], which should contain:
+Kconfig: Contains configuration options for the board
+MAINTAINERS: Contains a record of whether the board is currently maintained
+and, if so, by whom
+Makefile: Used to build the board-specific code
+README: Contains any useful information about this port of U-Boot; for
+example, which hardware variants are covered
+
+Barebox
+Getting barebox
+Building barebox
+Using barebox
+
+
+
+Configuring and Building the Kernel
+The kernel is the third element of embedded Linux. It is the component that is
+responsible for managing resources and interfacing with hardware, and so affects
+almost every aspect of your final software build. It is usually tailored to your
+particular hardware configuration
+
+What does the kernel do?
+The kernel has three main jobs: to manage resources, to interface with hardware,
+and to provide an API that offers a useful level of abstraction to user space
+programs, as summarized in the following diagram:
+
+Applications running in User space run at a low CPU privilege level. They can
+do very little other than make library calls. The primary interface between the
+User space and the Kernel space is the C library, which translates user level
+functions, such as those defined by POSIX, into kernel system calls. The system
+call interface uses an architecture-specific method, such as a trap or a software
+interrupt, to switch the CPU from low privilege user mode to high privilege
+kernel mode, which allows access to all memory addresses and CPU registers.
+The System call handler dispatches the call to the appropriate kernel
+subsystem: memory allocation calls go to the memory manager, filesystem calls
+to the filesystem code, and so on. Some of those calls require input from the
+underlying hardware and will be passed down to a device driver. In some cases,
+the hardware itself invokes a kernel function by raising an interrupt.
+
+In other words, all the useful things that your application does, it does them
+through the kernel. The kernel, then, is one of the most important elements in the
+system.
+
+Choosing a kernel
+Kernel development cycle
+
+Building the kernel
+Getting the source
+Both of the targets used in this book, the BeagleBone Black and the ARM
+Versatile PB, are well supported by the mainline kernel. Therefore, it makes
+sense to use the latest long-term kernel available from https://www.kernel.org/
+
+Understanding kernel configuration – Kconfig
+One of the strengths of Linux is the degree to which you can configure the
+kernel to suit different jobs, from a small dedicated device such as a smart
+thermostat to a complex mobile handset
+$ make ARCH=arm menuconfig
+
+Kernel modules
+Here are a few cases where kernel modules are a good idea in embedded
+systems:
+When you have proprietary modules, for the licensing reasons given in the
+preceding section.
+To reduce boot time by deferring the loading of non-essential drivers.
+When there are a number of drivers that could be loaded and it would take
+up too much memory to compile them statically. For example, you have a
+USB interface that supports a range of devices. This is essentially the same
+argument as is used in desktop distributions.
+
+Compiling – Kbuild
+
+Finding out which kernel target to build
+To build a kernel image, you need to know what your bootloader expects. This is
+a rough guide:
+U-Boot: Traditionally, U-Boot has required uImage, but newer versions can
+load a zImage file using the bootz command
+x86 targets: Requires a bzImage file
+Most other bootloaders: Require a zImage file
+Here is an example of building a zImage file:
+$ make -j 4 ARCH=arm CROSS_COMPILE=arm-cortex_a8-linux-gnueabihf- zImage
+
+Compiling device trees
+Building a kernel for the BeagleBone Black
+In light of the information already given, here is the complete sequence of
+commands to build a kernel, the modules, and a device tree for the BeagleBone
+Black, using the Crosstool-NG ARM Cortex A8 cross compiler:
+$ cd linux-stable
+$ make ARCH=arm CROSS_COMPILE=arm-cortex_a8-linux-gnueabihf- mrproper
+$ make ARCH=arm multi_v7_defconfig
+$ make -j4 ARCH=arm CROSS_COMPILE=arm-cortex_a8-linux-gnueabihf- zImage
+$ make -j4 ARCH=arm CROSS_COMPILE=arm-cortex_a8-linux-gnueabihf- modules
+$ make ARCH=arm CROSS_COMPILE=arm-cortex_a8-linux-gnueabihf- dtbs
+
+Booting the kernel
+Booting Linux is highly device-dependent. In this section, I will show you how
+it works for the BeagleBone Black and QEMU. For other target boards, you
+must consult the information from the vendor or from the community project, if
+there is one.
+At this point, you should have the zImage file and the dtbs targets for the
+BeagleBone Black or QEMU
+
+Booting the BeagleBone Black
+To begin, you need a microSD card with U-Boot installed, as described in the
+section Installing U-Boot. Plug the microSD card into your card reader and from
+the linux-stable directory the files arch/arm/boot/zImage and arch/arm/boot/dts/am335xboneblack.dtb to the boot partition. Unmount the card and plug it into the
+BeagleBone Black. Start a terminal emulator, such as gtkterm, and be prepared to
+press the space bar as soon as you see the U-Boot messages appear. Next, power
+on the BeagleBone Black and press the space bar. You should get a U-Boot
+prompt, . Now enter the following commands to load Linux and the device tree
+binary:
+U-Boot# fatload mmc 0:1 0x80200000 zImage
+reading zImage
+7062472 bytes read in 447 ms (15.1 MiB/s)
+U-Boot# fatload mmc 0:1 0x80f00000 am335x-boneblack.dtb
+reading am335x-boneblack.dtb
+34184 bytes read in 10 ms (3.3 MiB/s)
+U-Boot# setenv bootargs console=ttyO0
+U-Boot# bootz 0x80200000 - 0x80f00000
+## Flattened Device Tree blob at 80f00000
+Booting using the fdt blob at 0x80f00000
+Loading Device Tree to 8fff4000, end 8ffff587 ... OK
+Starting kernel ...
+[ 0.000000] Booting Linux on physical CPU 0x0
+
+Note that we set the kernel command line to console=ttyO0. That tells Linux which
+device to use for console output, which in this case is the first UART on the
+board, device ttyO0. Without this, we would not see any messages after Starting
+the kernel..., and therefore would not know if it was working or not. The
+sequence will end in a kernel panic, for reasons I will explain later on
+
+Kernel panic
+
+Early user space
+In order to transition from kernel initialization to user space, the kernel has to
+mount a root filesystem and execute a program in that root filesystem. This can
+be achieved via a ramdisk or by mounting a real filesystem on a block device.
+The code for all of this is in init/main.c, starting with the function rest_init(),
+which creates the first thread with PID 1 and runs the code in kernel_init(). If
+there is a ramdisk, it will try to execute the program /init, which will take on the
+task of setting up the user space.
+If fails to find and run /init, it tries to mount a filesystem by calling the function
+prepare_namespace() in init/do_mounts.c. This requires a root= command line to give
+the name of the block device to use for mounting, usually in the form:
+
+Kernel messages
+Kernel developers are fond of printing out useful information through liberal use
+of printk() and similar functions. The messages are categorized according to
+importance, with 0 being the highest:
+Level Value Meaning
+KERN_EMERG 0 The system is unusable
+KERN_ALERT 1 Action must be taken immediately
+KERN_CRIT 2 Critical conditions
+KERN_ERR 3 Error conditions
+KERN_WARNING 4 Warning conditions
+KERN_NOTICE 5 Normal but significant conditions
+KERN_INFO 6 Informational
+KERN_DEBUG 7 Debug-level messages
+
+Kernel command line
+The kernel command line is a string that is passed to the kernel by the
+bootloader, via the bootargs variable in the case of U-Boot; it can also be defined
+in the device tree, or set as part of the kernel configuration in CONFIG_CMDLINE.
+
+Porting Linux to a new board
+Porting Linux to a new board can be easy or difficult, depending on how similar
+your board is to an existing development board. In Chapter 3, All About
+Bootloaders, we ported U-Boot to a new board, named Nova, which is based on
+the BeagleBone Black. very few changes to be made to the kernel code and so it
+very easy. If you are porting to completely new and innovative hardware, there
+will be more to do. I am only going to consider the simple case.
+
+
+Building a Root Filesystem
+The root filesystem is the fourth and the final element of embedded Linux. Once
+you have read this chapter, you will be able build, boot, and run a simple
+embedded Linux system.
+
+What should be in the root filesystem?
+The kernel will get a root filesystem, either an initramfs, passed as a pointer from
+the bootloader, or by mounting the block device given on the kernel command
+line by the root= parameter. Once it has a root filesystem, the kernel will execute
+the first program, by default named init, as described in the section Early user
+space in Chapter 4, Configuring and Building the Kernel. Then, as far as the kernel
+is concerned, its job is complete. It is up to the init program to begin starting
+other programs and so bring the system to life.
+
+
+The directory layout
+/bin: Programs essential for all users
+/dev: Device nodes and other special files
+/etc: System configuration files
+/lib: Essential shared libraries, for example, those that make up the Clibrary
+/proc: The proc filesystem
+/sbin: Programs essential to the system administrator
+/sys: The sysfs filesystem
+/tmp: A place to put temporary or volatile files
+/usr: Additional programs, libraries, and system administrator utilities, in
+the directories /usr/bin, /usr/lib and /usr/sbin, respectively
+/var: A hierarchy of files and directories that may be modified at runtime,
+for example, log messages, some of which must be retained after boot
+
+The staging directory
+$ mkdir ~/rootfs
+$ cd ~/rootfs
+$ mkdir bin dev etc home lib proc sbin sys tmp usr var
+$ mkdir usr/bin usr/lib usr/sbin
+$ mkdir -p var/log
+To see the directory hierarchy more clearly, you can use the handy tree command
+used in the following example with the -d option to show only the directories:
+$ tree -d
+.
+├── bin
+├── dev
+├── etc
+├── home
+├── lib
+├── proc
+├── sbin
+├── sys
+├── tmp
+├── usr
+│ ├── bin
+│ ├── lib
+│ └── sbin
+├── va
+└── var
+└── log
+
+POSIX file access permissions
+Every process, which in the context of this discussion means every running
+program, belongs to a user and one or more groups. The user is represented by a
+32-bit number called the user ID or UID. Information about users, including the
+mapping from a UID to a name, is kept in /etc/passwd. Likewise, groups are
+represented by a group ID or GID with information kept in /etc/group. There is
+always a root user with a UID of 0 and a root group with a GID of 0. The root user
+is also called the superuser because; in a default configuration, it bypasses most
+permission checks and can access all the resources in the system. Security in
+Linux-based systems is mainly about restricting access to the root account.
+
+Programs for the root filesystem
+Now, it is time to start populating the root filesystem with the essential programs
+and the supporting libraries, configuration, and data files that they need to
+operate. I will begin with an overview of the types of programs you will need.
+
+
+The init program
+Init is the first program to be run, and so it is an essential part of the root
+filesystem. In this chapter, we will be using the simple init program provided by
+BusyBox.
+
+Shell
+We need a shell to run scripts and to give us a command prompt so that we can
+interact with the system. An interactive shell is probably not necessary in a
+production device, but it is useful for development, debugging, and maintenance.
+There are various shells in common use in embedded systems:
+
+
+Libraries for the root filesystem
+Programs are linked with libraries. You could link them all statically, in which
+case, there would be no libraries on the target device. But, this takes up an
+unnecessarily large amount of storage if you have more than two or three
+programs. So, you need to copy shared libraries from the toolchain to the staging
+directory. How do you know which libraries?
+
+Device nodes
+Most devices in Linux are represented by device nodes, in accordance with the
+Unix philosophy that everything is a file (except network interfaces, which are
+sockets). A device node may refer to a block device or a character device. Block
+devices are mass storage devices, such as SD cards or hard drives. A character
+device is pretty much anything else, once again with the exception of network
+interfaces. The conventional location for device nodes is the directory called /dev.
+For example, a serial port maybe represented by the device node called
+/dev/ttyS0.
+
+The proc and sysfs filesystems
+proc and sysfs are two pseudo filesystems that give a window onto the inner
+workings of the kernel. 
+
+Mounting filesystems
+The mount command allows us to attach one filesystem to a directory within
+another, forming a hierarchy of filesystems. The one at the top, which was
+mounted by the kernel when it booted, is called the root filesystem. The format
+of the mount command is as follows:
+mount [-t vfstype] [-o options] device directory
+
+Transferring the root filesystem to the target
+After having created a skeleton root filesystem in your staging directory, the next
+task is to transfer it to the target.
+
+Creating a boot initramfs
+An initial RAM filesystem, or initramfs, is a compressed cpio archive. cpio is an
+old Unix archive format, similar to TAR and ZIP but easier to decode and so
+requiring less code in the kernel. You need to configure your kernel with
+CONFIG_BLK_DEV_INITRD to support initramfs.
+
+Standalone initramfs
+Booting the initramfs
+
+Booting with QEMU
+Booting the BeagleBone Black
+
+Mounting proc
+You will find that on both platforms the ps command doesn't work. This is
+because the proc filesystem has not been mounted yet. Try mounting it:
+# mount -t proc proc /proc
+
+Building an initramfs into the kernel
+image
+So far, we have created a compressed initramfs as a separate file and used the
+bootloader to load it into memory. Some bootloaders do not have the ability to
+load an initramfs file in this way. To cope with these situations, Linux can be
+configured to incorporate initramfs into the kernel image.
+
+The init program
+Running a shell, or even a shell script, at boot time is fine for simple cases, but
+really you need something more flexible. Normally, Unix systems run a program
+called init that starts up and monitors other programs
+
+Starting a daemon process
+Typically, you would want to run certain background processes at startup. Let's
+take the log daemon, syslogd, as an example. The purpose of syslogd is to
+accumulate log messages from other programs, mostly other daemons. Naturally,
+BusyBox has an applet for that!
+Starting the daemon is as simple as adding a line like this to etc/inittab:
+::respawn:/sbin/syslogd -n
+
+Configuring user accounts
+As I have hinted already, it is not good practice to run all programs as root, since
+if one is compromised by an outside attack, then the whole system is at risk. It is
+preferable to create unprivileged user accounts and use them where full root is
+not necessary
+
+Adding user accounts to the root filesystem
+Firstly, you have to add to your staging directory the files etc/passwd, etc/shadow,
+and etc/group, as shown in the preceding section. Make sure that the permissions
+of shadow are 0600.
+
+A better way of managing device nodes
+
+An example using mdev
+While mdev is a bit more complex to set up, it does allow you to modify the
+permissions of device nodes as they are created.
+
+Configuring the network
+Next, let's look at some basic network configurations so that we can
+communicate with the outside world. I am assuming that there is an Ethernet
+interface, eth0, and that we only need a simple IPv4 configuration.
+These examples use the network utilities that are part of BusyBox, and they are
+sufficient for a simple use case, using the old-but-reliable ifup and ifdown
+programs. You can read the manual pages for both to get the details. The main
+network configuration is stored in /etc/network/interfaces. You will need to create
+these directories in the staging directory:
+etc/network
+etc/network/if-pre-up.d
+etc/network/if-up.d
+var/run
+For a static IP address, /etc/network/interfaces would look like this:
+auto lo
+iface lo inet loopback
+auto eth0
+iface eth0 inet static
+address 192.168.1.101
+netmask 255.255.255.0
+network 192.168.1.0
+
+Booting the BeagleBone Black
+The script called MELP/format-sdcard.sh creates two partitions on the micro SD card:
+one for the boot files and one for the root filesystem. Assuming that you have
+created the root filesystem image as shown in the previous section, you can use
+the dd command to write it to the second partition. As always, when copying files
+directly to storage devices like this, make absolutely sure that you know which is
+the micro SD card. In this case, I am using a built-in card reader, which is the
+device called /dev/mmcblk0, so the command is as follows:
+$ sudo dd if=rootfs.ext2 of=/dev/mmcblk0p2
+
+Mounting the root filesystem using
+NFS
+If your device has a network interface, it is often useful to mount the root
+filesystem over the network during development. It gives you access to the
+almost unlimited storage on your host machine, so you can add in debug tools
+and executables with large symbol tables. As an added bonus, updates made to
+the root filesystem on the development machine are made available on the target
+immediately. You can also access all the target's log files from the host.
+To begin with, you need to install and configure an NFS server on your host. On
+Ubuntu, the package to install is named nfs-kernel-server:
+$ sudo apt-get install nfs-kernel-server
+
+Testing with the BeagleBone Black
+In a similar way, you can enter these commands at the U-Boot prompt of the
+BeagleBone Black:
+setenv serverip 192.168.1.1
+setenv ipaddr 192.168.1.101
+setenv npath [path to staging directory]
+setenv bootargs console=ttyO0,115200 root=/dev/nfs rw nfsroot=${serverip}:${npath} ip=${ipaddr}
+fatload mmc 0:1 0x80200000 zImage
+fatload mmc 0:1 0x80f00000 am335x-boneblack.dtb
+bootz 0x80200000 - 0x80f00000
+There is a U-Boot environment file in chapter_05/uEnv.txt, which contains all these
+commands. Just copy it to the boot partition of the microSD card and U-Boot
+will do the rest.
+
+Using TFTP to load the kernel
+Now that we know how to mount the root filesystem over a network using NFS,
+you may be wondering if there is a way to load the kernel, device tree, and
+initramfs over the network as well. If we could do this, the only component that
+needs to be written to storage on the target is the bootloader. Everything else
+could be loaded from the host machine. It would save time since you would not
+need to keep reflashing the target, and you could even get work done while the
+flash storage drivers are still being developed (it happens).
+The Trivial File Transfer Protocol (TFTP) is the answer to the problem. TFTP
+is a very simple file transfer protocol, designed to be easy to implement in
+bootloaders such as U-Boot.
+
+Selecting a Build System
+In the preceding chapters, we covered the four elements of embedded Linux and
+showed you step-by-step how to build a toolchain, a bootloader, a kernel, a root
+filesystem, and then combined them into a basic embedded Linux system
+
+Build systems
+I have described the process of creating a system manually, as described in Chapte
+r 5, Building a Root Filesystem, as the Roll Your Own (RYO) process. It has the
+advantage that you are in complete control of the software, and you can tailor it
+to do anything you like. If you want it to do something truly odd but innovative,
+or if you want to reduce the memory footprint to the smallest size possible, RYO
+is the way to go. But, in the vast majority of situations, building manually is a
+waste of time and produces inferior, unmaintainable systems.
+The idea of a build system is to automate all the steps I have described up to this
+point. A build system should be able to build, from upstream source code, some
+or all of the following:
+A toolchain
+A bootloader
+A kernel
+A root filesystem
+Building from upstream source code is important for a number of reasons. It
+means that you have peace of mind that you can rebuild at any time, without
+external dependencies. It also means that you have the source code for
+debugging and also that you can meet your license requirements to distribute the
+code to users where necessary.
+
+
+Buildroot
+The Buildroot project website is at http://buildroot.org.
+The current versions of Buildroot are capable of building a toolchain, a
+bootloader, a kernel, and a root filesystem. It uses GNU make as the principal
+build tool. There is good online documentation at http://buildroot.org/docs.html,
+including The Buildroot user manual at https://buildroot.org/downloads/manual/manual.html
+
+Installing
+As usual, you can install Buildroot either by cloning the repository or
+downloading an archive. Here is an example of obtaining version 2017.02.1,
+which was the latest stable version at the time of writing:
+$ git clone git://git.buildroot.net/buildroot -b 2017.02.1
+$ cd buildroot
+The equivalent TAR archive is available at http://buildroot.org/downloads.
+Next, you should read the section titled System requirement from The
+Buildroot user manual available at http://buildroot.org/downloads/manual/manual.html, and
+make sure that you have installed all the packages listed there
+
+Configuring
+Buildroot uses the kernel Kconfig/Kbuild mechanism, which I described in the
+section Understanding kernel configuration in Chapter 4, Configuring and
+Building the Kernel. You can configure Buildroot from scratch directly using make
+menuconfig (xconfig or gconfig), or you can choose one of the 100+ configurations
+for various development boards and the QEMU emulator, which you can find
+stored in the directory, configs/. Typing make list-defconfigs lists all the default
+configurations.
+Let's begin by building a default configuration that you can run on the ARM
+QEMU emulator:
+$ cd buildroot
+$ make qemu_arm_versatile_defconfig
+$ make
+
+
+Running
+Some of the sample configurations have a corresponding entry in the directory
+board/, which contains custom configuration files and information about
+installing the results on the target. In the case of the system you have just built,
+the relevant file is board/qemu/arm-versatile/readme.txt, which tells you how to start
+QEMU with this target. Assuming that you have already installed qemu-system-arm
+as described in Chapter 1, Starting Out, you can run it using this command:
+$ qemu-system-arm -M versatilepb -m 256 \
+-kernel output/images/zImage \
+-dtb output/images/versatile-pb.dtb \
+-drive file=output/images/rootfs.ext2,if=scsi,format=raw \
+-append "root=/dev/sda console=ttyAMA0,115200" \
+-serial stdio -net nic,model=rtl8139 -net user
+There is a script named MELP/chapter_06/run-qemu-buildroot.sh in the book code
+archive, which includes that command. When QEMU boots up, you should see
+the kernel boot messages appear in the same terminal window where you started
+QEMU, followed by a login prompt:
+
+Creating a custom BSP
+
+U-Boot
+Linux
+In Chapter 4, Configuring and Building the Kernel, we based the kernel on Linux
+4.9.13 and supplied a new device tree, which is in MELP/chapter_04/nova.dts. Copy
+the device tree to board/melp/nova, change the Buildroot kernel configuration to
+select Linux version 4.9.13, and the device tree source to board/melp/nova/nova.dts,
+as shown in the following screenshot:
+
+Build
+In the last stage of the build, Buildroot uses a tool named genimage to create an
+image for the SD card that we can copy directory to the card.
+
+Adding your own code
+Suppose there is a program that you have developed and that you want to include
+it in the build. You have two options: firstly to build it separately using its own
+build system, and then roll the binary into the final build as an overlay. Secondly,
+you could create a Buildroot package that can be selected from the menu and
+built like any other
+
+Overlays
+Adding a package
+
+
+
+Creating a Storage Strategy
+The mass-storage options for embedded devices have a great impact on the rest
+of the system in terms of robustness, speed, and methods of in-field updates.
+Most devices employ flash memory in some form or other. Flash memory has
+become much less expensive over the past few years as storage capacities have
+increased from tens of megabytes to tens of gigabytes.
+
+Storage options
+Embedded devices need storage that takes little power and is physically
+compact, robust, and reliable over a lifetime of perhaps tens of years.
+
+NOR flash
+The memory cells in NOR flash chips are arranged into erase blocks of, for
+example, 128 KiB. Erasing a block sets all the bits to 1
+
+NAND flash
+NAND flash is much cheaper than NOR flash and has a higher capacity. Firstgeneration NAND chips stored one bit per memory cell in what is now known as
+an SLC or single-level cell organization. 
+
+Managed flash
+The burden of supporting flash memory in the operating system, NAND in
+particular, becomes less if there is a well-defined hardware interface and a
+standard flash controller that hides the complexities of the memory
+
+MultiMediaCard and Secure Digital cards
+The MultiMediaCard (MMC) was introduced in 1997 by SanDisk and Siemens
+as a form of packaged storage using flash memory. Shortly after, in 1999,
+SanDisk, Matsushita, and Toshiba created the Secure Digital (SD) card, which
+is based on MMC but adds encryption and DRM (the secure in the name).
+
+
+eMMC
+eMMC or Embedded MMC is simply MMC memory packaged so that it can
+be soldered on to the motherboard, using a 4- or 8-bit interface for data transfer.
+
+
+Accessing flash memory from the bootloader
+In Chapter 3, All About Bootloaders, I mentioned the need for the bootloader to
+load kernel binaries and other images from various flash devices, and to perform
+system maintenance tasks such as erasing and reprogramming flash memory
+
+
+U-Boot and NOR flash
+U-Boot and NAND flash
+U-Boot and MMC, SD, and eMMC
+Accessing flash memory from Linux
+Memory technology devices
+The MTD subsystem was started by David Woodhouse in 1999 and has been
+extensively developed over the intervening years. In this section, I will
+concentrate on the way it handles the two main technologies, NOR and NAND
+flash.
+
+MTD partitions
+MTD device drivers
+The MTD character device, mtd
+The MTD block device, mtdblock
+Simulating NAND memory
+The NAND simulator emulates a NAND chip using system RAM. The main use
+is for testing code that has to be NAND-aware without access to physical NAND
+memory
+
+The MMC block driver
+Filesystems for flash memory
+
+Flash translation layers
+A flash translation layer has the following features:
+Sub allocation: Filesystems work best with a small allocation unit,
+traditionally a 512-byte sector. This is much smaller than a flash erase block
+of 128 KiB or more. Therefore, erase blocks have to be subdivided into
+smaller units to avoid wasting large amounts of space.
+Garbage collection: A consequence of suballocation is that an erase block
+will contain a mixture of good data and stale data after the filesystem has
+been in use for a while.
+
+Filesystems for NOR and NAND flash memory
+To use raw flash chips for mass storage, you have to use a filesystem that
+understands the peculiarities of the underlying technology. There are three such
+filesystems:
+JFFS2 (Journaling Flash File System 2): This was the first flash
+filesystem for Linux, and is still in use today. It works for NOR and NAND
+memory, but is notoriously slow during mount.
+
+
+Creating a JFFS2 filesystem
+Creating an empty JFFS2 filesystem at runtime is as simple as erasing an MTD
+partition with clean markers and then mounting it.
+
+Filesystems for managed flash
+As the trend towards managed flash technologies continues, particularly eMMC,
+we need to consider how to use it effectively
+
+Flashbench
+Discard and TRIM
+Usually, when you delete a file, only the modified directory node is written to
+storage, while the sectors containing the file's contents remain unchanged.
+
+Ext4
+The extended filesystem, ext, has been the main filesystem for Linux desktops
+since 1992.
+
+F2FS
+The Flash-Friendly File System, known as F2FS, is a log-structured filesystem
+designed for managed flash devices, especially eMMC chips and SD cards. 
+
+FAT16/32
+The old Microsoft filesystems, FAT16 and FAT32, continue to be important as a
+common format understood by most operating systems.
+
+Read-only compressed filesystems
+Compressing data is useful if you don't have quite enough storage to fit
+everything in. Both JFFS2 and UBIFS do on-the-fly data compression by
+default.
+
+Making the root filesystem read-only
+You need to make your target device able to survive unexpected events,
+including file corruption, and still be able to boot and achieve at least a
+minimum level of function.
+
+Updating Software in the Field
+In previous chapters, we discussed various ways to build the software for a
+Linux device and also how to create system images for various types of mass
+storage. When you go into production, you just need to copy the system image to
+the flash memory and it is ready to be deployed. Now, I want to consider the life
+of the device beyond the first shipment.
+
+What to update?
+Embedded Linux devices are very diverse in their design and implementation.
+However, they all have these basic components:
+Bootloader
+Kernel
+Root filesystem
+System applications
+Device-specific data
+Some components are harder to update than others, as summarized in this
+diagram:
+
+Bootloader
+The bootloader is the first piece of code to run when the processor is powered
+up.
+
+Kernel
+The Linux kernel is a critical component that will certainly need updating from
+time to time. 
+
+Root filesystem
+The root filesystem contains the essential system libraries, utilities, and scripts
+needed to make the system work.
+
+System applications
+The system applications are the main payload of the device; they implement its
+primary function. As such, they are likely to be updated frequently to fix bugs
+and to add features. 
+
+Device-specific data
+This is the combination of files that are modified at runtime, and includes
+configuration settings, logs, user-supplied data, and the like.
+
+Components that need to be updated
+In summary, then, an update may include new versions of the kernel, root
+filesystem, and system applications. The device will have other partitions that
+should not be disturbed by an update, as is the case with the device runtime data.
+
+
+The basics of software update
+Updating software seems, at first sight, to be a simple task: you just need to
+overwrite some files with new copies. But then your engineer's training kicks in
+as you begin to realize all the things that could go wrong. What if the power
+goes down during the update? What if a bug, not seen while testing the update,
+renders a percentage of the devices unbootable? What if a third party sends a
+fake update that enlists your device as part of a botnet? At the very least the
+software update mechanism must be:
+Robust, so that an update does not render the device unusable
+Fail-safe, so that there is a fall-back mode if all else fails
+Secure, to prevent the device from being hijacked by people installing
+unauthorized updates
+
+Making updates robust
+You might think that the problem of updating Linux systems was solved a long
+time ago--we all have Linux desktops that we update regularly (don't we?). Also,
+there are vast numbers of Linux servers running in data centers that are similarly
+kept up to date. However, there is a difference between a server and a device.
+The former is operating in a protected environment. 
+
+Making updates fail-safe
+The next problem to consider is that of recovering from an update that was
+installed correctly, but which contains code that stops the system from booting.
+Ideally, we want the system to detect this case and to revert to a previous
+working image.
+
+
+Making updates secure
+The final problem relates to the potential misuse of the update mechanism itself.
+Your prime intention when implementing an update mechanism is to provide a
+reliable, automated or semi-automated method to install security patches and
+new features. However, others may use the same mechanism to install
+unauthorized versions of software and so hijack the device. We need to look at
+how we can ensure that this cannot happen.
+
+
+Types of update mechanism
+In this section, I will describe three approaches to applying software updates:
+symmetric, or A/B, image update; asymmetric image update, also known as
+recovery mode update; and finally, atomic file update
+
+Symmetric image update
+In this scheme, there are two copies of the operating system, each comprising the
+Linux kernel, root filesystem, and system applications. They are labelled as A
+and B in the following diagram:
+
+Asymmetric image update
+You can reduce storage requirements by keeping a minimal recovery operating
+system purely for updating the main one, as shown here:
+
+Atomic file updates
+Another approach is to have redundant copies of a root filesystem present in
+multiple directories of a single filesystem and then use the chroot(8) command to
+choose one of them at boot time.
+
+Installing an update
+Now we want make a change to the root filesystem and then install it as an
+update.
+
+
+
+Interfacing with Device Drivers
+Kernel device drivers are the mechanism through which the underlying hardware
+is exposed to the rest of the system. As a developer of embedded systems, you
+need to know how these device drivers fit into the overall architecture and how
+to access them from user space programs. Your system will probably have some
+novel pieces of hardware, and you will have to work out a way of accessing
+them. In many cases, you will find that there are device drivers provided for you,
+and you can achieve everything you want without writing any kernel code. For
+example, you can manipulate GPIO pins and LEDs using files in sysfs, and there
+are libraries to access serial buses, including SPI (Serial Peripheral Interface)
+and I2C (Inter-Integrated Circuit).
+
+
+The role of device drivers
+As I mentioned in Chapter 4, Configuring and Building the Kernel, one of the
+functions of the kernel is to encapsulate the many hardware interfaces of a
+computer system and present them in a consistent manner to user space
+programs. The kernel has frameworks designed to make it easy to write a device
+driver, which is the piece of code that mediates between the kernel above and the
+hardware below. A device driver maybe written to control physical devices such
+as a UART or an MMC controller, or it may represent a virtual device such as
+the null device (/dev/null) or a ramdisk. One driver may control multiple devices
+of the same kind.
+
+Character devices
+Character devices are identified in user space by a special file called a device
+node. This file name is mapped to a device driver using the major and minor
+numbers associated with it
+
+Block devices
+Block devices are also associated with a device node, which also has major and
+minor numbers.
+
+Network devices
+Network devices are not accessed through device nodes, and they do not have
+major and minor numbers. Instead, a network device is allocated a name by the
+kernel, based on a string and an instance number.
+
+Finding out about drivers at runtime
+Once you have a running Linux system, it is useful to know which device drivers
+are loaded and what state they are in. You can find out a lot by reading the files
+in /proc and /sys.
+
+Getting information from sysfs
+You can define sysfs in a pedantic way as a representation of kernel objects,
+attributes, and relationships. A kernel object is a directory, an attribute is a file,
+and a relationship is a symbolic link from one object to another.
+
+The devices: /sys/devices
+This is the kernel's view of the devices discovered since boot and how they are
+connected to each other. It is organized at the top level by the system bus, so
+what you see varies from one system to another.
+
+The drivers: /sys/class
+This is a view of the device drivers presented by their type. In other words, it is a
+software view rather than a hardware view. Each of the subdirectories represents
+a class of driver and is implemented by a component of the driver framework.
+
+The block drivers: /sys/block
+There is one more view of the device model that is important to this discussion:
+the block driver view that you will find in /sys/block. There is a subdirectory for
+each block device. 
+
+Finding the right device driver
+
+Device drivers in user space
+Before you start writing a device driver, pause for a moment to consider whether
+it is really necessary
+
+GPIO
+General-Purpose Input/Output (GPIO) is the simplest form of digital
+interface since it gives you direct access to individual hardware pins, each of
+which can be in one of two states: either high or low
+
+LEDs
+LEDs are often controlled though a GPIO pin, but there is another kernel
+subsystem that offers more specialized control specific to the purpose.
+
+I2C
+I2C is a simple low speed 2-wire bus that is common on embedded boards,
+typically used to access peripherals that are not on the SoC, such as display
+controllers, camera sensors, GPIO extenders, and so on. 
+
+Serial Peripheral Interface (SPI)
+The SPI bus is similar to I
+2C, but is a lot faster, up to tens of MHz.
+
+Writing a kernel device driver
+Eventually, when you have exhausted all the previous user space options, you
+will find yourself having to write a device driver to access a piece of hardware
+attached to your device. 
+
+Designing a character driver interface
+The main character driver interface is based on a stream of bytes, as you would
+have with a serial port. However, many devices don't fit this description: a
+controller for a robot arm needs functions to move and rotate each joint, for
+example. Luckily, there are other ways to communicate with device drivers than
+just read and write:
+
+The anatomy of a device driver
+It's time to draw some threads together by looking at the code for a simple
+device driver. Here is a device driver named dummy, which creates four devices
+that are accessed through dev/dummy0 to /dev/dummy3. The complete source code for
+the driver follows: you will find the code in MELP/chapter_09/dummy-driver:
+
+
+Compiling kernel modules
+At this point, you have some driver code that you want to compile and test on
+your target system. You can copy it into the kernel source tree and modify
+makefiles to build it, or you can compile it as a module out of tree. Let's start by
+building out of tree.
+
+Loading kernel modules
+You can load, unload, and list modules using the simple insmod, lsmod, and rmmod
+commands. Here they are shown loading the dummy driver:
+
+Discovering the hardware configuration
+The dummy driver demonstrates the structure of a device driver, but it lacks
+interaction with real hardware since it only manipulates memory structures.
+Device drivers are usually written to interact with hardware. Part of that is being
+able to discover the hardware in the first place, bearing in mind that it maybe at
+different addresses in different configurations.
+
+
+Device trees
+I gave you an introduction to device trees in Chapter 3, All About Bootloaders.
+Here, I want to show you how the Linux device drivers hook up with this
+information.
+
+Linking hardware with device drivers
+You have seen in the preceding section how an Ethernet adapter is described
+using a device tree and using platform data. The corresponding driver code is in
+drivers/net/ethernet/smsc/smc91x.c, and it works with both the device tree and
+platform data. Here is the initialization code, once again edited for clarity:
+static const struct of_device_id smc91x_match[] = {
+{ .compatible = "smsc,lan91c94", },
+{ .compatible = "smsc,lan91c111", },
+{},
+};
+MODULE_DEVICE_TABLE(of, smc91x_match);
+static struct platform_driver smc_driver = {
+.probe = smc_drv_probe,
+.remove = smc_drv_remove,
+.driver = {
+.name = "smc91x",
+.of_match_table = of_match_ptr(smc91x_match),
+},
+};
+static int __init smc_driver_init(void)
+{
+return platform_driver_register(&smc_driver);
+}
+static void __exit smc_driver_exit(void)
+{
+platform_driver_unregister(&smc_driver);
+}
+module_init(smc_driver_init);
+module_exit(smc_driver_exit);
+
+
+
+Starting Up – The init Program
+We looked at how the kernel boots up to the point that it launches the first
+program, init, in Chapter 4, Configuring and Building the Kernel. In Chapter 5,
+Building a Root Filesystem, and Chapter 6, Selecting a Build System, we looked at
+creating root filesystems of varying complexity, all of which contained an init
+program. Now, it is time to look at the init program in more detail and discover
+why it is so important to the rest of the system.
+
+After the kernel has booted
+We saw in Chapter 4, Configuring and Building the Kernel, how the kernel
+bootstrap code seeks to find a root filesystem, either initramfs or a filesystem
+specified by root= on the kernel command line, and then to execute a program
+which, by default, is /init for initramfs and /sbin/init for a regular filesystem. The
+init program has root privilege, and since it is the first process to run, it has a
+process ID (PID) of 1. If, for some reason, init cannot be started, the kernel will
+panic.
+The init program is the ancestor of all other processes, as shown here by the
+pstree command running on a simple embedded Linux system:
+
+
+Introducing the init programs
+The three init programs that you are most likely to encounter in embedded
+devices are BusyBox init, System V init, and systemd. Buildroot has options to
+build all three with the init BusyBox as the default. The Yocto Project allows
+you to choose between the System V called init and systemd with System V init as
+the default.
+
+BusyBox init
+BusyBox has a minimal init program that uses a configuration file, /etc/inittab,
+to define rules to start programs at boot up and to stop them at shutdown.
+Usually, the actual work is done by shell scripts, which, by convention, are
+placed in the /etc/init.d directory
+
+Buildroot init scripts
+Buildroot has been making effective use of the BusyBox init for many years.
+Buildroot has two scripts in /etc/init.d/ named rcS and rcK. The first one runs at
+boot up and iterates over all the scripts in /etc/init.d/ with names that begin with
+a capital S followed by two digits, and runs them in numerical order. These are
+the start scripts. The rcK script is run at shutdown and iterates over all the scripts
+beginning with a capital K followed by two digits, and runs them in numerical
+order. These are the kill scripts.
+
+System V init
+This init program was inspired by the one from Unix System V and so dates
+back to the mid 1980s. The version most often found in Linux distributions was
+written initially by Miquel van Smoorenburg. Until recently, it was the init
+daemon for almost all desktop and server distributions and a fair number of
+embedded systems as well. However, in recent years, it has been replaced by
+systemd, which I will describe in the next section.
+
+
+inittab
+The init program begins by reading /etc/inttab, which contains entries that define
+what happens at each runlevel. The format is an extended version of BusyBox
+inittab that I described in the preceding section, which is not surprising because
+BusyBox borrowed it from System V in the first place.
+
+inittab
+The init program begins by reading /etc/inttab, which contains entries that define
+what happens at each runlevel. The format is an extended version of BusyBox
+inittab that I described in the preceding section, which is not surprising because
+BusyBox borrowed it from System V in the first place.
+
+Adding a new daemon
+Imagine that you have a program named simpleserver , which is written as a
+traditional Unix daemon, in other words, it forks and runs in the background:
+
+Starting and stopping services
+You can interact with the scripts in /etc/init.d by calling them directly. Here is an
+example using the syslog script, which controls the syslogd and klogd daemons:
+# /etc/init.d/syslog --help
+Usage: syslog { start | stop | restart }
+# /etc/init.d/syslog stop
+Stopping syslogd/klogd: stopped syslogd (pid 198)
+stopped klogd (pid 201)
+done
+# /etc/init.d/syslog start
+Starting syslogd/klogd: done
+
+systemd
+
+Introducing targets, services, and
+units
+Before I describe how systemd init works, I need to introduce these three key
+concepts:
+
+
+Services
+A service is a daemon that can be started and stopped, equivalent to a System V
+init service
+
+How systemd boots the system
+Now, we can see how systemd implements the bootstrap. systemd is run by the
+kernel as a result of /sbin/init being symbolically linked to /lib/systemd/systemd.
+
+Implications for embedded Linux
+Systemd has a lot of features that are useful in embedded Linux, including many
+that I have not mentioned in this brief description, such as resource control using
+slices (which are described in the manual pages for systemd.slice(5) and
+systemd.resource-control(5)), device management (udev(7)), and system logging
+facilities (journald(5)).
+
+
+Learning About Processes and Threads
+Process or thread?
+Processes
+Creating a new process
+Terminating a process
+Running a different program
+Daemons
+Inter-process communication
+Message-based IPC
+Unix (or local) sockets
+FIFOs and named pipes
+POSIX message queues
+Summary of message-based IPC
+Shared memory-based IPC
+POSIX shared memory
+Threads
+Creating a new thread
+Terminating a thread
+Compiling a program with threads
+Inter-thread communication
+Mutual exclusion
+Changing conditions
+Partitioning the problem
+Scheduling
+Fairness versus determinism
+Time-shared policies
+Real-time policies
+Choosing a policy
+Choosing a real-time priority
+
+
+Managing Memory
+This chapter covers issues related to memory management, which is an
+important topic for any Linux system but especially for embedded Linux, where
+system memory is usually in limited supply. After a brief refresher on virtual
+memory, I will show you how to measure memory usage, how to detect
+problems with memory allocation, including memory leaks, and what happens
+when you run out of memory
+
+In this chapter, we will cover the following topics:
+Virtual memory basics.
+Kernel space memory layout.
+User space memory layout.
+The process memory map.
+Swapping.
+Mapping memory with mmap.
+How much memory does my application use?
+Per-process memory usage.
+Identifying memory leaks.
+Running out of memory.
+
+
+
+Debugging with GDB
+Bugs happen. Identifying and fixing them is part of the development process.
+There are many different techniques for finding and characterizing program
+defects, including static and dynamic analysis, code review, tracing, profiling,
+and interactive debugging. I will look at tracers and profilers in the next chapter,
+but here I want to concentrate on the traditional approach of watching code
+execution through a debugger, which in our case is the GNU Project Debugger
+(GDB). GDB is a powerful and flexible tool. You can use it to debug
+applications, examine the postmortem files (core files) that are created after a
+program crash, and even step through kernel code.
+In this chapter, we will cover the following topics:
+The GNU debugger
+Preparing to debug
+Debugging applications
+Just-in-time debugging
+Debugging forks and threads
+Core files
+GDB user interfaces
+Debugging kernel code
+
+
+
+Real-Time Programming
+Much of the interaction between a computer system and the real world happens
+in real time, and so this is an important topic for developers of embedded
+systems. I have touched on real-time programming in several places so far: in Cha
+pter 12, Learning About Processes and Threads, I looked at scheduling policies
+and priority inversion, and in Chapter 13, Managing Memory, I described the
+problems with page faults and the need for memory locking. Now, it is time to
+bring these topics together and look at real-time programming in some depth.
+In this chapter, I will begin with a discussion about the characteristics of realtime systems and then consider the implications for system design, both at the
+application and kernel levels. I will describe the real-time kernel patch,
+PREEMPT_RT, and show how to get it and apply it to a mainline kernel. The final
+sections will describe how to characterize system latencies using two tools:
+cyclictest and Ftrace.
+There are other ways to achieve real-time behavior on an embedded Linux
+device, for instance, using a dedicated microcontroller or a separate real-time
+kernel alongside the Linux kernel in the way that Xenomai and RTAI do. I am
+not going to discuss these here because the focus of this book is on using Linux
+as the core for embedded systems.
+In this chapter, we will cover the following topics:
+What is real time?
+Identifying sources of non-determinism.
+Understanding scheduling latency.
+Kernel preemption.
+The real-time Linux kernel (PREEMPT_RT).
+High-resolution timers.
+Avoiding page faults.
+Interrupt shielding.
+Measuring scheduling latencies.
+

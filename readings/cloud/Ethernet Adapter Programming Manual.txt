@@ -1,0 +1,64 @@
+
+2.2 HCA Configuration
+at initialization, the device is configured through an HCA command queue.
+
+the HCA registers (UAR/DoorBells and initialization segment) are mapped to physical memory space. the mapping is provided through a standard PCI BAR/LIMIT mechanism.
+
+2.3 HCA operation
+after the HCA is initialized and opened, the host sw supports send and receive data transfers through Work Request (WRs) posted to Work Queues (WQs). each WQ contains a Send Work Queue (SQ) for posted, and Receive Work Queue (RQ) for posted receive requests.
+
+		send	and    receive		WRs		WQs
+host sw	 	 ______		______		______		______
+supports	|      |       |      |	       |      |	       |      |
+         	|______|       |______|	       |______|	       |______|		
+                     data transfer     through         posted to 
+
+each   WQ contains a Send Work Queue (SQ) --> for posted send requests,
+and a Receive Work Queue (RQ) ---> for posted receive queue
+the WR is posted as a Work Queue Entry (WQE) to an SQ/RQ.
+these WQEs can either cause data to be transmitted or received.
+WQEs are essential descriptors that control the source and destination of data movement.
+
+WQEs that transmit data from the HCA local memory can include a "gather" list "gather" list points to a set of memory beuffers from which to assemble the outgoing message or contain immediate data to be sent. the RQ also has a "scatter" list included in posted WQEs to indicate memory buffers to be used for placing the received send payloads.
+
+data transfer is initialized by posting a descriptor to an SQ and ringing the respective DoorBell. Once the DoorBell has been rung on an SQ, the HCA initiate execution of the send descriptor, reading the descriptor and executing it accordingly to the descriptor's opcode - data transfer, memory registration and so on.
+
+after a descriptor is executed and the message is completed, the HCA will post an entry to the corresponding Completion Queue (CQ). multiple WQs can report their completions to the same CQ; the CQ number to report the completions is specified for each WQ at its initialization. the HCA stores a WQE identifier in the CQ.
+
+2.3.1 Work Queues
+mainstream operations (send/receive data, bind and so on) are posted to WQs by the application SW. the Work Queue is accessible directly by the application program to post Work Requests to the HCA. each Work Queue Element (WQE) represents a single Work Request. 
+The Work Request posted to WQs are executed by the HCA in the order that they are posted. Work Request is posted to the HCA by writing a list of one or more WQEs to the WQ and ringing the DoorBell
+
+
+
+
+7.4 Work Queue
+Work Request is posted to the HCA by writing a list of one or more Work Queue Elements (WQE) to the WQ and ringing the Doorbell, notifying the HCA that request has been posted.
+This section described the structure and management of WQs and the WQE and the WQE format.
+
+HCA WQ is an object containing the ff entities:
+
+1. SQ/RQ Context - Contains control information required by the device to execute I/O operations on that context. these context are configured by SW at creation time.
+
+2. Work Queue Buffer - A virtually-contiguous memory buffer allocated when creating the SQ/RQ:
+	Send Queue - A virtually-contiguous circular buffer accessible by user-level software and used to post send requests.
+	receive queue - a virtually-contiguous circular buffer accessible by user-level software and used to post receive requests.
+
+3. DoorBell Record - A structure containing info of most recently-posted work request.
+
+
+
+
+7.12 Completion Queues
+HCA implements Completion Queues used to post completion reports upon completion of Work request. this section discusses CQ structure and operation.
+
+a CQ is an object containing the ff entities:
+
+1. Completion Queue Buffer - A virtually-contiguous circular buffer accessible by uer-level software and used by hardware to post completions - writing completion queue elements (CQEs). this area must be allocated when creating the CQ.
+
+2. Completion Queue Context (CQC) - The data structure describing the CQ properties that is passed to the device by SW while creating the CQ. HCA hardware can support up to 16M CQs per virtual HCA.
+
+3. CQ Doorbell Record - A structure containing information of recently-posted CQ commands and consumer index and is accessible by user-level software.
+
+7.12.1 Completion Queue Buffer
+A CQ is virtually-contiguous memory buffer used by the HCA to post completion

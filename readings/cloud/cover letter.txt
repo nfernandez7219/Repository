@@ -1,0 +1,5 @@
+I have experience doing a firmware while the fpga is being build in bitmicro. i have more 20 years in firmware/software development using different cpu and tools, my main programming language for low level is c/c++ and assembly language. i know how to bring-up the fpga with firmware, the boot up process, and a device driver for it. i also expose in
+linux and python for scripting. i think i am the right guy you are looking, i hope you can give me a call to justify my claims. 
+
+best regards,
+nathaniel
