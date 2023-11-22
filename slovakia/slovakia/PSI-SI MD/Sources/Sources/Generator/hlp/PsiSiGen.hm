@@ -1,0 +1,14 @@
+// MAKEHELP.BAT generated Help Map file.  Used by PSISIGEN.HPJ. 
+ 
+// Commands (ID_* and IDM_*) 
+ 
+// Prompts (IDP_*) 
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20148
+HIDR_PSISIGTYPE                         0x20149
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x2012C
+ 
+// Frame Controls (IDW_*) 

@@ -1,0 +1,43 @@
+optimux
+
+advanced sfn streams processing
+enabling significant opex & capex savings
+
+parallel direct to tower & dth
+regional advertisements
+emergency warning system
+regional tv programs
+contribution link re-use
+local tv insertion
+
+sfn limits:
+sfn networks need identical transport streams for sfn transmitters
+when it comes to the content modification needs, such as regionalization,
+ parallel dtt & dth transmission, regional content insertion, this causes
+ a steep increase of distribution bandwidth as they need to transmit multiple
+ and modified transport streams
+this significantly impacts the flexibility to modify and regionalize sfn signals
+
+optimux allows to support regionalization by keeping opex costs at minimal
+ level eliminating multiplication of required bandwidth
+
+modules:
+1 optimux dth - parallel dtt & dth transmission
+2 optimux ad - reginal advertisement insertion into national TVs
+3 optimux ews - emergency warning system
+4 optimux reg - regional tv programs
+5 optimux local - re-multiplexing local tv program
+6 optimux contri - reusing contribution link capacity
+
+dvb-t2 encapsulation layers
+4 mpeg dth
+3 bbf
+2 dvd-t2 mi
+1 data piping
+
+optimux dth dvb-t2 configuration
+optimux platform consists of:
+1. optimux-t2 tx adapter located at satellite uplink
+2. optimux-t2 rx adapter places at tv transmitters
+
+dth receivers do not need any modification to receive signal

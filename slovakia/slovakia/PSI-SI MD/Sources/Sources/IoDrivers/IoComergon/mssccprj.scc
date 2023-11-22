@@ -1,0 +1,5 @@
+SCC = This is a Source Code Control file
+
+[IoComergon.dsp]
+SCC_Aux_Path = "\\Tester\SourceSafe\Dvb.Vss"
+SCC_Project_Name = "$/dev/dvb/IoDrivers/IoComergon", SBDAAAAA

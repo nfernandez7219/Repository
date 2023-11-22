@@ -1,0 +1,119 @@
+
+product design for dvb sis adapters
+ a. control stream generator
+ b. daughter stream adapter
+
+analyze proper product design for dvb sis, design cost-efficient, maintainable,
+modular and reliable solution
+
+existing pc based server running linux also in kernel
+
+figure seq figure arabic 1 - adapter prototype trl6
+md7211 tsoip 
+md7212 dvb-asi tsoip
+md7213 dvb-s2 fta input dvb asi tsoip
+
+competition design
+1. enesys
+2. nevion
+   cp440 ts processor
+   transport stream interfaces
+3. harmonic
+   based on discussion with hardmonic reseller, harmonic really shifted almost all
+   or all products to sw implementation, including multiplexer, encoders, statistical
+   multiplex etc.
+   it is typically installed at hp servers using modified linux
+   sw based remultiplexers are commercially deployed, used, working with stb.
+   last question remains whether fully sw implementation is used also for dvb-sis
+   daughter stream adapter and/or dvb-t2 gw. to be done
+   according to dektec harmonic integrated their pcie boards, so it seems identical
+   to maindata "old" product arch.
+
+   both ends of harmonics dvb-sis (prostramx and xos) are built in linux and 
+   synchonization should be achieved by
+   a. ptp https://en.wikipedia.org/wiki/Precision_Time_Protocol
+   b. pps/gps adapter https://en.wikipedia.org/wiki/Pulse-per-second_signal
+   which is connected to server serial port
+   harmonic solutions are installed at hp servers or virtual machines
+  generally it runs on linux with above descrived synchronization
+
+1. hw vs sw solution
+   is hw solution necessary or sw solution (linux) is enough?
+
+1.1 in case hw solution is need
+    to what extent/for which functionalities, is hw mandatory?
+
+    1 timing at last stage? (latency, jitter anything else?)
+    2 back panel space - full of input output connector, without half of mother board
+                         being occupied by mobo connectors?
+    3 realibility?
+    4 fastboot?
+    5 anything else?
+    6 redundant power?
+    7 high density?
+    8 front panel
+
+1.2 in case of sw only solution using available servers:
+    is it enough to compose bitwise precise bitstream with unprecise or dummy
+    timestamp which are then preciselly restamped by modulators?
+
+2. time reference
+   maindata products are linux based on pc motherboard with unprecise clock
+   is that ok?
+   do we need e.g gps pcie board to make timing more precise?
+
+3. high density
+   could we use blade servers to achieve high density with specific boards e.g for IO
+   (e.g dvb asi input outputs, timestamping)
+   how blades are connected are pcie boards supported (easy use of dvb-asi boards)
+
+4. inputs outputs
+   do we need dvb-asi or Gbe is enough?
+   in my opinion dvb
+
+5. front panel or ipmi?
+   we use front lcd panel with 6 buttons (crystal fontz) to allow initial ip configuration
+   and also for basic monitoring
+   it is questionable whether ipmi is not enough, as most of configuration and
+   monitoring can be done via web and or snmp
+
+6. potential blade server design?
+
+7. ready supermicro server with front lcd panel
+
+8. add-on module to existing third party hw e.g appeartv, wisi group, sumavision
+
+9. own fpga e.g xylinx/altera with central processor (linux)
+   this architecture looks like it is deployed by heavy professionals like appear tv,
+   enensys, nevion etc.
+
+   advantages:
+   it provides much more connectors at rear panel
+   no need for intense sw upgrades due to kernel evolution
+   low cost for high quantities (not our case)
+   more reliable (eliminating connectors, cables etc)
+   low energy consumption
+   high security
+   higher processing speed?
+   more crediable for telecom customers
+
+   disadvantages:
+   less modular
+   less flexible - inability to add available pcie interface board, e.g. satellite
+   receiver directly into box
+   more expensive initial development costs
+
+possible alternatives of fpga board with linux module:
+1st alternative integrated linux processor on fpga board, normal linux ocde after
+ cross compiling should work
+
+2nd alternative - having 2 independent boards: fpga and server motherboard connected
+ via ethernet. unified configuration should be thought out to not force user to
+ configure separately each one.
+
+3rd alternative, fpga acting as pcie (daughter board). this would be likely lead
+ to developing many drivers for all device in fpga?
+
+question: can we perform real-time precise time stamping by sw solution?
+
+  

@@ -1,0 +1,5 @@
+LIBRARY      "IOComergon"
+DESCRIPTION  'IOComergon Windows Dynamic Link Library'
+
+EXPORTS
+	DVBDRIVER_IOCTL	= Comergon_driver_ioctl

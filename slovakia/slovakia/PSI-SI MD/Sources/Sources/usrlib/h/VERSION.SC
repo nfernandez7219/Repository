@@ -1,0 +1,4 @@
+
+#define SCREEN_LIB_VERSION 1.60
+#define SCREEN_LIB_BUILD   001
+#define SCREEN_LIB_DATE    dec-23-96

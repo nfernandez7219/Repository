@@ -1,0 +1,75 @@
+
+Purpose:
+--------
+	IoDvbAsi.dll is a connection dll between DVB Server/Receiver and
+	Linear Systems DVB ASI driver.
+
+Sources:
+--------
+	ComDvbAsi.cpp          // ComInpDvbAsi and ComOutDvbasi classes
+	drv_comAsi.cpp		   // driver ioctl function (main dll entry point)
+	DrvAsiSetupDlg.cpp	   // Configuration, Install and Readme dialogs
+	ComAsi.def			   // Exports definition
+	IoDvbAsi.rc			   // Dll resources
+
+Headers:
+--------
+	ComDvbAsi.hpp		   // Main header for dll
+	dvbIoctl.h			   // Header for DvbAsi-card driver 
+	resource.h			   // Resource header
+
+Documentation:
+--------------
+	ReadmeDvbAsiRcv.txt			// user documentation
+	ReadmeDvbAsiSrv.txt			// user documentation
+	DVB Master Manual 2.0.doc   // DVB ASI card documentation
+	technote.doc				// DVB ASI card tech-notes 
+
+Version management:
+-------------------
+	Version is taken from the version resource.
+
+Project directory:
+------------------
+	\dev\dvb\IoDrivers\IoDvbAsi
+
+Project dependencies
+====================
+	screen library	\___ userlib library
+	applib library	/
+	DvbLib library	
+
+Project settings (Debug build)
+==============================
+
+General:
+	Use MFC in a Shared Dll
+	Output files: ..\..\Bin
+
+C/C++
+	Language: Enable exception handling
+	Code generation: cdecl, Debug MT Dll, 1 By struct alignment
+	Precompiled headers: Automatic ... tools2.hpp
+	#defines: WIN32,_DEBUG,_WINDOWS,_MBCS,_USRDLL,__IODVBASIDLL,_WINDLL,_AFXDLL
+	#includes: ..\..\Dvblib\h,..\..\..\mfc\screen\h,..\..\..\mfc\applib\h
+
+Link
+	General: ..\..\Bin/IoDvbAsi.dll
+	Libraries: version.lib DvbD.lib appm41td.lib scrm41td.lib 
+	Library path: ..\..\bin,\cs\mfc\winnt\slib
+
+Resources:
+	Resource file name: Debug/IoDvbAsi.res
+	#defines: _DEBUG,_AFXDLL
+
+
+Interface to DVB applications:
+==============================
+Version
+	Dll version is maintained via Version resource.
+	Driver version can be queried via ioctl call DVBDRV_GetDrvVersion.
+
+IoDvbAsi.dll exports single ioctl function described in DvbLib\DrvInterface.hpp.
+This function has to be loaded explicitly by GetProcAddress().
+
+

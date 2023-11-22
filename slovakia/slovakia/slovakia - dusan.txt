@@ -1,0 +1,200 @@
+
+dvb sis published in aug 2018 as etsi ts 103 615, allows for terrestrial retransmission of signal
+addressing dth satellit receivers. sis tstands for single illumination system, referring to the fact that
+a single satellite beam can be used simultaneoursly for dth and to feed terrestrial networks
+
+since the standard has been designed in a generic way, the satellite/terrestrial use case is just one
+possibility; in the future other use case could be realized using dvb-sis, e.g a cable/terrestrial
+combination. the common denominator for all use cases is the deployment of mpeg-2 transport streams.
+
+the dvb-sis concept consists in deriving content and metadata from one delivery path (e.g satellite)
+for re-delivery via another path (e.g terrestrial). the video content for both paths is assembled into a
+single transport stream at a so called parent site and broadcasted on the single network path; the
+video content for the other path is derived at the so called daughter sites.
+
+1. we need to program low level transport streams processing in compliancy with the standard
+2. you will create api for web control
+3. you need to understand dvb sis standard
+4. csg is generating metadata - timing & framing and other info which tells dsa's
+5. how to generate dvb-t or dvb-t2 signals from incoming one or more satellite tv streams
+6. main instrument dsa use is time-stamping of incoming packets from satellite tv streams
+7. according to epoch timestamps and metadata from csg dsa's are able to deterministically multiplex 
+   new regional mpeg streams framed either to dvb-t or dvb-t2
+8. c# for api web control can be replaced with ts duck written in c++
+9. dvb-t and t2 is easier to understand from the book which is on readme
+10. dsaci is using xml, yes it is metadata stream from csg
+
+we will decide later what will be done in which programming language.
+first is understanding of requirements
+
+
+
+
+the digital video broadcasting project (dvb) is an industry-led consortium of broadcasters, manufacturers
+network operators, software developers, regulatory bodies, content owners and other committed to designing
+global standards for the delivery of digital television and data services. dvb fosters market driven so
+lutions that meet the needs and economic circumtances of broadcast industry stakeholders and consumers.
+dvb standards cover all aspects of digital television from transmission through interfacing, conditional
+access and interactivity for digital videl, audio and data. the consortium came together in 1993 to pro
+vide global standardisation, interoperability and future proof specification.
+
+1. scope
+the present document describes the single illumination system, which allows to deliver parent signals
+for direct reception by consumer receivers and at, at the same time, for a deterministic generation of
+daughter streams for terrestrial retransmission. parent signals can be provided to the daughter site via 
+all defined ts-based dvb means - be it satellite, cable or terrestrial. metadata may be provided as part
+of the parent signals (called "in-band" in the present document). part of the metadata may also be
+provided "out-of-band".
+
+a typical use case is described by the present document and is based on satellit broadcast signals on 
+parent side - be it dvb-s (etsi en 300 421 [8]), 
+                      -s2 (etse en 302 307-1 [9] or
+                     -s2x (etse en 302 307-2 [10]
+that are addressing consumer direct-to-home (dth) receivers and terrestrial transmitter on daughter side
+in parellel. for terrestrial retransmission of the whole or partial content, the dth signals of mpeg-2 ts
+format(iso/eic 13818-1 [5]) from one or several satellite can be used and services and service components
+can be selected according to terrestrial broadcasters needs. also other non-satellite parent signals and
+out-of-band metadata feeds can be integrated into the preparation of the terrestrial 
+dvb-t2, etsi en 302 755 [2], and/or
+dvb-t,  etsi en 300 744 [3] signals on daughter site. single frequency network (sfn) operation of the 
+terrestrial networks driver by the single illumination system is enabled.
+
+2. references
+[1] etsi ts 102 773 - digital video broadcasting (dvb); modulator interface (t2-mi) for a second
+   generation digital terrestrial television broadcasting system (dvb-t2)
+
+[2] ETSI EN 302 755: "Digital Video Broadcasting (DVB); Frame structure channel coding and 
+modulation for a second generation digital terrestrial television broadcasting system (DVB-T2)". 
+
+[3] ETSI EN 300 744: "Digital Video Broadcasting (DVB); Framing structure, channel coding and 
+modulation for digital terrestrial television". 
+
+[4] ETSI TS 101 191: "Digital Video Broadcasting (DVB); DVB mega-frame for Single Frequency 
+Network (SFN) synchronization". 
+
+[5] ISO/IEC 13818-1: "Information technology - Generic coding of moving pictures and associated 
+audio information: Systems". 
+
+[6] ETSI EN 300 468: "Digital Video Broadcasting (DVB); Specification for Service Information (SI) 
+in DVB systems". 
+
+[7] ETSI TS 102 034: "Digital Video Broadcasting (DVB); Transport of MPEG-2 TS Based DVB 
+Services over IP Based Networks". 
+
+[8] ETSI EN 300 421: "Digital Video Broadcasting (DVB); Framing structure, channel coding and 
+modulation for 11/12 GHz satellite services". 
+
+[9] ETSI EN 302 307-1: "Digital Video Broadcasting (DVB); Second generation framing structure, 
+channel coding and modulation systems for Broadcasting, Interactive Services, News Gathering 
+and other broadband satellite applications; Part 1: DVB-S2". 
+
+[10] ETSI EN 302 307-2: "Digital Video Broadcasting (DVB); Second generation framing structure, 
+channel coding and modulation systems for Broadcasting, Interactive Services, News Gathering 
+and other broadband satellite applications; Part 2: DVB-S2 Extensions (DVB-S2X)".
+ 
+[11] IETF RFC 3629 (STD 63) (November 2003): "UTF-8, a transformation format of ISO 10646", 
+F. Yergeau. 
+
+3. definition, symbols and abbreviations
+
+control stream generator - device that generates metadata, namely framing and timing information (f&ti),
+dsa configuration information (dsaci) and layer 1 signallin - for the daughter site signal
+
+daughter site adapter - device that creates the tmf/t2-mi streams to be output to the related dvb-t or
+-t2 modulators - based on the metadata it receives from the csg, the outputs streams consist of content
+received from the parent side.
+
+dsa configuration informaion - information that enables deterministic generation of dvb-t2-mi and/or
+dvb-t-mega-frame streams at the output of the daughter site adapter.
+
+F&TI packet: TS packet used for F&TI signalling in the DVB-T case 
+
+in-band: part of one of the Parent Signals 
+
+interleaving frame: unit over which dynamic capacity allocation for a particular PLP is carried out, made up of an 
+integer, dynamically varying number of FEC blocks and having a fixed relationship to the T2-frames 
+
+layer 1 signalling: metadata that describes the physical layer configuration 
+NOTE: In the DVB-T2 case the L1 signalling provides the receiver with a means to access physical layer pipes 
+within the T2-frames; for further details see ETSI EN 300 744 [3] for DVB-T and ETSI EN 302 755 [2] 
+for DVB-T2.
+
+layer 2 signalling: equivalent to PSI/SI - see ISO/IEC 13818-1 [5] and ETSI EN 300 468 [6], respectively - since the 
+present document covers Transport Streams (ISO/IEC 13818-1 [5]) only, layer 2 metadata that describes the service 
+configuration of the tuned and optionally of other multiplexes 
+mode adaptation: applicable to DVB-T2 only: the mode adaptation modules, which operate separately on the contents 
+of each PLP, slice the input data stream into data fields which, after stream adaptation, will form baseband frames 
+(BBFRAMEs), see also ETSI EN 302 755 [2] 
+out-of-band: not part of any of the Parent Signals, but provided to the DSA by other means 
+parent network: any DVB- and TS-based delivery network carrying the parent signal. This can be a satellite, cable or 
+terrestrial network 
+parent signal: transport Stream present at the DSA input providing some or all the services used to build the output 
+DTT stream 
+
+NOTE: There may be one or several Parent Signal(s) contributing to the output DTT stream (T2-MI stream or 
+stream of T-mega-frames). Each Parent Signal consists of a time reference of the SIS system clock 
+(PCRabs). 
+PCR_base: 90 kHz clock 
+primary sis service: primary SIS service (one per terrestrial output/per current_DSA_group_id) consists of the listed 
+mandatory elements and can consist of the listed optional elements: 
+• PCRabs using the transport packet adaptation mechanism (see ISO/IEC 13818-1 [5]) on a PID that is designated 
+as the PCR_PID in the PMT (mandatory) 
+• F&TI, which may be sent on the PCRabs PID (mandatory) 
+• DSACI (optional) 
+• Terrestrial-only PSI/SI tables belonging to hybrid or sheer terrestrial services, including PATs (for terrestrial 
+TSs, with PID ≠ 0016) and PMTs (all optional) 
+
+reference transport stream: reference transport stream (RTS) is a transport stream made up entirely of null packets 
+(see ISO/IEC 13818-1 [5]) but with a defined timing in terms of the SIS reference clock. Each packet has an associated 
+PCRabs value 
+service information: service information is the layer 2 signalling specific to DVB usage of transport streams and 
+consists of the MPEG programme service information and the DVB service information 
+SIS service: SIS service (one per parent signal) consists of the listed mandatory elements and can consist of the listed 
+optional elements: 
+• PCRabs using the transport packet adaptation mechanism (see ISO/IEC 13818-1 [5]) on a PID that is designated 
+as the PCR_PID in the PMT (mandatory) 
+• F&TI, which may be sent on the PCRabs PID (optional) 
+• DSACI (optional) 
+• Terrestrial-only PSI/SI tables belonging to hybrid or sheer terrestrial services, including PATs (for terrestrial 
+TSs, with PID ≠ 0016) and PMTs (all optional) 
+
+SIS system clock: 27 MHz clock that has an active edge at the SIS epoch and executes exactly 27,000,000 cycles in 
+every subsequent second of UTC 
+SIS epoch: epoch for DVB-T2 time, i.e. 2000-01-01 T 00:00:00 UTC
+
+T2-frame: fixed physical layer TDM frame that is further divided into variable size sub-slices 
+NOTE: The T2-frame starts with one P1 and one or multiple P2 symbols. 
+T2-MI stream: stream of T2-MI packets carrying the T2 data for a single T2 profile and optionally any non-profile 
+data with a given value of T2-MI stream ID 
+
+
+4. digital video broadcasting (dvb) single illumination system (sis) definition
+system overview and arch
+the target is, on the other hand, to feed receivers installed at consumer's household with a "Parent"
+signal suitable for direct reception and, on the other hand, to use the same signal to derive services 
+and service components for terrestrial re-transmission. the parent signal might typically be uplinked
+via:
+ dvb-s (etsi en 300 421 [8]
+   -s2 (etsi en 302 307 - 1 [9]) or
+   s2x (etse en 302 307 - 2 [10] to
+  a satellite
+
+the terrestrial multiplexes could either by  
+ dvb-t2 or dvb-t multiplex and shall be suitable for use in sfn networks
+
+central functional blocks on the parent site are the control stream generator (csg) and the transport
+stream multiplexer that prepares the ts (iso/iec 13818-1 [5]) that is transmitted to consumers. the
+csg prepares all metadata that is not layer 2 signalling (psi/si), i.e the layer 1 signalling, the 
+framing & timing information (f&ti) as well as the dsa configuration information (dsaci).
+
+the csg obtains instruction from its control interface (man-machine interface, etc) for the configuration
+of the:
+ dvb-t2 (etsi en 302 755 [2]) and/or 
+ dvb-t  (etsi en 300 744 [3]) transmission frames that its counter-part on the dauther site, the daugther
+site adapter (dsa) receives parent signal from one or more dvb networks and extracts services and service
+components for terrestrial re-transmission. that selection is determined by the dsa configuration informa
+tion (dsaci). the latter also provides instruction to the dsa for the preparation of the terrestrial psi/
+si. in the t2 case, layer 1 signalling is only decapsulated and inserted into the output t2-mi stream.
+framing & timing information indicates frame boundaries - in the t2 case the boundaries between interlea
+ving frames and in the t case the boundaries between t mega-frames. the latter signals are output by the
+dsa to the related modulators.

@@ -1,0 +1,6 @@
+#include "errors.e"
+
+extern Z_USERDLL StringTable errorsStringTable;
+
+#define errorsMSG_VERSION 2.01
+#define errorsMSG( msg_no ) errorsStringTable.text( msg_no )

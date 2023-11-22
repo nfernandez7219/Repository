@@ -1,0 +1,43 @@
+
+IoComergon is an intermediate Dll connecting Application (Server/Receiver programs)
+and NT Comergon Card driver md_DvbDriver.sys.
+
+md_DvbDriver.sys takes care about the data exchange with the Card. The same driver
+works for both Server and Receiver applications.
+Sources for md_DvbDriver.sys are located under dvbDirectory\drivers\CardNT.
+Readme file in the same directory describes the build process.
+
+Application interface is concentrated into following objects:
+ - Comergon_driver_ioctl() implementing standard i/o dll interface as described
+   in Dvblib\h\DrvInterface.hpp.
+ - communication classes ComInpDVB (Receiver) and ComOutDVB (Server) implementing
+   DvbLib classes BaseInpDriver, resp. ComOut; both are described in DvbLib\h\ComIo.hpp.
+
+Single exported function (Comergon_driver_ioctl()) is implemented in drv_ComDvb.cpp
+and declared in the def file.
+
+Source files:
+ card.cpp
+	Low level interface to md_DvbDriver.sys (corresp. header is card.h)
+ ComDvb.cpp
+	Implements:
+	- communication classes ComInpDVB (Receiver) and ComOutDVB (Server),
+	- ComergonErrorAsText(): function translating error codes into textual form,
+	- openDVB() and closeDVB() functions (handshake procedure with the card).
+ ComDvbRegistry.cpp
+	Utilities working with Registry settings.
+ ComDvbSetup.cpp
+	Implements DvbSetupDialog() - instead of MFC API functions are used.
+ ComDvbStatistics.cpp
+	Implements:
+	- ComDVBSetup class (configuration storage),
+	- StatPageBaseDVB class - sheet dialog page displaying card statistics,
+	- statistics-related functions of ComInpDVB class,
+	- function readDrvStatistics()
+ ComInstall.cpp
+	Implements installDialog() - function used from Install Shield to install the card.
+ drv_ComDvb.cpp
+	Implements Comergon_driver_ioctl() - single dll entry point.
+
+More documentation concerning data exchange with Comergon card is in the doc files
+DvbDSPReceiverCard_v2.doc and DvbDSPServerCard_v2.doc.

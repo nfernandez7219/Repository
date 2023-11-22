@@ -1,0 +1,58 @@
+program specific information
+ is metadata of program channel and mpeg transport stream
+ includes for table
+ 1. pat - program association table 
+ 2. cat - conditional access table
+ 3. pmt - program mapping table
+ 4. nit - network information table
+
+1. psi structure
+ table section
+ descriptor
+ pat
+ pmt
+ cat
+ nit
+2. psi labels
+ table identifiers
+ program and elementary stream descriptor tags
+ elementary stream types
+
+Service Information
+ was a regular slot in the early days of colour tv in the UK that gave out
+ engg information for the radio and tv tradde.
+
+1. format
+ clock
+ transmitters and relays
+ trade test colour films
+2. bulletin length
+3. tuning information
+4. continuity announcers
+5. example transcript
+
+MPEG transport stream
+ is a standard digital container format for transmission and storage of audio
+ video, and program and system information protocol (PSIP) data. it is used
+ in broadcast systems such as dvb, atsc, and iptv
+
+ transport stream specifies a container format encapsulating packetized 
+ elementary streams, with error correction and synchronization pattern features
+ for maintaining transmission integrity when the communication channel carrying
+ the stream is degraded
+ 
+ transport streams differ from the similarly-named MPEG program stream in
+ several important ways: program streams are designed for reasonably reliable
+ media, such as discs (like DVDs)
+
+1. elements
+ packet 
+ packet identifier (PID)
+ programs
+ programs specific information
+ PCR
+ null packets
+2. use in digital video cameras
+3. user in blu ray
+
+ 

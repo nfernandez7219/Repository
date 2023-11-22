@@ -1,0 +1,748 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PAT_PMT DIALOG DISCARDABLE  0, 0, 439, 223
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Program Association"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Transport Stream ID",IDC_STATIC,7,5,64,8
+    EDITTEXT        IDC_TsId,7,16,68,14,ES_AUTOHSCROLL
+    LTEXT           "Programs",IDC_STATIC,7,32,30,8
+    CONTROL         "List1",IDC_LST_Programs,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,7,43,88,131
+    PUSHBUTTON      "Add",IDC_BTN_AddProgram,7,179,40,12
+    PUSHBUTTON      "Del",IDC_BTN_DeleteProgram,55,179,40,12
+    GROUPBOX        "",IDC_STATIC,102,6,330,192
+    CONTROL         "Program mapping",IDC_CHK_ProgramMapping,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,107,5,68,10
+    LTEXT           "Program Number",IDC_STATIC,110,26,54,8
+    EDITTEXT        IDC_EDT_ProgramNumber,110,37,57,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "PCR PID",IDC_STATIC,110,56,30,8
+    EDITTEXT        IDC_EDT_PcrPid,110,66,57,14,ES_AUTOHSCROLL
+    CONTROL         "Hex",IDC_RDB_PcrPidHex,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,171,62,29,10
+    CONTROL         "Dec",IDC_RDB_PcrPidDec,"Button",BS_AUTORADIOBUTTON,171,
+                    72,29,10
+    LTEXT           "Descriptors",IDC_STATIC,110,85,36,8
+    LISTBOX         IDC_LST_Descriptors,110,96,87,78,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_AddDesc,110,179,40,12
+    PUSHBUTTON      "Del",IDC_BTN_DelDesc,157,179,40,12
+    GROUPBOX        "Streams",IDC_STATIC,203,12,223,183
+    CONTROL         "List3",IDC_LST_Streams,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,215,23,100,151
+    PUSHBUTTON      "Add",IDC_BTN_AddStream,215,179,45,12
+    PUSHBUTTON      "Del",IDC_BTN_DelStream,270,179,45,12
+    LTEXT           "Type",IDC_STATIC,326,23,17,8
+    COMBOBOX        IDC_CB_StreamType,326,35,92,89,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Elementary PID",IDC_STATIC,326,53,50,8
+    EDITTEXT        IDC_EDT_StreamPid,326,63,56,14,ES_AUTOHSCROLL
+    CONTROL         "Hex",IDC_RDB_ElemPidHex,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,388,60,29,10
+    CONTROL         "Dec",IDC_RDB_ElemPidDec,"Button",BS_AUTORADIOBUTTON,388,
+                    70,29,10
+    LTEXT           "Stream descriptors",IDC_STATIC,326,83,59,8
+    LISTBOX         IDC_LST_StreamDescr,326,94,87,80,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_AddStreamDesc,326,179,40,12
+    PUSHBUTTON      "Del",IDC_BTN_DelStreamDesc,373,179,40,12
+    DEFPUSHBUTTON   "OK",IDOK,258,203,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,320,203,50,14
+    PUSHBUTTON      "Apply",ID_APPLY_NOW,382,203,50,14
+END
+
+IDD_AddDescriptor DIALOG DISCARDABLE  0, 0, 340, 162
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Descriptor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Descriptor Type",IDC_STATIC,7,7,51,8
+    LISTBOX         IDC_LST_DescrType,7,17,122,117,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,7,141,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,79,141,50,14
+END
+
+IDD_ProgramPid DIALOG DISCARDABLE  0, 0, 153, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Program PID"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Program Number",IDC_STATIC,7,7,54,8
+    EDITTEXT        IDC_EDT_ProgramNumber,7,17,55,14,ES_AUTOHSCROLL
+    LTEXT           "Program PID",IDC_STATIC,7,39,41,8
+    EDITTEXT        IDC_EDT_ProgramPid,7,49,55,14,ES_AUTOHSCROLL
+    CONTROL         "Hex",IDC_RDB_PrgPidHex,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,69,45,29,10
+    CONTROL         "Dec",IDC_RDB_PrgPidDec,"Button",BS_AUTORADIOBUTTON,69,
+                    55,29,10
+    DEFPUSHBUTTON   "OK",IDOK,96,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,96,24,50,14
+END
+
+IDD_Desc_data_broadcast_id_descriptor DIALOG DISCARDABLE  0, 0, 162, 118
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Data Broadcast Type",IDC_STATIC,4,9,68,8
+    LISTBOX         IDC_LST_BroadcastID,3,22,149,87,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_NIT_SDT DIALOG DISCARDABLE  0, 0, 510, 194
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Network Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Network Id",IDC_STATIC,7,7,36,8
+    EDITTEXT        IDC_EDT_NetwrokID,7,16,65,14,ES_AUTOHSCROLL
+    LTEXT           "Network Descriptors",IDC_STATIC,7,38,65,8
+    LISTBOX         IDC_LST_NetworkDesc,7,48,84,96,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_AddNtwDesc,7,149,40,12
+    PUSHBUTTON      "Del",IDC_BTN_DelNtwDesc,51,149,40,12
+    CONTROL         "List1",IDC_LST_TransportStreams,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,101,16,98,128
+    PUSHBUTTON      "Add",IDC_BTN_AddTS,100,149,40,12
+    PUSHBUTTON      "Del",IDC_BTN_DelTS,159,149,40,12
+    LTEXT           "Transp. Stream ID",IDC_STATIC,208,16,58,8
+    EDITTEXT        IDC_EDT_TsID,208,26,65,14,ES_AUTOHSCROLL
+    LTEXT           "Original Network ID",IDC_STATIC,208,44,62,8
+    EDITTEXT        IDC_EDT_TsOrigNetworkID,208,54,65,14,ES_AUTOHSCROLL
+    LTEXT           "Stream Descriptors",IDC_STATIC,208,72,60,8
+    LISTBOX         IDC_LST_StreamDesc,208,82,84,62,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_AddTSDesc,208,149,40,12
+    PUSHBUTTON      "Del",IDC_BTN_DelTSDesc,252,149,40,12
+    GROUPBOX        "Services",IDC_STATIC,296,13,201,154
+    CONTROL         "List4",IDC_LST_Services,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | 
+                    WS_TABSTOP,302,22,108,122
+    PUSHBUTTON      "Add",IDC_BTN_AddService,302,149,40,12
+    PUSHBUTTON      "Del",IDC_BTN_DelService,370,149,40,12
+    LTEXT           "Service ID",IDC_STATIC,418,23,34,8
+    EDITTEXT        IDC_EDT_ServiceId,418,33,72,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Service Descriptors",IDC_STATIC,418,54,62,8
+    LISTBOX         IDC_LST_ServiceDesc,418,64,72,80,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Add",IDC_BTN_AddServDesc,418,149,33,12
+    PUSHBUTTON      "Del",IDC_BTN_DelServDesc,457,149,33,12
+    DEFPUSHBUTTON   "OK",IDOK,317,174,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,385,174,50,14
+    GROUPBOX        "Transport Streams",IDC_STATIC,95,7,406,163
+    PUSHBUTTON      "Apply",ID_APPLY_NOW,451,174,50,14
+END
+
+IDD_Service DIALOG DISCARDABLE  0, 0, 186, 117
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Service"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Service ID",IDC_STATIC,7,7,34,8
+    EDITTEXT        IDC_EDT_ServiceId,7,17,50,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Free Conditional Access Mode",IDC_CHK_FreeCAMode,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,40,112,10
+    CONTROL         "Event Schedule Information Present",
+                    IDC_CHK_EventSchedPresent,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,7,52,129,10
+    CONTROL         "Event Present/Following Information Present",
+                    IDC_CHK_EventFollowPresent,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,7,65,156,10
+    LTEXT           "Running Status",IDC_STATIC,7,80,50,8
+    COMBOBOX        IDC_CB_RunningStatus,7,91,102,72,CBS_DROPDOWNLIST | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+END
+
+IDD_Desc_unsupported DIALOG DISCARDABLE  0, 0, 186, 94
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Unsupported descriptor",IDC_STATIC,55,43,74,8
+END
+
+IDD_EditValue DIALOG DISCARDABLE  0, 0, 247, 98
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Edit"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Item",IDC_ItemName,7,7,94,8
+    EDITTEXT        IDC_edtValue,7,19,70,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_cbEditValue,7,22,168,75,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_cbValue,7,22,168,75,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Description",IDC_STATIC,7,39,231,53
+    LTEXT           "",IDC_Description,13,48,219,39
+    DEFPUSHBUTTON   "OK",IDOK,188,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,188,24,50,14
+END
+
+IDD_Wizard DIALOG DISCARDABLE  0, 0, 247, 191
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "< &Back",ID_WIZBACK,7,170,50,14
+    DEFPUSHBUTTON   "&Next >",ID_WIZNEXT,57,170,50,14
+    PUSHBUTTON      "Finish",IDOK,139,170,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,190,170,50,14
+END
+
+IDD_ADDPRGWIZ_1 DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Program type",IDC_STATIC,9,7,42,8
+    CONTROL         "List1",IDC_PRGWIZ_PrgType,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSCROLL | 
+                    LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,9,19,85,90
+    LTEXT           "Program number",IDC_STATIC,108,19,52,8
+    EDITTEXT        IDC_PRGWIZ_PrgNum,108,30,57,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Enter unique number which will identify the program (service)",
+                    IDC_STATIC,171,19,64,35
+    LTEXT           "PMT PID",IDC_STATIC,108,81,30,8
+    EDITTEXT        IDC_PRGWIZ_PmtPid,108,92,57,14,ES_AUTOHSCROLL
+    LTEXT           "Select PID of the transport stream packets carying the Program Map Table for this program",
+                    IDC_STATIC,171,81,64,55
+    LTEXT           "NOTE: Above listed values will be inserted into PMT",
+                    IDC_STATIC,32,149,185,8
+END
+
+IDD_ADDPRGWIZ_2 DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Service ID",IDC_STATIC,40,16,34,8
+    EDITTEXT        IDC_PRGWIZ_ServId,41,27,40,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "Service ID number is the same as program number on the previous page",
+                    IDC_STATIC,105,16,103,29
+    GROUPBOX        "Service description",IDC_STATIC,13,53,222,91
+    LTEXT           "Service name",IDC_STATIC,42,69,44,8
+    EDITTEXT        IDC_PRGWIZ_ServName,42,80,66,14,ES_AUTOHSCROLL
+    LTEXT           "Provider",IDC_STATIC,132,69,27,8
+    EDITTEXT        IDC_PRGWIZ_ProvName,132,80,76,14,ES_AUTOHSCROLL
+    LTEXT           "Service type",IDC_STATIC,42,106,40,8
+    COMBOBOX        IDC_PRGWIZ_ServType,42,117,108,74,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "NOTE: Above listed values will be inserted into SDT",
+                    IDC_STATIC,32,149,185,8
+END
+
+IDD_ADDPRGWIZ_3 DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Program Streams (Components)",IDC_STATIC,9,39,100,8
+    CONTROL         "List1",IDC_ADDPRGWIZ_StreamList,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
+                    LVS_NOSCROLL | LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,9,53,102,91
+    LTEXT           "Stream type",IDC_STATIC,127,53,38,8
+    COMBOBOX        IDC_ADDPRGWIZ_StreamType,127,64,99,64,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Elementary PID",IDC_STATIC,127,83,50,8
+    EDITTEXT        IDC_ADDPRGWIZ_ElemPid,127,95,50,14,ES_AUTOHSCROLL
+    LTEXT           "Data broadcast type",IDC_STATIC,127,115,65,8
+    COMBOBOX        IDC_ADDPRGWIZ_DataBroadId,127,127,99,77,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "PCR PID",IDC_ADDPRGWIZ_PcrPidEnabled,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,9,6,45,10
+    EDITTEXT        IDC_ADDPRGWIZ_PcrPid,9,17,62,14,ES_AUTOHSCROLL
+    LTEXT           "Program Clock Reference (PCR) PID identifies the stream on which Program Clock Reference is being broadcast",
+                    IDC_STATIC,79,6,129,26
+    LTEXT           "NOTE: Above listed values will be inserted into PMT Components / Streams",
+                    IDC_STATIC,5,149,240,8
+END
+
+IDD_NewNtwWiz_1 DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_NetworkName,37,125,174,14,ES_AUTOHSCROLL
+    LTEXT           "&Network Name",IDC_STATIC,37,112,48,8
+    COMBOBOX        IDC_cbNetworkId,37,20,174,89,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "NOTE: Above listed values will be inserted into NIT",
+                    IDC_STATIC,43,149,162,8
+    LTEXT           "Network identification is a number from range 0x0001 - 0xFFFF. If your company does not have assigned value use one from temporary private use interval (0xFF00 - 0xFFFF)",
+                    IDC_STATIC,41,67,166,33
+    LTEXT           "",IDC_NetwIdAsText,37,40,174,24,SS_SUNKEN
+    GROUPBOX        "Network ID",IDC_STATIC,17,6,215,103
+END
+
+IDD_NewNtwWiz_2 DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Transport Stream ID",IDC_STATIC,19,9,64,8
+    EDITTEXT        IDC_TsId,19,21,64,14,ES_AUTOHSCROLL
+    LTEXT           "Transport stream identification is a number from range 1 - 65535 and must be unique within the network",
+                    IDC_STATIC,97,9,104,33
+    LTEXT           "Original Network ID",IDC_STATIC,19,44,62,8
+    COMBOBOX        IDC_cbOrigNetworkId,19,57,155,89,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "",IDC_OrigNetwIdAsText,19,75,155,20,SS_SUNKEN
+    LTEXT           "Original network identification is a number from range 0x0001 - 0xFFFF",
+                    IDC_STATIC,184,44,59,44
+    GROUPBOX        "Delivery system",IDC_STATIC,19,100,210,44
+    CONTROL         "&Cable delivery",IDC_Cable,"Button",BS_AUTORADIOBUTTON | 
+                    WS_DISABLED | WS_GROUP | WS_TABSTOP,88,110,60,10
+    CONTROL         "&Satellite delivery",IDC_Satellite,"Button",
+                    BS_AUTORADIOBUTTON,88,120,67,10
+    CONTROL         "&Terrestrial delivery",IDC_Terrestrial,"Button",
+                    BS_AUTORADIOBUTTON | WS_DISABLED,88,130,73,10
+    LTEXT           "NOTE: Above listed values will be inserted into NIT's TS loop ",
+                    IDC_STATIC,28,149,193,8
+END
+
+IDD_NewNtwWiz_Sat DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Satellite description",IDC_STATIC,6,8,237,131
+    LTEXT           "Frequency (GHz)",IDC_STATIC,13,41,54,8
+    EDITTEXT        IDC_SatFreq,13,53,70,14,ES_AUTOHSCROLL
+    LTEXT           "Orbital Position (degrees)",IDC_STATIC,96,41,79,8
+    EDITTEXT        IDC_SatOrbitPos,96,53,70,14,ES_AUTOHSCROLL
+    CONTROL         "West",IDC_SatWest,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,177,48,33,10
+    CONTROL         "East",IDC_SatEast,"Button",BS_AUTORADIOBUTTON,177,58,30,
+                    10
+    LTEXT           "Polarization",IDC_STATIC,15,78,37,8
+    COMBOBOX        IDC_cbSatPolar,13,90,70,58,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Symbol Rate (MSymb/s)",IDC_STATIC,96,79,77,8
+    EDITTEXT        IDC_SatSymbRate,96,90,70,14,ES_AUTOHSCROLL
+    LTEXT           "FEC",IDC_STATIC,177,78,14,8
+    COMBOBOX        IDC_cbFec,177,90,57,69,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "NOTE: Above listed values will be inserted into NIT TS descriptors loop ",
+                    IDC_STATIC,12,149,225,8
+END
+
+IDD_NewNtwWiz_Cable DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Cable delivery description",IDC_STATIC,6,9,237,134
+    LTEXT           "NOTE: Above listed values will be inserted into NIT TS descriptors loop ",
+                    IDC_STATIC,12,149,225,8
+END
+
+IDD_NewNtwWiz_Ter DIALOG DISCARDABLE  0, 0, 250, 165
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Terrestrial delivery description",IDC_STATIC,11,9,230,
+                    148
+END
+
+IDD_DeliveryEdit DIALOG DISCARDABLE  0, 0, 308, 145
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,251,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,251,24,50,14
+END
+
+IDD_LanguageDlg DIALOG DISCARDABLE  0, 0, 186, 73
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ISO 639 Language Descriptor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+    LTEXT           "Language",IDC_STATIC,7,7,33,8
+    COMBOBOX        IDC_cbLanguage,7,18,106,61,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Audio Type",IDC_STATIC,7,41,37,8
+    COMBOBOX        IDC_cbAudioType,7,51,106,61,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_CountryAvail DIALOG DISCARDABLE  0, 0, 377, 194
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Country Availability"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Countries",IDC_STATIC,7,7,30,8
+    LISTBOX         IDC_lstCountries,7,19,131,168,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Available",IDC_STATIC,176,7,30,8
+    LISTBOX         IDC_lstAvailable,176,19,131,76,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "- >",IDC_AddAvail,146,33,23,10
+    PUSHBUTTON      "< -",IDC_RemoveAvail,146,49,23,10
+    LTEXT           "Not available",IDC_STATIC,176,99,42,8
+    LISTBOX         IDC_lstNotAvailable,176,111,131,76,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "- >",IDC_AddNotAvail,146,108,23,10
+    PUSHBUTTON      "< -",IDC_RemoveNotAvail,146,124,23,10
+    DEFPUSHBUTTON   "OK",IDOK,320,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,320,24,50,14
+END
+
+IDD_MultiLingName DIALOG DISCARDABLE  0, 0, 323, 164
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Multilingual Name"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Language",IDC_STATIC,7,7,33,8
+    LISTBOX         IDC_lstLanguages,7,19,125,122,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Name",IDC_STATIC,148,19,20,8
+    EDITTEXT        IDC_edtName,148,31,100,14,ES_AUTOHSCROLL
+    LTEXT           "Provider",IDC_ProvLabel,148,64,27,8
+    EDITTEXT        IDC_edtProvider,148,76,100,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Add",IDC_btnAddLang,7,145,40,12
+    PUSHBUTTON      "Del",IDC_btnDelLang,92,145,40,12
+    DEFPUSHBUTTON   "OK",IDOK,266,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,266,24,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PAT_PMT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+    END
+
+    IDD_AddDescriptor, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 333
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 155
+    END
+
+    IDD_ProgramPid, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 146
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_NIT_SDT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 188
+    END
+
+    IDD_Service, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 110
+    END
+
+    IDD_Desc_unsupported, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_EditValue, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+    END
+
+    IDD_Wizard, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 240
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+    END
+
+    IDD_DeliveryEdit, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 301
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 138
+    END
+
+    IDD_LanguageDlg, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 66
+    END
+
+    IDD_CountryAvail, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 370
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_MultiLingName, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 316
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 157
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_Service DLGINIT
+BEGIN
+    IDC_CB_RunningStatus, 0x403, 10, 0
+0x6e55, 0x6564, 0x6966, 0x656e, 0x0064, 
+    IDC_CB_RunningStatus, 0x403, 12, 0
+0x6f4e, 0x2074, 0x7572, 0x6e6e, 0x6e69, 0x0067, 
+    IDC_CB_RunningStatus, 0x403, 24, 0
+0x7453, 0x7261, 0x7374, 0x6920, 0x206e, 0x2061, 0x6566, 0x2077, 0x6573, 
+0x6f63, 0x646e, 0x0073, 
+    IDC_CB_RunningStatus, 0x403, 8, 0
+0x6150, 0x7375, 0x6e69, 0x0067, 
+    IDC_CB_RunningStatus, 0x403, 8, 0
+0x7552, 0x6e6e, 0x6e69, 0x0067, 
+    0
+END
+
+IDD_PAT_PMT DLGINIT
+BEGIN
+    IDC_CB_StreamType, 0x403, 6, 0
+0x6956, 0x6564, 0x006f, 
+    IDC_CB_StreamType, 0x403, 44, 0
+0x6956, 0x6564, 0x206f, 0x726f, 0x6320, 0x6e6f, 0x7473, 0x6172, 0x6e69, 
+0x6465, 0x7020, 0x7261, 0x6d61, 0x7465, 0x7265, 0x7620, 0x6469, 0x6f65, 
+0x7320, 0x7274, 0x6165, 0x006d, 
+    IDC_CB_StreamType, 0x403, 22, 0
+0x7541, 0x6964, 0x206f, 0x4928, 0x4f53, 0x492f, 0x4345, 0x3120, 0x3131, 
+0x3237, 0x0029, 
+    IDC_CB_StreamType, 0x403, 24, 0
+0x7541, 0x6964, 0x206f, 0x4928, 0x4f53, 0x492f, 0x4345, 0x3120, 0x3833, 
+0x3831, 0x332d, 0x0029, 
+    IDC_CB_StreamType, 0x403, 17, 0
+0x7250, 0x7669, 0x7461, 0x2065, 0x6573, 0x7463, 0x6f69, 0x736e, "\000" 
+    IDC_CB_StreamType, 0x403, 32, 0
+0x6150, 0x6b63, 0x7465, 0x2073, 0x6f63, 0x746e, 0x6961, 0x696e, 0x676e, 
+0x7020, 0x6972, 0x6176, 0x6574, 0x6420, 0x7461, 0x0061, 
+    IDC_CB_StreamType, 0x403, 5, 0
+0x484d, 0x4745, "\000" 
+    IDC_CB_StreamType, 0x403, 7, 0
+0x5344, 0x204d, 0x4343, "\000" 
+    IDC_CB_StreamType, 0x403, 19, 0
+0x5449, 0x2d55, 0x2054, 0x6552, 0x2e63, 0x4820, 0x322e, 0x3232, 0x312e, 
+"\000" 
+    IDC_CB_StreamType, 0x403, 23, 0
+0x5349, 0x2f4f, 0x4549, 0x2043, 0x3331, 0x3138, 0x2d38, 0x2036, 0x7974, 
+0x6570, 0x4120, "\000" 
+    IDC_CB_StreamType, 0x403, 23, 0
+0x5349, 0x2f4f, 0x4549, 0x2043, 0x3331, 0x3138, 0x2d38, 0x2036, 0x7974, 
+0x6570, 0x4220, "\000" 
+    IDC_CB_StreamType, 0x403, 23, 0
+0x5349, 0x2f4f, 0x4549, 0x2043, 0x3331, 0x3138, 0x2d38, 0x2036, 0x7974, 
+0x6570, 0x4320, "\000" 
+    IDC_CB_StreamType, 0x403, 23, 0
+0x5349, 0x2f4f, 0x4549, 0x2043, 0x3331, 0x3138, 0x2d38, 0x2036, 0x7974, 
+0x6570, 0x4420, "\000" 
+    IDC_CB_StreamType, 0x403, 26, 0
+0x5349, 0x2f4f, 0x4549, 0x2043, 0x3331, 0x3138, 0x2d38, 0x2031, 0x7561, 
+0x6978, 0x696c, 0x7261, 0x0079, 
+    0
+END
+
+IDD_ADDPRGWIZ_3 DLGINIT
+BEGIN
+    IDC_ADDPRGWIZ_StreamType, 0x403, 8, 0
+0x6e55, 0x6e6b, 0x776f, 0x006e, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 12, 0
+0x6956, 0x6564, 0x206f, 0x504d, 0x4745, 0x0031, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 12, 0
+0x6956, 0x6564, 0x206f, 0x504d, 0x4745, 0x0032, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 12, 0
+0x7541, 0x6964, 0x206f, 0x504d, 0x4745, 0x0031, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 12, 0
+0x7541, 0x6964, 0x206f, 0x504d, 0x4745, 0x0032, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 16, 0
+0x7250, 0x7669, 0x7461, 0x2065, 0x6573, 0x7463, 0x6f69, 0x006e, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 22, 0
+0x4550, 0x2053, 0x6977, 0x6874, 0x7020, 0x6972, 0x6176, 0x6574, 0x6420, 
+0x7461, 0x0061, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 6, 0
+0x484d, 0x4745, 0x0009, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 7, 0
+0x5344, 0x204d, 0x4343, "\000" 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 19, 0
+0x5449, 0x2d55, 0x2054, 0x6552, 0x2e63, 0x4820, 0x322e, 0x3132, 0x312e, 
+"\000" 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 14, 0
+0x5344, 0x204d, 0x4343, 0x7420, 0x7079, 0x2065, 0x0041, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 14, 0
+0x5344, 0x204d, 0x4343, 0x7420, 0x7079, 0x2065, 0x0042, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 14, 0
+0x5344, 0x204d, 0x4343, 0x7420, 0x7079, 0x2065, 0x0043, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 14, 0
+0x5344, 0x204d, 0x4343, 0x7420, 0x7079, 0x2065, 0x0044, 
+    IDC_ADDPRGWIZ_StreamType, 0x403, 10, 0
+0x7541, 0x6978, 0x696c, 0x7261, 0x0079, 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 8, 0
+0x6e55, 0x6e6b, 0x776f, 0x006e, 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 10, 0
+0x6144, 0x6174, 0x7020, 0x7069, 0x0065, 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 25, 0
+0x7341, 0x6e79, 0x6863, 0x6f72, 0x6f6e, 0x7375, 0x6420, 0x7461, 0x2061, 
+0x7473, 0x6572, 0x6d61, "\000" 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 24, 0
+0x7953, 0x636e, 0x7268, 0x6e6f, 0x756f, 0x2073, 0x6164, 0x6174, 0x7320, 
+0x7274, 0x6165, 0x006d, 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 25, 0
+0x7953, 0x636e, 0x7268, 0x6e6f, 0x7369, 0x6465, 0x6420, 0x7461, 0x2061, 
+0x7473, 0x6572, 0x6d61, "\000" 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 29, 0
+0x754d, 0x746c, 0x2069, 0x7270, 0x746f, 0x636f, 0x6c6f, 0x6520, 0x636e, 
+0x7061, 0x7573, 0x616c, 0x6974, 0x6e6f, "\000" 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 14, 0
+0x6144, 0x6174, 0x4320, 0x7261, 0x756f, 0x6573, 0x006c, 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 16, 0
+0x624f, 0x656a, 0x7463, 0x4320, 0x7261, 0x756f, 0x6573, 0x006c, 
+    IDC_ADDPRGWIZ_DataBroadId, 0x403, 16, 0
+0x5644, 0x2042, 0x5441, 0x204d, 0x7473, 0x6572, 0x6d61, 0x0073, 
+    0
+END
+
+IDD_NewNtwWiz_Sat DLGINIT
+BEGIN
+    IDC_cbSatPolar, 0x403, 18, 0
+0x694c, 0x656e, 0x7261, 0x4820, 0x726f, 0x7a69, 0x6e6f, 0x6174, 0x006c, 
+
+    IDC_cbSatPolar, 0x403, 16, 0
+0x694c, 0x656e, 0x7261, 0x5620, 0x7265, 0x6974, 0x6163, 0x006c, 
+    IDC_cbSatPolar, 0x403, 14, 0
+0x6943, 0x6372, 0x6c75, 0x7261, 0x4c20, 0x6665, 0x0074, 
+    IDC_cbSatPolar, 0x403, 15, 0
+0x6943, 0x6372, 0x6c75, 0x7261, 0x5220, 0x6769, 0x7468, "\000" 
+    IDC_cbFec, 0x403, 12, 0
+0x6f4e, 0x2074, 0x6564, 0x6966, 0x656e, 0x0064, 
+    IDC_cbFec, 0x403, 4, 0
+0x2f31, 0x0032, 
+    IDC_cbFec, 0x403, 4, 0
+0x2f32, 0x0033, 
+    IDC_cbFec, 0x403, 4, 0
+0x2f33, 0x0034, 
+    IDC_cbFec, 0x403, 4, 0
+0x2f35, 0x0036, 
+    IDC_cbFec, 0x403, 4, 0
+0x2f37, 0x0038, 
+    0
+END
+
+IDD_LanguageDlg DLGINIT
+BEGIN
+    IDC_cbAudioType, 0x403, 14, 0
+0x6c43, 0x6165, 0x206e, 0x6665, 0x6566, 0x7463, 0x0073, 
+    IDC_cbAudioType, 0x403, 17, 0
+0x6548, 0x7261, 0x6e69, 0x2067, 0x6d69, 0x6170, 0x7269, 0x6465, "\000" 
+    IDC_cbAudioType, 0x403, 27, 0
+0x6956, 0x7573, 0x6c61, 0x6920, 0x706d, 0x6961, 0x6572, 0x2064, 0x6f63, 
+0x6d6d, 0x6e65, 0x6174, 0x7972, "\000" 
+    0
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

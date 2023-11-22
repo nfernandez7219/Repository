@@ -1,0 +1,5 @@
+LIBRARY      "IOTcp"
+DESCRIPTION  'IOTcp Windows Dynamic Link Library'
+
+EXPORTS
+	DVBDRIVER_IOCTL	= tcp_driver_ioctl

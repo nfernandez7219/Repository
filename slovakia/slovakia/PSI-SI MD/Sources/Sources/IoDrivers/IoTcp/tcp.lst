@@ -1,0 +1,74 @@
+
+Description:
+------------
+IoTcp.dll is a module for simulated tcp connection between DVB Server and Receiver.
+
+
+Source files:
+-------------
+	drv_tcp.cpp				// driver ioctl function (main dll entry point)
+	tcp.cpp					// i/o classes
+	tcp.def					// Exports definition
+
+Headers:
+--------
+	tcp.hpp
+
+Documentation:
+--------------
+	IoTcpPrgDoc.doc			// programmer doc
+	IoTcp.lst				// this file
+
+Version management:
+-------------------
+	Version is taken from the version resource.
+
+Project file:
+-------------
+	IoTcp.dsp
+
+Project directory:
+------------------
+	\dev\dvb\IoDrivers\IoTcp
+
+Project dependencies
+====================
+	usrlib library
+	DvbLib library
+
+Project settings (Debug build)
+==============================
+
+General:
+	Use MFC in a Shared Dll
+	Output files: ..\..\Bin
+
+C/C++
+	Language: Enable exception handling
+	Code generation: cdecl, Debug MT Dll, 1 By struct alignment
+	Precompiled headers: Automatic ... tools2.hpp
+	#defines: WIN32,_DEBUG,_WINDOWS,_MBCS,_USRDLL,_IOTCPDLL,_WINDLL,_AFXDLL
+	#includes: ..\..\Dvblib\h,..\..\usrlib\h
+
+Link
+	General: ..\..\Bin/IoTcp.dll
+	Libraries: wsock32.lib version.lib usrlibD.lib
+	Library path: ..\..\bin
+	additional settings: /opt:ref
+
+Resources:
+	none
+
+Interface to DVB applications:
+==============================
+Version
+	Dll version is maintained via Version resource.
+	Driver version can be queried via ioctl call DVBDRV_GetDrvVersion.
+
+IoTcp.dll exports single ioctl function described in DvbLib\DrvInterface.hpp.
+This function has to be loaded explicitly by GetProcAddress().
+
+
+Registry settings:
+==================
+	none

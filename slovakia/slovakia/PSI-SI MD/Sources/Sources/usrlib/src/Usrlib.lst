@@ -1,0 +1,96 @@
+Description:
+------------
+	UsrLib - static library containing general purpose utilities
+	This library is an excerpt from J.S.Soft libraries (Screen & Applib);
+	some of the functionality is stripped out and replaced by dummy files.
+	(Such as interactive dialog or localization ability.)
+
+Source files:
+-------------
+	CRC32.CPP
+	CTRLTOOL.CPP
+	DeclStringTables.cpp
+	DLG_TOOL.CPP
+	ENV.CPP
+	ENV1.CPP
+	ENV_Base.CPP
+	EXCEPT.CPP
+	FILELST.CPP
+	FILES.CPP
+	GlbLogin.cpp
+	LOADRES.CPP
+	LoginClas.cpp
+	MessageQueue.cpp
+	MSGLOG.CPP
+	OKDIALOG.CPP
+	PROTECT.CPP
+	STRINGS.CPP
+	StringTable.cpp
+	Transport.cpp
+	TransportClass.cpp
+	UTILS.CPP
+
+
+Header files:
+-------------
+	APP_RC.HPP
+	CtrlTool.hpp
+	Dlg_tool.hpp
+	ENV.HPP
+	Env_base.hpp
+	envX.hpp
+	except.hpp
+	GENERAL.H
+	HEAP.H
+	LOADRES.HPP
+	MessageQueue.hpp
+	MSGLOG.HPP
+	protectedFile.hpp
+	SCREEN.H
+	SCRTOOLS.HPP
+	ScrTrace.h
+	SID.HPP
+	SLIST.H
+	STDERROR.H
+	TOOLS2.HPP
+	transport.hpp
+	transportClass.hpp
+	transportPrivate.hpp
+
+String tables:
+-------------
+	scr.e
+	errors.e
+
+Documentation:
+--------------
+	UsrLib.lst				// this file
+
+Project file:
+-------------
+	UsrLib.dsp
+
+Project dependencies:
+---------------------
+	none
+
+Project settings:
+-----------------
+	General:
+		Use MFC in a Shared Dll
+	Compiler settings:
+		C++ Language:
+			Enable exception handling
+		Code generation:
+			Debug Multithreaded Dll
+			__cdecl
+			1 Byte
+		Precompiled headers:
+			Automatic use through tools2.hpp
+		Additional include directories:
+			h,e
+		Preprocessor:
+			Definitions:
+				_DEBUG,WIN32,_WINDOWS,_MBCS,_AFXDLL
+	Library settings:
+		..\bin\UsrlibD.lib

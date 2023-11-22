@@ -1,0 +1,44 @@
+etsi en 302 307-2 
+
+introduction
+the optional extension of the s2 system have been approved in 2014 and are
+identified by the s2x denomination. such extension are non-backwards-compatible
+with etsi en 302 307 [4], are optional for the implementation of new receivers
+under etsi en 302 307-1 [3], but are normative for the implementation of receivers
+under the present document: remapping of specific s2x building blocks to application
+areas is specified in table 1. for every s2x application area, as defined in
+table 1, the configuration for the corresponding s2 application area, as defined
+in etsi en 302 307-1 [3], table 1, will be implemented. in case of conflicts the
+definition of the s2x application area applies.
+
+the present document targets the core application areas of s2 (digital video 
+broadcasting, forward link for interactive services using ACM, digital satallite
+news gathering and professional digital links such as video point-to-point or
+internet trunking links), and new application areas requiring very-low carrier-
+to-noise and carrier-to-interference operation (vl-snr)
+
+in particular for dth, a possible use case is the launch of uhdtv-1 (e.g 4k)
+television services in Ku-/Ka-band that will adopt HEVC encoding. in this context 
+it may be desirable to eventually use fragments of smaller blocks of capacity
+on two or three DTH transponders and bond them into one logical stream. this 
+permits to maximise capacity exploitation by avoiding the presence of space
+capacity in individual transponders and/or to take maximum advantage of statistical
+multiplexing.
+
+the s2x system offers the ability to operate with very low carrier-to-noise and
+carrier-to-interference ratios (SNR down to -10db), to serve market such as 
+airborne (business jets), maritime, civil aviation internet access, vsat terminal
+at higher frequency ranges or in tropical zones, small portable terminals for
+journalists and other professionals. furthermore, the s2x system provides transmission
+modes offering significantly higher capacity and efficiency to serve professional links
+characterized by very-high carrier-to-noise and carrier-to-interference ratios
+condition.
+
+the present document reuses the s2, system architecture, while adding fines
+modcod steps, sharper roll-off filtering, technical means for bonding of multiple
+transponders and additional signalling capacity by means of an optional periodic
+super-fram structure, extended plheader signalling schemes and the support of
+dse-lite signals.
+
+the present document maintains the same clause number as etsi en 302 307-1 [3]
+in order to facilitate cross-reference.

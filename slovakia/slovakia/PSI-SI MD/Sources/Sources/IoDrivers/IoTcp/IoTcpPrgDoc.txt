@@ -1,0 +1,27 @@
+
+IoTcp is a Dll realizing simulated i/o using tcp. This dll is used both by
+Server/Receiver programs for test purposes.
+Rules for connect string specification are explained in Server/Receiver online readme files.
+
+Application interface is concentrated into following objects:
+ - tcp_driver_ioctl() implementing standard i/o dll interface as described
+   in Dvblib\h\DrvInterface.hpp.
+ - communication classes ComInpTcp (Receiver) and ComOutTcp (Server) implementing
+   DvbLib classes BaseInpDriver, resp. ComOut; both are described in DvbLib\h\ComIo.hpp.
+
+Single exported function (tcp_driver_ioctl()) is implemented in drv_tcp.cpp
+and declared in the def file.
+
+As user id disk id is used.
+IoTcp.dll does not implement either interactive setup or statistics.
+
+Source files:
+ tcp.cpp
+	Implements:
+	- communication classes TcpInpDriver (Receiver) and ComOutTcp (Server),
+	- tcpEventAsText(): function translating error codes into textual form,
+	- openDVB() and closeDVB() functions (handshake procedure with the card).
+ drv_tcp.cpp
+	Implements:
+	- Comergon_driver_ioctl() - single dll entry point.
+	- setup structure ComTCPSetup

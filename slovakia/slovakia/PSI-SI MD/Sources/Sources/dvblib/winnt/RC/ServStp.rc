@@ -1,0 +1,440 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "ServStpRC.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "ServStpRC.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+sSrvD_SetupDialog DIALOGEX 0, 0, 289, 292
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Server setup"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Tab2",sSrvC_SetupTab,"SysTabControl32",0x0,7,7,275,260
+    PUSHBUTTON      "&Apply",sSrvC_ApplaySettings,7,271,50,14
+    PUSHBUTTON      "&Close",IDCANCEL,61,271,50,14
+END
+
+sSrvD_DVB DIALOG DISCARDABLE  0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "RS-422",sSrvC_DVB_ECP,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,181,10,40,10
+    EDITTEXT        sSrvC_DVBAliveInterval,80,53,40,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_DVB_AbsPriPart,176,60,40,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_DVBLogFileName,90,83,166,14,ES_AUTOHSCROLL | 
+                    WS_GROUP
+    EDITTEXT        sSrvC_DVBLogDelay,90,99,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        sSrvC_DVBPID,62,7,100,14,ES_AUTOHSCROLL | WS_DISABLED
+    COMBOBOX        sSrvC_DVBFormat,62,23,101,64,CBS_DROPDOWNLIST | 
+                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "&PSI tables",sSrvC_DVBPSITable,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_GROUP | WS_TABSTOP,9,41,63,10
+    CONTROL         "",sSrvC_DVBAliveSignal,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,8,56,10,10
+    CONTROL         "LVDS",sSrvC_DVB_LVDS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_DISABLED | WS_TABSTOP,181,22,35,10
+    CONTROL         "DVB ASI",sSrvC_DVB_ASI,"Button",BS_AUTORADIOBUTTON | 
+                    WS_DISABLED | WS_TABSTOP,181,34,44,10
+    GROUPBOX        "Support",IDC_STATIC,0,124,262,110
+    GROUPBOX        "DVB Settings",IDC_STATIC,1,0,166,72
+    LTEXT           "Stream Format:  ",IDC_STATIC,8,26,49,8
+    GROUPBOX        "Log file",IDC_STATIC,0,75,262,43
+    LTEXT           "File name:  ",IDC_STATIC,7,86,83,8
+    LTEXT           "Start new log file each ",IDC_STATIC,7,102,73,8
+    LTEXT           "entries. (0 means ignore it)",IDC_STATIC,134,102,83,8
+    LTEXT           "PID:",IDC_STATIC,41,13,15,8
+    LTEXT           "sec's (1-10)",IDC_STATIC,123,57,37,8
+    GROUPBOX        "Port protocol",IDC_STATIC,176,0,86,45
+    LTEXT           "Rel. priority part (0-100%)",IDC_STATIC,177,50,79,8
+    LTEXT           "Alive signal each",IDC_STATIC,22,56,54,8
+    LTEXT           "TCP/IP monittoring port:",IDC_STATIC,7,139,77,8
+    EDITTEXT        IDC_TCPPort,87,136,40,14,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+sSrvD_Providers DIALOGEX 0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",sSrvC_ListCtrl,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_TABSTOP,0,0,263,
+                    216,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&New...",sSrvC_ProviderAdd,1,220,50,14
+    PUSHBUTTON      "&Modify",sSrvC_ProviderView,55,220,50,14
+    PUSHBUTTON      "&Delete",sSrvC_ProviderDelete,109,220,50,14
+END
+
+sSrvD_Users DIALOGEX 0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",sSrvC_ListCtrl,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_TABSTOP,0,0,263,
+                    217,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&New...",sSrvC_UserAdd,0,221,41,14
+    PUSHBUTTON      "&Modify...",sSrvC_UserView,44,221,41,14
+    PUSHBUTTON      "&Delete",sSrvC_UserDelete,90,221,41,14
+    PUSHBUTTON      "Send CA &table",sSrvC_UserSendUserTable,159,221,61,14
+    PUSHBUTTON      "&Send file...",sSrvC_UserSendFile,223,221,40,14
+END
+
+sSrvD_Channels DIALOGEX 0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",sSrvC_ListCtrl,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_TABSTOP,0,0,263,
+                    218,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&New...",sSrvC_ChannelAdd,0,221,33,14
+    PUSHBUTTON      "&Modify...",sSrvC_ChannelView,38,221,39,14
+    PUSHBUTTON      "&Delete",sSrvC_ChannelDelete,81,221,33,14
+    PUSHBUTTON      "Send file...",sSrvC_ChannelSendFile,157,221,50,14
+    PUSHBUTTON      "",sSrvC_ChnlStartStop,213,221,50,14
+END
+
+sSrvD_AdrProvider DIALOG DISCARDABLE  0, 0, 279, 293
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Provider data"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        sSrvC_AdrSurname,39,29,105,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrName,147,29,119,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrStreet,38,52,228,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrCity,38,77,71,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrZipCode,115,77,40,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrCountry,161,77,105,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrTelephone,38,130,113,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrFax,157,130,109,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrEMail,38,158,228,14,ES_AUTOHSCROLL
+    COMBOBOX        sSrvC_AdrContactPerson,38,188,228,91,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        sSrvC_AdrProviderChannels,27,242,236,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,7,271,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,63,271,50,14
+    GROUPBOX        "Address",IDC_STATIC,7,7,265,89
+    LTEXT           "(First name):",IDC_STATIC,148,19,39,8
+    LTEXT           "Company (or Last name):",IDC_STATIC,39,19,79,8
+    LTEXT           "Street:",IDC_STATIC,38,43,22,8
+    LTEXT           "ZipCode:",IDC_STATIC,115,68,30,8
+    LTEXT           "City:",IDC_STATIC,38,68,14,8
+    LTEXT           "Country:",IDC_STATIC,161,68,27,8
+    GROUPBOX        "Contact",IDC_STATIC,7,112,265,95
+    LTEXT           "Telephone:",IDC_STATIC,38,122,37,8
+    LTEXT           "Fax:",IDC_STATIC,157,122,14,8
+    LTEXT           "e-mail:",IDC_STATIC,38,150,21,8
+    LTEXT           "Contact person:",IDC_STATIC,38,178,51,8
+    LTEXT           "Provider channels  (Separate with comma or spaces; ""6,7,8"" or""1 4 23"")",
+                    IDC_STATIC,28,232,228,8
+    ICON            IDI_Bussiness,IDC_STATIC,12,21,20,20
+    ICON            IDI_Phone,IDC_STATIC,13,124,20,20
+END
+
+sSrvD_AdrUser DIALOG DISCARDABLE  0, 0, 279, 322
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "User data"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        sSrvC_AdrSurname,39,29,105,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrName,147,29,119,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrStreet,38,52,228,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrCity,38,76,71,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrZipCode,115,76,40,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrCountry,161,76,105,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrTelephone,38,114,113,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrFax,157,114,109,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrEMail,38,137,228,14,ES_AUTOHSCROLL
+    COMBOBOX        sSrvC_AdrContactPerson,38,162,228,91,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         sSrvC_AdrChannelsList,37,197,228,64,NOT LBS_NOTIFY | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | LBS_MULTICOLUMN | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP
+    CONTROL         "Allow &Hybrid-Net",sSrvC_AdrHNet,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,271,68,10
+    DEFPUSHBUTTON   "OK",IDOK,7,302,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,61,302,50,14
+    GROUPBOX        "Personal info",IDC_STATIC,7,7,265,89
+    LTEXT           "First name:",IDC_STATIC,148,19,35,8
+    LTEXT           "Surname:",IDC_STATIC,39,19,31,8
+    LTEXT           "Street:",IDC_STATIC,38,43,22,8
+    LTEXT           "ZipCode:",IDC_STATIC,115,68,30,8
+    LTEXT           "City:",IDC_STATIC,38,68,14,8
+    LTEXT           "Country:",IDC_STATIC,161,68,27,8
+    GROUPBOX        "Contact",IDC_STATIC,7,98,265,84
+    LTEXT           "Telephone:",IDC_STATIC,38,106,37,8
+    LTEXT           "Fax:",IDC_STATIC,157,106,14,8
+    LTEXT           "e-mail:",IDC_STATIC,38,129,21,8
+    LTEXT           "Contact person:",IDC_STATIC,38,152,51,8
+    GROUPBOX        "Allowed channels",IDC_STATIC,7,187,265,79
+    LTEXT           "UserID:",IDC_STATIC,7,284,25,8
+    EDITTEXT        sSrvC_AdrUserID,48,282,199,14,ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    CONTROL         "Allow HW CA check",sSrvC_AdrCACheck,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,150,271,86,10
+    ICON            IDI_Bussiness,IDC_STATIC,13,21,20,20
+    ICON            IDI_Phone,IDC_STATIC,13,108,20,20
+    ICON            IDI_Computers,IDC_STATIC,14,198,20,20
+END
+
+sSrvD_ChannelView DIALOG DISCARDABLE  0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        sSrvC_ChnlName,60,0,131,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_ChnlPort,217,0,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        sSrvC_ChnlDir,60,48,190,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_ChnlInboxDelay,60,64,53,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        sSrvC_ChnlOutRateFrom,103,97,38,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_ChnlOutRateTo,188,96,41,14,ES_AUTOHSCROLL
+    CONTROL         "Absolute priority:",sSrvC_ChnlAbsPriorOn,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,116,83,8
+    EDITTEXT        sSrvC_ChnlAbsPrior,103,113,38,14,ES_AUTOHSCROLL
+    CONTROL         "Relative priority:",sSrvC_ChnlRelPriorOn,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,132,82,8
+    EDITTEXT        sSrvC_ChnlRelPrior,103,129,38,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_ChnlNumRebroad,103,155,38,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        sSrvC_ChnlRebroadcastDelay,103,171,38,14,ES_AUTOHSCROLL
+    CONTROL         "Max volume per day:",sSrvC_ChnlMaxVolPerDayOn,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,190,85,8
+    EDITTEXT        sSrvC_ChnlMaxVolPerDay,103,187,38,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Service name:",IDC_STATIC,4,3,46,8
+    LTEXT           "ID:",IDC_STATIC,203,3,10,8
+    LTEXT           "Minimum rate:",IDC_STATIC,21,99,61,8
+    LTEXT           "Maximum:",IDC_STATIC,152,99,35,8
+    LTEXT           "Number of rebroadcasts:",IDC_STATIC,21,158,82,8
+    LTEXT           "[KBytes]",IDC_STATIC,145,190,27,8
+    GROUPBOX        "Parameters",IDC_STATIC,4,88,253,116
+    GROUPBOX        "Inbox settings",IDC_STATIC,4,39,253,42
+    LTEXT           "Directory:",IDC_STATIC,10,50,31,8
+    LTEXT           "Send delay:",IDC_STATIC,10,67,38,8
+    LTEXT           "Rebroadcast delay:",IDC_STATIC,21,174,62,8
+    GROUPBOX        "Encoding",IDC_STATIC,4,206,253,27,WS_DISABLED
+    CONTROL         "Use &encryption",sSrvC_ChnlUseEncription,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED,21,217,63,10
+    CONTROL         "Use &compression",sSrvC_ChnlUseCompression,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED,99,217,70,10
+    CONTROL         "&FEC",sSrvC_ChnlFEC,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED,192,217,29,10
+    LTEXT           "(0 - 15; 0 = infinite rebroadcast)",IDC_STATIC,144,158,
+                    107,8
+    LTEXT           "Mb/s",IDC_STATIC,235,99,20,8
+    LTEXT           "[seconds; 0 - 1000]",IDC_STATIC,144,174,62,8
+    LTEXT           "(valid values: 0-10)",IDC_STATIC,144,116,60,8
+    LTEXT           "(valid values: 0-10)",IDC_STATIC,144,132,60,8
+    LTEXT           "[seconds; 0 - 1000]",IDC_STATIC,117,67,62,8
+    LTEXT           "PID:",IDC_STATIC,4,22,15,8
+    EDITTEXT        sSrvC_ChnlPID,60,19,131,14,ES_AUTOHSCROLL | WS_DISABLED
+END
+
+sSrvD_Internet DIALOG DISCARDABLE  0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Range of dynamically assigned IP addresses",IDC_STATIC,
+                    0,6,263,54
+    LTEXT           "First dynamic IP address",IDC_STATIC,14,24,90,10
+    LTEXT           "Number of dynamic IP addresses",IDC_STATIC,14,42,140,10
+    EDITTEXT        sSrvC_FirstDynamicIPAdress,160,22,95,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    EDITTEXT        sSrvC_NumberOfDynIPAdress,200,40,55,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    LTEXT           "Size of output queue (# packets)",IDC_STATIC,14,67,140,
+                    10
+    EDITTEXT        sSrvC_SizeOfOutputQueue,200,65,55,12,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+END
+
+sSrvD_ProvidersTCP DIALOGEX 0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",sSrvC_ListCtrl,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_TABSTOP,0,0,263,
+                    185,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&New...",sSrvC_ProviderAdd,5,189,50,14
+    PUSHBUTTON      "&Modify",sSrvC_ProviderView,60,189,50,14
+    PUSHBUTTON      "&Delete",sSrvC_ProviderDelete,208,189,50,14
+    PUSHBUTTON      "&Get settings",sSrvC_GetSettings,188,215,70,14
+    GROUPBOX        "&Settings",IDC_STATIC,0,205,263,30
+    COMBOBOX        IDC_SettingType,12,215,116,114,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+sSrvD_AdrTCPProvider DIALOG DISCARDABLE  0, 0, 280, 290
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Contact area"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        sSrvC_AdrSurname,38,29,106,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrName,147,29,119,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrStreet,38,52,228,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrCity,38,77,71,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrZipCode,115,77,40,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrCountry,161,77,105,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrTelephone,38,120,113,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrFax,157,120,109,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrEMail,38,145,228,14,ES_AUTOHSCROLL
+    EDITTEXT        sSrvC_AdrProviderChannels,38,240,228,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,7,269,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,63,269,50,14
+    GROUPBOX        "Address",IDC_STATIC,7,7,265,89
+    LTEXT           "(First name):",IDC_STATIC,148,19,39,8
+    LTEXT           "Company (or Last name):",IDC_STATIC,38,19,80,8
+    LTEXT           "Street:",IDC_STATIC,38,43,22,8
+    LTEXT           "ZipCode:",IDC_STATIC,115,68,30,8
+    LTEXT           "City:",IDC_STATIC,38,68,14,8
+    LTEXT           "Country:",IDC_STATIC,161,68,27,8
+    GROUPBOX        "Contact",IDC_STATIC,7,102,265,87
+    LTEXT           "Telephone:",IDC_STATIC,38,112,37,8
+    LTEXT           "Fax:",IDC_STATIC,157,112,14,8
+    LTEXT           "e-mail:",IDC_STATIC,38,137,21,8
+    LTEXT           "Contact person:",IDC_STATIC,38,162,51,8
+    LTEXT           "Provider channels  (Separate with comma or spaces; ""6,7,8"" or""1 4 23"")",
+                    IDC_STATIC,38,232,228,8
+    ICON            IDI_Bussiness,IDC_STATIC,12,25,20,20
+    ICON            IDI_Phone,IDC_STATIC,14,113,20,20
+    GROUPBOX        "Computer",IDC_STATIC,7,193,265,67
+    LTEXT           "TCP/IP address:",IDC_STATIC,38,205,54,8
+    CONTROL         "IPAddress1",IDC_TCPAddress,"SysIPAddress32",WS_TABSTOP,
+                    38,213,100,15
+    EDITTEXT        IDC_TCPPort,149,213,46,14,ES_AUTOHSCROLL
+    LTEXT           "Port:",IDC_STATIC,150,205,16,8
+    ICON            IDI_Computers,IDC_STATIC,14,209,20,20
+    COMBOBOX        sSrvC_AdrContactPerson,38,170,228,91,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+sSrvD_ExtCfgDialog DIALOGEX 0, 0, 289, 293
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Server setup"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Tab2",sSrvC_SetupTab,"SysTabControl32",0x0,7,7,275,260
+    PUSHBUTTON      "&Send to operator",IDOK,7,272,65,14
+    PUSHBUTTON      "&Close",IDCANCEL,77,272,50,14
+END
+
+sSrvD_Scheduler DIALOGEX 0, 0, 263, 235
+STYLE DS_CONTROL | WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",sSrvC_ListCtrl,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | 
+                    WS_TABSTOP,0,0,263,176,WS_EX_CLIENTEDGE
+    COMBOBOX        sSrvC_DVBDays,7,200,60,116,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        sSrvC_DVBDayRate,71,199,184,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Delete rate",sSrvC_DVBDeleteRate,71,217,50,14
+    PUSHBUTTON      "&Add/modify rate",sSrvC_DVBAddRate,7,217,60,14
+    LTEXT           "New Bandwidth, e.g.   ""0-6 < 1.23 ; 6-23:30 < 1.05; ...""",
+                    IDC_STATIC,72,189,174,8
+    LTEXT           "New Date",IDC_STATIC,7,189,33,8
+    GROUPBOX        "Scheduler",IDC_STATIC,0,179,263,56
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    sSrvD_SetupDialog, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 282
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 285
+    END
+
+    sSrvD_ExtCfgDialog, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 282
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 286
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_Bussiness           ICON    DISCARDABLE     "\\dev\\dvb\\dvblib\\winnt\\RC\\ico\\bussiness.ico"
+IDI_Computers           ICON    DISCARDABLE     "\\dev\\dvb\\dvblib\\winnt\\RC\\ico\\computer.ico"
+IDI_Phone               ICON    DISCARDABLE     "\\dev\\dvb\\dvblib\\winnt\\RC\\ico\\phone.ico"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "afxres.rc"         // Standard components
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

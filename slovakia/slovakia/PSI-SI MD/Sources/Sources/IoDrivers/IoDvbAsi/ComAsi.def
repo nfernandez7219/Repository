@@ -1,0 +1,5 @@
+LIBRARY      "IODvbAsi"
+DESCRIPTION  'IODvbAsi Windows Dynamic Link Library'
+
+EXPORTS
+	DVBDRIVER_IOCTL	= DvbAsi_driver_ioctl

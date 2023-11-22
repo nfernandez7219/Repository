@@ -1,0 +1,70 @@
+Main Data,s.r.o.   License Agreement
+=============================
+
+IMPORTANT: THE ENCLOSED PROGRAMS ARE LICENSED BY
+MAIN DATA,S.R.O. TO END-USERS FOR THEIR USE ONLY. 
+ACCEPTANCE AND USAGE OF THE PROGRAMS INDICATE YOUR
+ACCEPTANCE OF THESE TERMS.
+
+1. License
+Main Data,s.r.o. agrees to grant you a non-exclusive license to use
+the enclosed program(s) subject to the terms and conditions of this
+License Agreement.
+
+2. Copyright
+The Program(s) and documentation are copyrighted and contain trade
+secrets and are the proprietary property of Main Data,s.r.o.
+You shall only make copies of the Program(s) for back-up purposes or
+when authorized to do so in writing by Main Data,s.r.o.
+In addition to any other rights of the Main Data,s.r.o. has the right
+to trace serial numbers at any time and in any reasonable manner.
+
+3. Restrictions on Use and Transfer
+The PSI/SI Generator and its Documentation are to be used on one computer
+only at one time. You may not distribute the Program(s) or documentation
+to a third party.
+
+4. ALL EXPRESS AND IMPLIED WARRANTIES FOR THIS PRODUCT
+INCLUDING THE WARRANTIES OF MERCHANTABILITY AND FIRMESS
+FOR A PARTICULAR PURPOSE ARE LIMITED IN DURATION TO
+A PERIOD OF 90 DAYS FROM THE DATE OF PURCHASE AND
+NO WARRANTIES, WHETHER EXPRESS OR IMPLIED, WILL APPLY
+AFTER THIS PERIOD.
+AS SOFTWARE IS MADE BY HUMANS,MAINDATA, S.R.O. DOES NOT
+GUARANTY FOR THE FLAWLESSNESS OF THE PROGRAM.
+THE PACKAGE IS SOLD/BOUGHT IN THE WORKING ORDER AS SEEN
+DURING DEMONSTRATION.
+
+5. LIMITATION OF LIABILITY
+NEITHER MAIN DATA,S.R.O., NOR ANYBODY CONNECTED WITH
+MAIN DATA,S.R.O. SHALL BE LIABLE FOR ANY DIRECT,
+INCIDENTAL OR CONSEQUENTIAL DAMAGES SUCH AS, BUT NOT
+LIMITED TO, LOSS OF ANTICIPATED BENEFITS, PROFITS OR SAVINGS,
+RESULTING FROM THE USE OF THE PROGRAM(S) OR ARISING OUT OF
+ANY BREACH OF WARRANTY.
+THE ENTIRE RISK AS TO THE RESULTS AND PERFORMANCE
+OF THE PROGRAM(S) IS ASSUMED BY THE USER.
+
+6. Terms
+The license is effective until terminated.
+It will be terminated if you fail to comply with any terms
+or condition of this License Agreement.
+You may terminate this License Agreement at any time.
+In the event of termination you agree to destroy the Program(s)
+and Documentation together with all copies and related material.
+
+7. BY INSTALLATION OF THIS PROGRAMM, USE OF THIS PROGRAM(S)
+OR SIGNATURE ON THE LICENSE AGREEMENT ACKNOWLEDGES THAT
+YOU HAVE READ THIS END-USER LICENSE AGREEMENT AND
+AGREE TO ITS TERMS.
+THIS AGREEMENT IS COMPLETE AND SUPERSEDES ANY OTHER
+AGREEMENT THAT MAY HAVE RELATED TO THIS SUBJECT MATTER
+OF THIS AGREEMENT. THE PROGRAM WILL NOT INSTALL UNLESS
+YOU AGREE TO THESE TERMS.
+
+8. MISCELLENEOUS
+The validity and performance of this license shall be governed
+by Slovak law. This License Agreement is deemed entered into
+at Bratislava, Slovakia.
+This License Agreement shall inure to the benefit of Main Data, s.r.o..
+its successors, administrators, heirs and assigns.

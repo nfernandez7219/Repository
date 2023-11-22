@@ -1,0 +1,7 @@
+[TopDir]
+file0=E:\dev\InstallsPsi\Sources\HelpFiles\ReadmeDvbAsiSrv.txt
+file1=E:\dev\InstallsPsi\Sources\HelpFiles\readmeComergonSrv.txt
+file2=E:\dev\InstallsPsi\Sources\HelpFiles\Main Data PSI.doc
+[General]
+Type=FILELIST
+Version=1.00.000

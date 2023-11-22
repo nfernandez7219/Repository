@@ -1,0 +1,106 @@
+////////////////////////////////////////////////////////////////////////////////
+///////////////////InstallShield Media Library Report Summary///////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+Media Name      : New Media
+Report Filename : C:\My Installations\PSiSiGenerator\Media\New Media\Report Files\3-06-2001 12.41.04PM.rpt
+Date            : 03/06/2001
+Time            : 12:41PM
+
+Number of Components:                3 
+Number of File Groups:               4 
+Number of Files:                     8 
+Total Size of Files:         5,069,156 (bytes)
+
+==========
+COMPONENTS
+==========
+
+
+     Program Files
+     Help Files
+     Shared DLLs
+
+
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////Report Details/////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+================================================================================
+                           COMPONENT: "Program Files"
+================================================================================
+
+SUMMARY:
+    Total Files:                4 (files for this component only)
+    Source Bytes:         684,207 (files for this component only)
+
+
+                      **** File Group: "Program DLLs" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    IoComergon.dll              11/22/2000  12:30:32      118,830  3.20.0.0     
+    IoDvbAsi.dll                02/20/2001  17:50:07      147,500  3.20.0.1     
+    IOtcp.dll                   02/23/2001  14:00:48       98,345  3.20.0.1     
+    --------------------------  ----------  --------  -----------  -------------
+    Count=3                                               364,675               
+
+
+                **** File Group: "Program Executable Files" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    PsiSiGen.exe                03/06/2001  11:11:48      319,532  1.0.0.1      
+    --------------------------  ----------  --------  -----------  -------------
+    Count=1                                               319,532               
+
+
+================================================================================
+                            COMPONENT: "Help Files"
+================================================================================
+
+SUMMARY:
+    Total Files:                1 (files for this component only)
+    Source Bytes:       2,939,055 (files for this component only)
+
+
+                       **** File Group: "Help Files" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\HelpFiles
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    Main Data_PSI 1_1.doc       03/03/2001  21:42:30    2,254,848               
+    --------------------------  ----------  --------  -----------  -------------
+    Count=1                                             2,254,848               
+
+
+================================================================================
+                            COMPONENT: "Shared DLLs"
+================================================================================
+
+SUMMARY:
+    Total Files:                3 (files for this component only)
+    Source Bytes:       5,069,156 (files for this component only)
+
+
+                      **** File Group: "Shared DLLs" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\MFC
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    Msvcrtd.dll                 03/22/1999  23:00:00      401,484  6.0.8447.0   
+    Mfco42d.dll                 03/22/1999  23:00:00      798,773  6.0.8447.0   
+    Mfc42d.dll                  03/22/1999  23:00:00      929,844  6.0.8447.0   
+    --------------------------  ----------  --------  -----------  -------------
+    Count=3                                             2,130,101               

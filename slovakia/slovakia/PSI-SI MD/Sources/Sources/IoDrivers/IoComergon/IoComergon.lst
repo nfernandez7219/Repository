@@ -1,0 +1,87 @@
+Description:
+------------
+IoComergon.dll is a connection module between an application and ISA RS-422 Comergon Card
+driver md_DvbDriver.sys.
+
+
+Source files:
+-------------
+	card.cpp				// low level card access functions
+	ComDVB.cpp				// ComInpDVB and ComOutDVB classes
+	ComDvbRegistry.cpp		// support functions working with Registry
+	ComDVBSetup.cpp			// Configuration dialog
+	ComDVBStatistics.cpp	// Statistics services
+	ComInstall.cpp			// Installation routine
+	drv_ComDvb.cpp			// driver ioctl function (main dll entry point)
+	ComDvb.def				// Exports definition
+	IoComergon.rc			// Dll resources
+
+Headers:
+--------
+	card.h
+	ComDvb.hpp
+	Resource.h
+
+Documentation:
+--------------
+	ReadmeComergonRcv.txt		// user documentation
+	ReadmeComergonSrv.txt		// user documentation
+	DvbDSPReceiverCard_v.doc	// programmer doc - interface to the card
+	DvbDSPServerCard_v.doc		// programmer doc - interface to the card
+	IoComergon.lst				// this file
+
+Version management:
+-------------------
+	Version is taken from the version resource.
+
+Project file:
+-------------
+	IoComergon.dsp
+
+Project directory:
+------------------
+	\dev\dvb\IoDrivers\IoComergon
+
+Project dependencies
+====================
+	usrlib library
+	DvbLib library
+
+Project settings (Debug build)
+==============================
+
+General:
+	Use MFC in a Shared Dll
+	Output files: ..\..\Bin
+
+C/C++
+	Language: Enable exception handling
+	Code generation: cdecl, Debug MT Dll, 1 By struct alignment
+	Precompiled headers: Automatic ... tools2.hpp
+	#defines: WIN32,_DEBUG,_WINDOWS,_MBCS,_USRDLL,_IOCOMERGONDLL,_WINDLL,_AFXDLL
+	#includes: ..\..\Dvblib\h,..\..\usrlib\h
+
+Link
+	General: ..\..\Bin/IoComergon.dll
+	Libraries: wsock32.lib version.lib usrlibD.lib
+	Library path: ..\..\bin
+	additional settings: /opt:ref
+
+Resources:
+	Resource file name: Debug/IOHNet.res
+	#defines: _DEBUG,_AFXDLL
+
+
+Interface to DVB applications:
+==============================
+Version
+	Dll version is maintained via Version resource.
+	Driver version can be queried via ioctl call DVBDRV_GetDrvVersion.
+
+IoComergon.dll exports single ioctl function described in DvbLib\DrvInterface.hpp.
+This function has to be loaded explicitly by GetProcAddress().
+
+
+Registry settings:
+==================
+ HKLM\SYSTEM\CurrentControlSet\Services\md_DvbDriver

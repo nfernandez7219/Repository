@@ -1,0 +1,191 @@
+////////////////////////////////////////////////////////////////////////////////
+///////////////////InstallShield Media Library Report Summary///////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+Media Name      : New Media
+Report Filename : E:\dev\InstallsPsi\PsiGenerator\Media\New Media\Report Files\3-07-2001 7.05.25PM.rpt
+Date            : 03/07/2001
+Time            : 7:05PM
+
+Number of Components:                4 
+Number of File Groups:               5 
+Number of Files:                    32 
+Total Size of Files:         5,532,946 (bytes)
+
+==========
+COMPONENTS
+==========
+
+
+     Program Files
+     Help Files
+     Shared DLLs
+     Sentinel
+
+
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////Report Details/////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+================================================================================
+                           COMPONENT: "Program Files"
+================================================================================
+
+SUMMARY:
+    Total Files:                4 (files for this component only)
+    Source Bytes:         696,495 (files for this component only)
+
+
+                      **** File Group: "Program DLLs" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    IoComergon.dll              11/22/2000  12:30:32      118,830  3.20.0.0     
+    IoDvbAsi.dll                02/20/2001  17:50:07      147,500  3.20.0.1     
+    IOtcp.dll                   02/23/2001  14:00:48       98,345  3.20.0.1     
+    --------------------------  ----------  --------  -----------  -------------
+    Count=3                                               364,675               
+
+
+                **** File Group: "Program Executable Files" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    PsiSiGen.exe                03/07/2001  19:03:30      331,820  1.0.0.1      
+    --------------------------  ----------  --------  -----------  -------------
+    Count=1                                               331,820               
+
+
+================================================================================
+                            COMPONENT: "Help Files"
+================================================================================
+
+SUMMARY:
+    Total Files:                3 (files for this component only)
+    Source Bytes:       2,934,990 (files for this component only)
+
+
+                       **** File Group: "Help Files" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\HelpFiles
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    ReadmeDvbAsiSrv.txt         08/17/2000  10:01:34        5,658               
+    readmeComergonSrv.txt       09/11/2000  17:06:54        5,125               
+    Main Data PSI.doc           03/06/2001  16:15:24    2,227,712               
+    --------------------------  ----------  --------  -----------  -------------
+    Count=3                                             2,238,495               
+
+
+================================================================================
+                            COMPONENT: "Shared DLLs"
+================================================================================
+
+SUMMARY:
+    Total Files:                3 (files for this component only)
+    Source Bytes:       5,065,091 (files for this component only)
+
+
+                      **** File Group: "Shared DLLs" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\MFC
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    Msvcrtd.dll                 03/22/1999  23:00:00      401,484  6.0.8447.0   
+    Mfco42d.dll                 03/22/1999  23:00:00      798,773  6.0.8447.0   
+    Mfc42d.dll                  03/22/1999  23:00:00      929,844  6.0.8447.0   
+    --------------------------  ----------  --------  -----------  -------------
+    Count=3                                             2,130,101               
+
+
+================================================================================
+                             COMPONENT: "Sentinel"
+================================================================================
+
+SUMMARY:
+    Total Files:               22 (files for this component only)
+    Source Bytes:       5,532,946 (files for this component only)
+
+
+                        **** File Group: "Sentinel" ****
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\Sentinel
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    Readme.txt                  08/27/1999  15:02:46       59,818               
+    Setup.exe                   07/20/1999  04:38:00       19,328               
+    --------------------------  ----------  --------  -----------  -------------
+    Count=2                                                79,146               
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\Sentinel\Win_9x
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    sentinel.vxd                07/20/1999  04:38:00       73,732               
+    sentstrt.exe                07/20/1999  04:38:00       11,776               
+    sentw9x.dll                 07/20/1999  04:38:00       39,936  0.5.0.38     
+    sentw9x.exe                 07/20/1999  04:38:00       33,792  0.5.0.38     
+    Sentw9x.gid                 08/11/1999  16:10:42        8,628               
+    sentw9x.hlp                 07/20/1999  04:38:00        9,892               
+    sntnlusb.ifx                07/20/1999  04:38:00        1,297               
+    sntusb95.ifx                07/20/1999  04:38:00          783               
+    --------------------------  ----------  --------  -----------  -------------
+    Count=8                                               179,836               
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\Sentinel\Win_9x\Usb95
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    sntusb95.inf                07/20/1999  04:38:00          797               
+    sntusb95.sys                07/20/1999  04:38:00        6,944  0.5.0.38     
+    --------------------------  ----------  --------  -----------  -------------
+    Count=2                                                 7,741               
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\Sentinel\Win_9x\Usb98
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    sntnlusb.inf                07/20/1999  04:38:00        1,311               
+    sntnlusb.sys                07/20/1999  04:38:00        8,128  0.5.0.38     
+    --------------------------  ----------  --------  -----------  -------------
+    Count=2                                                 9,439               
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\Sentinel\Win_nt
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    setupx86.exe                07/20/1999  04:38:00       32,256  0.5.0.38     
+    snti386.dll                 07/20/1999  04:38:00       47,616  0.5.0.38     
+    --------------------------  ----------  --------  -----------  -------------
+    Count=2                                                79,872               
+
+
+<Directory>: E:\dev\InstallsPsi\Sources\Sentinel\Win_nt\I386
+
+    Filename                    Date        Time      Size         Version      
+    --------------------------  ----------  --------  -----------  -------------
+    rnbovtmp.dll                07/20/1999  04:38:00       17,920  0.5.0.38     
+    sentinel.hlp                07/20/1999  04:38:00        9,949               
+    senttemp.sys                07/20/1999  04:38:00       73,216  0.5.0.38     
+    sntnlusb.ifx                07/20/1999  04:38:00        1,297               
+    sntnlusb.inf                07/20/1999  04:38:00        1,311               
+    sntnlusb.sys                07/20/1999  04:38:00        8,128  0.5.0.38     
+    --------------------------  ----------  --------  -----------  -------------
+    Count=6                                               111,821               

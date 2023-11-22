@@ -1,0 +1,117 @@
+Source files:
+	CRC32.CPP
+	DeclStringTables.cpp
+	ENV.CPP
+	ENV1.CPP
+	ENV_Base.CPP
+	EXCEPT.CPP
+	FILELST.CPP
+	FILES.CPP
+	GENERAL.CPP
+	GlbLogin.cpp
+	LOAD_MSG.CPP
+	MSGLOG.CPP
+	OKDIALOG.CPP
+	PROTECT.CPP
+	SCRMSG.CPP
+	STRINGS.CPP
+	UTILS.CPP
+
+	DLG_TOOL.CPP
+	SCR_VIEW.CPP
+	MessageQueue.cpp
+	Transport.cpp
+	TransportClass.cpp
+	LOADRES.CPP
+
+Header files:
+	SCREEN.H
+	SID.HPP
+	SLIST.H
+	SCRTOOLS.HPP
+	HEAP.H
+	MSGLOG.HPP
+	TOOLS2.HPP
+	except.hpp
+	ProtectedFile.hpp
+	ScrTrace.h
+	dbgtrace.hpp
+	ENV.HPP
+	envX.hpp
+	COMPORT.H
+	STDERROR.H
+	GENERAL.H
+
+String tables:
+	scr.e
+	errors.e
+
+Resource dll:
+	none
+
+Project file:
+	usrLib.dsp with 2 configurations:
+		Win32 Debug		- usrLibD.lib
+		Win32 Relase 		- usrLibR.lib
+
+Project dependencies:
+	none
+
+Purpose:
+	tools library
+
+!!!!!!!!!!!!!!!!!!! dopisat setingy !!!!!!!!!!!!!!!!!!
+
+---------------- PROJECT SETTINGS (Win32 Debug)-------------------
+
+This configuration is used to build library with MFC.
+
+General:
+	Use MFC in shared DLL
+	Intermediate & output files:
+		WinNT\Obj\Debug
+
+Compiler settings:
+	C++:
+		Enable exception handling
+	Code generation:
+		1 Byte
+		debug MT dll
+		cdecl
+	Customize:
+		Enable function level linking
+	Optimizations:
+		disabled
+		Inline function expansion: only __inline
+	Precompiled headers:
+		Automatic ... tools2.hpp
+	Preprocessor:
+		Definitions:
+			_DEBUG,WIN32,_WINDOWS,_MBCS,_AFXDLL
+		Include directories:
+			h,\cs\apps\programs\msg
+
+Library:
+	Output file name: \cs\mfc\WinNT\slib\scrm41td.lib
+
+
+---------------- PROJECT SETTINGS (Win32 Debug No Mfc)-------------------
+
+This configuration is used to build library without MFC.
+
+Differences against Win32 Debug configuration:
+
+General:
+	Not using MFC
+	Intermediate & output files:
+		WinNT\Obj\DebugNoMfc
+
+Compiler settings:
+	Precompiled headers:
+		Automatic ... scrtools.hpp
+	Preprocessor:
+		Definitions:
+			NO_MFC instead of _AFXDLL
+
+Library:
+	Output file name: \cs\mfc\WinNT\slib\scr41td.lib

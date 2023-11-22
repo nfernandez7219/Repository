@@ -1,0 +1,267 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 3,20,0,0
+ PRODUCTVERSION 3,20,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "MainData, s.r.o.\0"
+            VALUE "FileDescription", "Interface Dll to ISA DVB Satellite card\0"
+            VALUE "FileVersion", "3, 20, 0, 0\0"
+            VALUE "InternalName", "IoComergon\0"
+            VALUE "LegalCopyright", "\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "IoComergon.dll\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "DVB Server/Receiver\0"
+            VALUE "ProductVersion", "3, 20, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+sClntD_DVBStatistics DIALOGEX 0, 0, 285, 150
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Hardware",IDC_STATIC,9,52,265,79
+    GROUPBOX        "Driver",IDC_STATIC,9,8,265,40
+    EDITTEXT        sClntC_numPacketsCorruptedHW,19,62,93,12,ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    EDITTEXT        sClntC_numPacketsAcceptedHW,19,75,93,12,ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    EDITTEXT        sClntC_numPacketsFilteredHW,19,88,93,12,ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    EDITTEXT        sClntC_numPacketsLostHW,19,101,93,12,ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    EDITTEXT        sClntC_numPacketsAcceptedDrv,19,19,93,12,ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    EDITTEXT        sClntC_numInternetPacketsDrv,19,32,93,12,ES_READONLY | 
+                    ES_NUMBER | NOT WS_TABSTOP
+    LTEXT           "corrupted packets",IDC_STATIC,121,62,126,12,
+                    SS_CENTERIMAGE
+    LTEXT           "accepted packets",IDC_STATIC,121,19,135,12,
+                    SS_CENTERIMAGE
+    LTEXT           "accepted packets",IDC_STATIC,121,75,127,12,
+                    SS_CENTERIMAGE
+    LTEXT           "internet packets",IDC_STATIC,121,33,131,12,
+                    SS_CENTERIMAGE
+    LTEXT           "filtered packets",IDC_STATIC,121,88,119,12,
+                    SS_CENTERIMAGE
+    LTEXT           "lost packets ( due to memory overflow )",IDC_STATIC,121,
+                    101,136,12,SS_CENTERIMAGE
+    CONTROL         "",sClntC_TimingClockSignal,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED,19,117,8,8,WS_EX_STATICEDGE
+    CONTROL         "",sClntC_CardSynchronization,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED,123,117,8,8,WS_EX_STATICEDGE
+    LTEXT           "Timing clock signal",IDC_STATIC,39,117,61,8
+    LTEXT           "Card synchronization",IDC_STATIC,141,117,89,8
+END
+
+DRVSTATEDLG DIALOG DISCARDABLE  0, 0, 237, 201
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Main Data, RS-422, ISA Card - Driver State"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_STATUS,75,27,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BUFFERSIZE,75,47,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_INAPP,75,72,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_OUTAPP,75,92,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_READ,195,27,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WRITE,195,47,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_INCARD,195,72,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_OUTCARD,195,92,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_INPACKETS,151,119,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_OUTPACKETS,151,138,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PACKETSSENT,151,157,40,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Dump",IDC_DUMP,3,180,50,14
+    DEFPUSHBUTTON   "&Close",IDOK,185,180,50,14
+    LTEXT           "Card status flag",IDC_STATIC,5,29,55,8
+    LTEXT           "Buffer Size",IDC_STATIC,5,49,55,8
+    LTEXT           "In App Pointer",IDC_STATIC,5,74,55,8
+    LTEXT           "Out App Pointer",IDC_STATIC,5,94,55,8
+    LTEXT           "In Card Pointer",IDC_STATIC,120,74,55,8
+    LTEXT           "Out Card Pointer",IDC_STATIC,120,95,55,8
+    LTEXT           "# packets in input buffer",IDC_STATIC,11,122,125,8
+    LTEXT           "# packets in output buffer",IDC_STATIC,11,140,125,8
+    LTEXT           "READ Flag",IDC_STATIC,125,29,55,8
+    LTEXT           "WRITE Flag",IDC_STATIC,125,49,55,8
+    LTEXT           "# data packets transfered",IDC_STATIC,11,158,125,8
+    LTEXT           "(This dialog serves solelly for the purpose of Driver debugging.)",
+                    IDC_STATIC,10,9,198,8
+END
+
+HWDLG_SRV DIALOGEX 0, 0, 240, 221
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Main Data, RS-422, ISA Card Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_BASE,111,29,50,14
+    EDITTEXT        IDC_IRQ,111,66,50,14
+    PUSHBUTTON      "Try Card Handshake",IDC_TESTHW,7,109,77,14
+    EDITTEXT        IDC_DataRate,111,181,50,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,7,204,65,14
+    PUSHBUTTON      "Cancel",IDCANCEL,86,204,65,14
+    PUSHBUTTON      "Help",IDC_ViewHelp,163,204,65,14
+    LTEXT           "DVB Card Port Address",IDC_STATIC,15,31,80,8
+    LTEXT           "DVB Card IRQ",IDC_STATIC,17,68,80,8
+    LTEXT           "",IDC_MSG,7,129,223,41,NOT WS_GROUP,WS_EX_CLIENTEDGE
+    LTEXT           "(Allowed IRQ's sorted by priority:  9=highest, 10, 11, 12, 5=lowest)",
+                    IDC_STATIC,17,85,208,8
+    LTEXT           "(Allowed range: 200 - 3f8; size = 8By)",IDC_STATIC,17,
+                    47,208,8
+    GROUPBOX        "ISA Settings",IDC_STATIC,7,18,223,83
+    LTEXT           "Data Rate",IDC_STATIC,74,183,34,8
+    LTEXT           "Mbit/s",IDC_STATIC,169,183,21,8
+    LTEXT           "",IDC_Version,7,5,221,8
+END
+
+HWDLG_RCV DIALOGEX 0, 0, 240, 225
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Main Data, RS-422, ISA Card Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_BASE,111,29,50,14
+    EDITTEXT        IDC_IRQ,111,66,50,14
+    PUSHBUTTON      "Try Card Handshake",IDC_TESTHW,7,109,77,14
+    EDITTEXT        IDC_PID,111,181,50,14,ES_AUTOHSCROLL
+    CONTROL         "Hexa",IDC_RADIO_HEX,"Button",BS_AUTORADIOBUTTON,166,179,
+                    33,10
+    CONTROL         "Decimal",IDC_RADIO_DEC,"Button",BS_AUTORADIOBUTTON,166,
+                    189,41,10
+    DEFPUSHBUTTON   "OK",IDOK,7,208,65,14
+    PUSHBUTTON      "Cancel",IDCANCEL,86,208,65,14
+    PUSHBUTTON      "Help",IDC_ViewHelp,163,208,65,14
+    LTEXT           "DVB Card Port Address",-1,15,31,80,8
+    LTEXT           "DVB Card IRQ",-1,17,68,80,8
+    LTEXT           "",IDC_MSG,7,129,223,41,NOT WS_GROUP,WS_EX_CLIENTEDGE
+    LTEXT           "(Allowed IRQ's sorted by priority:  9=highest, 10, 11, 12, 5=lowest)",
+                    -1,17,85,208,8
+    LTEXT           "(Allowed range: 200 - 3f8; size = 8By)",-1,17,47,208,8
+    LTEXT           "PID",-1,85,184,13,8
+    GROUPBOX        "ISA Settings",-1,7,18,223,83
+    LTEXT           "",IDC_Version,7,5,221,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "HWDLG_SRV", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 214
+    END
+
+    "HWDLG_RCV", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

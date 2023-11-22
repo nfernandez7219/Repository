@@ -1,0 +1,639 @@
+
+#include "stdafx.h"
+#include "TableHolders.h"
+
+DescriptorHolder::DescriptorHolder ( uchar descTag )
+ : BaseHolder(descTag)
+{
+}
+
+uchar *DescriptorHolder::loadFromBin ( uchar *buffer )
+{
+	#pragma message("DescriptorHolder::loadFromBin - ziadna kontrola platnosti descriptora - mozne vybehnutie z buffra")
+	BaseDescriptor *desc = (BaseDescriptor*)buffer ;
+	int len = desc->getLength() ;
+	memcpy(_body, buffer, len) ;
+
+	setHolderType(getType());
+
+	return buffer + len ;
+}
+
+uchar *DescriptorHolder::saveToBin ( uchar *buffer )
+{
+	int len = getLength() ;
+	memcpy( buffer, _body, len ) ;
+	return buffer + len ;
+} ;
+
+static void DescriptorHolderDelFn(DescriptorHolder** p)
+{
+	delete *p ;
+}
+
+DescriptorArray::DescriptorArray() 
+// :	BaseHolder(DESC_ARRAY)
+{
+	setDelFunc( DescriptorHolderDelFn ) ;
+}
+
+void DescriptorArray::loadFromBin( uchar *buffer, int size )
+{
+	uchar *p = buffer ;
+	while ( p < buffer+size )
+	{
+		BaseDescriptor *desc = (BaseDescriptor*)p ;
+		DescriptorHolder *holder = appendDesc(desc->getType()) ;
+		if (holder)
+			p = holder->loadFromBin(p) ;
+		else
+			p = p + desc->getLength() ;
+	}
+}
+
+uchar* DescriptorArray::saveToBin ( uchar *buffer )
+{
+	for ( int i = 0; i < count(); i++ )
+		buffer = item(i)->saveToBin(buffer) ;
+
+	return buffer ;
+}
+
+DescriptorHolder *DescriptorArray::findHolder( uchar type )
+{
+	int i = count() ;
+
+	while (i--)
+	{
+		DescriptorHolder *holder = item(i) ;
+		if (holder->getType()==type)
+			return holder ;
+	}
+
+	return NULL ;
+}
+
+DescriptorHolder* DescriptorArray::appendDesc( int type )
+{
+	DescriptorHolder *holder ;
+
+	switch(type)
+	{
+		case TAG_service_list_descriptor: 				
+		case TAG_stuffing_descriptor: 					
+		case TAG_cable_delivery_system_descriptor: 		
+		case TAG_bouquet_name_descriptor:				
+		case TAG_country_availability_descriptor: 		
+		case TAG_linkage_descriptor: 					
+		case TAG_NVOD_reference_descriptor: 				
+		case TAG_time_shifted_service_descriptor: 		
+		case TAG_short_event_descriptor: 				
+		case TAG_extended_event_descriptor: 				
+		case TAG_time_shifted_event_descriptor: 			
+		case TAG_component_descriptor: 					
+		case TAG_mosaic_descriptor:						
+		case TAG_stream_identifier_descriptor: 			
+		case TAG_CA_identifier_descriptor: 				
+		case TAG_content_descriptor: 					
+		case TAG_parental_rating_descriptor: 			
+		case TAG_teletext_descriptor: 					
+		case TAG_telephone_descriptor: 					
+		case TAG_local_time_offset_descriptor: 			
+		case TAG_subtitling_descriptor: 					
+		case TAG_terrestrial_delivery_system_descriptor: 
+		case TAG_multilingual_network_name_descriptor: 	
+		case TAG_multilingual_bouquet_name_descriptor: 	
+		case TAG_multilingual_service_name_descriptor: 	
+		case TAG_multilingual_component_descriptor:		
+		case TAG_private_data_specifier_descriptor: 		
+		case TAG_service_move_descriptor: 				
+		case TAG_short_smoothing_buffer_descriptor:		
+		case TAG_frequency_list_descriptor: 				
+		case TAG_partial_transport_stream_descriptor:
+			return NULL ;
+
+		case TAG_network_name_descriptor:
+			holder = new NetworkNameDescHolder ; 
+			break ;
+		case TAG_satellite_delivery_system_descriptor:
+			holder = new SatelliteDeliveryDescHolder ;
+			break ;
+		case TAG_service_descriptor: 					
+			holder = new ServiceDescHolder ;
+			break ;
+		case TAG_data_broadcast_descriptor:
+			holder = new DataBroadcastDescHolder ;
+			break ;
+		case TAG_CA_system_descriptor:		 			
+			holder = new CASystemDescHolder ;
+			break ;
+		case TAG_data_broadcast_id_descriptor:
+			holder = new DataBroadcastIdDescHolder ;
+			break ;
+	}
+
+	add(holder) ;
+	return holder ;
+}
+
+						////////////////////////
+						// Descriptor holders //
+						////////////////////////
+
+
+////////////////////////
+//	CASystemDescHolder
+
+void CASystemDescHolder::getItemName	( int itemIndex, char *buf )
+{
+	switch(itemIndex)
+	{
+		case 0 : strcpy(buf,"CA System") ; break ;
+		case 1 : strcpy(buf,"CA PID") ; break ;
+		case 2 : strcpy(buf,"Private data") ; break ;
+	}
+}
+
+void CASystemDescHolder::getValueText	( int itemIndex, char *buf )
+{
+	CASystemDescriptor *caDesc = (CASystemDescriptor*)getBaseDesc() ;
+	if (itemIndex==0)
+	{
+		ushort id = caDesc->getCaSystemId() ;
+		CASystemDescriptor::caSystemAsText(id, buf) ;
+		return ;
+	}
+	if (itemIndex==1)
+	{
+		int pid = caDesc->getCaSystemPid() ;
+		sprintf(buf,"%d", pid);
+		return ;
+	}
+}
+
+void CASystemDescHolder::getTextDescription( char *buf )
+{
+	CASystemDescriptor *caDesc = getDesc() ;
+	ushort id = caDesc->getCaSystemId() ;
+	char caSystem[256] ;
+	CASystemDescriptor::caSystemAsText(id, caSystem) ;
+	int pid = caDesc->getCaSystemPid() ;
+	sprintf(buf,"%s (ECM PID %d)", caSystem, pid);
+}
+
+#define DECLARE_EDIT_ENUM(num)	int EDEN_i, EDEN_vals[num] ; LPTSTR EDEN_texts[num] ;
+#define ADD_ENUM_VALUE(val) \
+	EDEN_vals[EDEN_i] = val ; \
+	EDIT_ENUM_TEXT_ENUMERATOR(EDEN_texts[EDEN_i]) ; \
+	EDEN_i++ ;
+
+BOOL CASystemDescHolder::editItem( int itemIndex )
+{
+	CASystemDescriptor *desc = getDesc() ;
+
+	if(itemIndex==0)
+	{
+		int		vals[35] ;
+		LPTSTR	texts[35] ;
+		int i=0 ;
+
+		vals[i++] = 0x0000; 
+		vals[i++] = 0x0100;
+		vals[i++] = 0x0200;
+		vals[i++] = 0x0300;
+		vals[i++] = 0x0400;
+		vals[i++] = 0x0500;
+		vals[i++] = 0x0600;
+		vals[i++] = 0x0700;
+		vals[i++] = 0x0800;
+		vals[i++] = 0x0900;
+		vals[i++] = 0x0A00;
+		vals[i++] = 0x0B00;
+		vals[i++] = 0x0C00;
+		vals[i++] = 0x0D00;
+		vals[i++] = 0x0E00;
+		vals[i++] = 0x0F00;
+		vals[i++] = 0x1000;
+		vals[i++] = 0x1100;
+		vals[i++] = 0x1200;
+		vals[i++] = 0x1300;
+		vals[i++] = 0x1400;
+		vals[i++] = 0x1500;
+		vals[i++] = 0x1600;
+		vals[i++] = 0x1700;
+		vals[i++] = 0x1800;
+		vals[i++] = 0x1900;
+		vals[i++] = 0x2000;
+		vals[i++] = 0x2100;
+		vals[i++] = 0x2200;
+		vals[i++] = 0x2300;
+		vals[i++] = 0x2400;
+		vals[i++] = 0x2500;
+		vals[i++] = 0x2600;
+		vals[i++] = 0x4700;
+		vals[i++] = 0x4800;
+
+		i = 35 ;
+		while (i--)
+		{
+			char b[128] ;
+			CASystemDescriptor::caSystemAsText(vals[i], b) ;
+			texts[i] = strdup(b) ;
+		}
+
+		int selected = desc->getCaSystemId() ;
+
+		BOOL changed = EditEnumValue(
+			"CA system Id",
+			"Select Conditional Access system used for scrambling data",
+			12,
+			vals,
+			texts,
+			&selected
+		) ;
+
+		i = 35 ;
+		while (i--)
+			free(texts[i]) ;
+
+		if (changed)
+			desc->setCaSystemId(selected) ;
+
+		return changed ;
+	}
+
+	if(itemIndex==1)
+	{
+		int pid = desc->getCaSystemPid() ;
+	
+		BOOL changed = EditIntValue(
+			"CA PID",
+			"Enter the PID of the TS packets which shall contain ECM(EMM) information for the CA systems",
+			&pid, 0x20, 0x1FFF 
+		) ;
+
+		if (changed)
+			desc->setCaSystemPid( (ushort)pid ) ;
+
+		return changed ;
+	}
+
+	return FALSE ;
+}
+
+/////////////////////////////
+//	DataBroadcastDescHolder
+
+static BOOL editBroadcastId( int *id )
+{
+	int		vals[21] ;
+	LPTSTR	texts[21] ;
+	int i=0 ;
+
+	vals[i++] = DataBroadcastDescriptor::Data_pipe ;
+	vals[i++] = DataBroadcastDescriptor::Asynchronous_data_stream;
+	vals[i++] = DataBroadcastDescriptor::Synchronous_data_stream;
+	vals[i++] = DataBroadcastDescriptor::Synchronised_data_stream;
+	vals[i++] = DataBroadcastDescriptor::Multi_protocol_encapsulation;
+	vals[i++] = DataBroadcastDescriptor::Data_Carousel;
+	vals[i++] = DataBroadcastDescriptor::Object_Carousel;
+	vals[i++] = DataBroadcastDescriptor::DVB_ATM_streams;
+
+	vals[i++] = DataBroadcastDescriptor::Eutelsat_Data_Piping;
+	vals[i++] = DataBroadcastDescriptor::Eutelsat_Data_Streaming;
+	vals[i++] = DataBroadcastDescriptor::SAGEM_IP_encapsulation;
+	vals[i++] = DataBroadcastDescriptor::BARCO_Data_Broadcasting;
+	vals[i++] = DataBroadcastDescriptor::CyberCity_Multiprotocol_Encapsulation;
+	vals[i++] = DataBroadcastDescriptor::CyberSat_Multiprotocol_Encapsulation;
+	vals[i++] = DataBroadcastDescriptor::The_Digital_Network;
+	vals[i++] = DataBroadcastDescriptor::OpenTV_Data_Carousel;
+	vals[i++] = DataBroadcastDescriptor::Panasonic;
+	vals[i++] = DataBroadcastDescriptor::MSG_MediaServices;
+	vals[i++] = DataBroadcastDescriptor::Televizja_Polsat;
+	vals[i++] = DataBroadcastDescriptor::UK_DTG;
+	vals[i++] = DataBroadcastDescriptor::SkyMedia;
+						
+	i = 21 ;
+	while (i--)
+	{
+		char b[128] ;
+		DataBroadcastDescriptor::broadcastIdAsText(vals[i], b) ;
+		texts[i] = strdup(b) ;
+	}
+
+	BOOL changed = EditEnumValue(
+		"Data broadcast Id",
+		"Select type of broadcast service",
+		21,
+		vals,
+		texts,
+		id
+	) ;
+
+	i = 21 ;
+	while (i--)
+		free(texts[i]) ;
+
+	return changed ;
+}
+
+void DataBroadcastDescHolder::getItemName	( int itemIndex, char *buf )
+{
+	switch(itemIndex)
+	{
+		case 0 : strcpy(buf,"Broadcast ID") ; break ;
+		case 1 : strcpy(buf,"Description") ; break ;
+	}
+}
+
+void DataBroadcastDescHolder::getValueText	( int itemIndex, char *buf )
+{
+	DataBroadcastDescriptor *desc = (DataBroadcastDescriptor*)getBaseDesc() ;
+	if(itemIndex==0)
+	{
+		ushort id = desc->getBroadcastId() ;
+		DataBroadcastDescriptor::broadcastIdAsText(id, buf) ;
+		return ;
+	}
+	if(itemIndex==1)
+	{
+		desc->getDescription(buf) ;
+		return ;
+	}
+}
+
+void DataBroadcastDescHolder::getTextDescription( char *buf )
+{
+	ushort id = getDesc()->getBroadcastId() ;
+	DataBroadcastDescriptor::broadcastIdAsText(id, buf) ;
+}
+
+BOOL DataBroadcastDescHolder::editItem( int itemIndex )
+{
+	if (itemIndex==0)
+	{	
+		DataBroadcastDescriptor *desc = getDesc() ;
+		int selected = desc->getBroadcastId() ;
+		char brDescription[256] ;
+		desc->getDescription(brDescription) ;
+		
+		BOOL changed = editBroadcastId(&selected) ;
+
+		if (changed)
+			desc->create(selected, brDescription) ;
+
+		return changed ;
+	}
+	return FALSE ;
+}
+
+///////////////////////////////
+//	DataBroadcastIdDescHolder
+
+void DataBroadcastIdDescHolder::getItemName	( int itemIndex, char *buf )
+{
+	if(itemIndex==0)
+		strcpy(buf,"Broadcast ID") ;
+}
+
+void DataBroadcastIdDescHolder::getValueText	( int itemIndex, char *buf )
+{
+	ushort id = getDesc()->getBroadcastId() ;
+	DataBroadcastDescriptor::broadcastIdAsText(id, buf) ;
+}
+
+void DataBroadcastIdDescHolder::getTextDescription( char *buf )
+{
+	ushort id = getDesc()->getBroadcastId() ;
+	DataBroadcastDescriptor::broadcastIdAsText(id, buf) ;
+}
+
+BOOL DataBroadcastIdDescHolder::editItem( int itemIndex )
+{
+	if (itemIndex!=0)
+		return FALSE ;
+	
+	DataBroadcastIdDescriptor *desc = getDesc() ;
+	int selected = desc->getBroadcastId() ;
+	
+	BOOL changed = editBroadcastId(&selected) ;
+
+	if (changed)
+		desc->create(selected) ;
+
+	return changed ;
+}
+
+///////////////////////////
+//	NetworkNameDescHolder
+
+void NetworkNameDescHolder::getItemName	( int itemIndex, char *buf )
+{
+	strcpy(buf, "Network name") ;
+}
+
+void NetworkNameDescHolder::getValueText	( int itemIndex, char *buf )
+{
+	if (itemIndex==0)
+	{
+		NetworkNameDescriptor *desc = (NetworkNameDescriptor*)getBaseDesc() ;
+		desc->getName(buf) ;
+	}
+}
+
+BOOL NetworkNameDescHolder::editItem( int itemIndex )
+{
+	char name[255] ;
+
+	getDesc()->getName(name) ;
+
+	BOOL changed = EditStringValue("Network name","",name) ;
+
+	if (changed)
+		getDesc()->create(name) ;
+
+	return changed ;
+}
+
+////////////////////////
+//	ServiceDescHolder
+
+void ServiceDescHolder::getItemName	( int itemIndex, char *buf )
+{
+	switch(itemIndex)
+	{
+		case 0 : strcpy(buf,"Service type") ; break ;
+		case 1 : strcpy(buf,"Provider name") ; break ;
+		case 2 : strcpy(buf,"Service name") ; break ;
+	}
+}
+
+void ServiceDescHolder::getValueText	( int itemIndex, char *buf )
+{
+	ServiceDescriptor *servDesc = (ServiceDescriptor*)getBaseDesc() ;
+	if (itemIndex==0)
+	{
+		uchar type = servDesc->getServiceType() ;
+		ServiceDescriptor::serviceTypeAsText(type, buf) ;
+		return ;
+	}
+	if (itemIndex==1)
+	{
+		servDesc->getServiceProviderName(buf) ;
+		return ;
+	}
+	if (itemIndex==2)
+		servDesc->getServiceName(buf) ;
+}
+
+void ServiceDescHolder::getTextDescription( char *buf )
+{
+	ServiceDescriptor *servDesc = getDesc() ;
+
+	char name[255], provider[255], servType[64] ;
+	servDesc->getServiceName(name) ;
+	servDesc->getServiceProviderName(provider) ;
+	uchar type = servDesc->getServiceType() ;
+	ServiceDescriptor::serviceTypeAsText(type, servType) ;
+
+	sprintf(buf,"%s (%s) - %s", name, provider, servType) ;
+}
+
+BOOL ServiceDescHolder::editItem( int itemIndex )
+{
+	ServiceDescriptor *desc = getDesc() ;
+
+	if (itemIndex==0)
+	{
+		int		vals[12] ;
+		LPTSTR	texts[12] ;
+		int i=0 ;
+
+		vals[i++] = ServiceDescriptor::Digital_television_service;
+		vals[i++] = ServiceDescriptor::Digital_radio_sound_service;
+		vals[i++] = ServiceDescriptor::Teletext_service;
+		vals[i++] = ServiceDescriptor::NVOD_reference_service;
+		vals[i++] = ServiceDescriptor::NVOD_time_shifted_service;
+		vals[i++] = ServiceDescriptor::Mosaic_service;
+		vals[i++] = ServiceDescriptor::PAL_coded_signal;
+		vals[i++] = ServiceDescriptor::SECAM_coded_signal;
+		vals[i++] = ServiceDescriptor::D_D2_MAC;
+		vals[i++] = ServiceDescriptor::FM_Radio;
+		vals[i++] = ServiceDescriptor::NTSC_coded_signal;
+		vals[i++] = ServiceDescriptor::Data_broadcast_service ;
+
+		i = 12 ;
+		while (i--)
+		{
+			char b[128] ;
+			ServiceDescriptor::serviceTypeAsText(vals[i], b) ;
+			texts[i] = strdup(b) ;
+		}
+
+		int selected = desc->getServiceType() ;
+
+		BOOL changed = EditEnumValue(
+			"Data broadcast Id",
+			"Select type of broadcast service",
+			12,
+			vals,
+			texts,
+			&selected
+		) ;
+
+		i = 12 ;
+		while (i--)
+			free(texts[i]) ;
+
+		if (changed)
+			desc->setServiceType(selected) ;
+
+		return changed ;
+	}
+
+	if (itemIndex==1)
+	{
+		char provName[256] ;
+		desc->getServiceProviderName(provName) ;
+	
+		BOOL changed = EditStringValue("Service provider","",provName) ;
+
+		if (changed)
+		{
+			char servName[256] ;
+			uchar type = desc->getServiceType() ;
+			desc->getServiceName(servName) ;
+			desc->create(type, provName, servName) ;
+		}
+
+		return changed ;
+	}
+
+	if (itemIndex==2)
+	{
+		char servName[256] ;
+		desc->getServiceName(servName) ;
+	
+		BOOL changed = EditStringValue("Service name","",servName) ;
+
+		if (changed)
+		{
+			char provName[256] ;
+			uchar type = desc->getServiceType() ;
+			desc->getServiceProviderName(provName) ;
+			desc->create(type, provName, servName) ;
+		}
+
+		return changed ;
+	}
+
+	return FALSE ;
+}
+
+/////////////////////////////////
+//	SatelliteDeliveryDescHolder
+
+void SatelliteDeliveryDescHolder::getItemName	( int itemIndex, char *buf )
+{
+	switch(itemIndex)
+	{
+		case 0 : strcpy(buf,"Frequency") ; break ;
+		case 1 : strcpy(buf,"Orbital position") ; break ;
+		case 2 : strcpy(buf,"West/East") ; break ;
+		case 3 : strcpy(buf,"Polarization") ; break ;
+		case 4 : strcpy(buf,"Modulation") ; break ;
+		case 5 : strcpy(buf,"Symbol rate") ; break ;
+		case 6 : strcpy(buf,"Forward Error Correction (FEC) rate") ; break ;
+	}
+}
+
+void SatelliteDeliveryDescHolder::getValueText	( int itemIndex, char *buf )
+{
+	SatelliteDeliveryDescriptor *desc = getDesc() ;
+	switch(itemIndex)
+	{
+		case 0 : sprintf(buf,"%.5f", desc->getFrequency()  ) ; break ;
+		case 1 : sprintf(buf,"%.1f", desc->getOrbitalPos() ) ; break ;
+		case 2 : desc->westEastAsText(buf) ; break ;
+		case 3 : desc->polarizationAsText(buf) ; break ;
+		case 4 : desc->modulationAsText(buf) ; break ;
+		case 5 : sprintf(buf,"%.4f", desc->getSymbolRate() ) ; break ;
+		case 6 : desc->fecAsText(buf) ; break ;
+	}
+}
+
+void SatelliteDeliveryDescHolder::getTextDescription( char *buf )
+{
+	SatelliteDeliveryDescriptor *desc = getDesc() ;
+	char pol[30], fec[20] ;
+	desc->polarizationAsText(pol) ;
+	desc->fecAsText(fec) ;
+	sprintf(buf,"Freq:%f, SR:%f, Pol:%s, FEC:%s", desc->getFrequency(), desc->getSymbolRate(), pol, fec ) ;
+}
+
+
+
+
+
+
+

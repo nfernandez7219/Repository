@@ -1,0 +1,14 @@
+
+// --- screen message table ---
+
+#ifndef __SCREEN_MSG__
+#define __SCREEN_MSG__
+
+#include "scr.e"
+
+extern Z_USERDLL StringTable SCRStringTable ;
+
+#define SCRMSG_VERSION    2.73
+#define SCRMSG( msg_no)    SCRStringTable.text( msg_no)
+
+#endif

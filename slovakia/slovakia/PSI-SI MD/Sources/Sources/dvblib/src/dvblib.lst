@@ -1,0 +1,93 @@
+Description:
+------------
+	DvbLib - static library containing DVB utilities
+
+Source files:
+-------------
+	Asserts.cpp
+	BaseIo.cpp
+	ComIO.cpp
+	CommandReceiver.cpp
+	DvbError.cpp
+	DvbUser.cpp
+	Fec.cpp
+	FileIO.cpp
+	Inbox.cpp
+	Internet.cpp
+	Logger.cpp
+	MfxGlobals.cpp
+	Mux.cpp
+	MuxPacket.cpp
+	Schedulers.cpp
+	SerialNum.cpp
+	Services.cpp
+	Splash.cpp
+
+	Setup Sources:
+		BaseCfg.cpp
+		BaseRegistry.cpp
+		ClientCfg.cpp
+		ServCfg.cpp
+
+Header files:
+-------------
+	ComIO.hpp
+	DrvInterface.hpp
+	DvbError.hpp
+	DvbUser.hpp
+	DvbUser.h
+	FileIO.hpp
+	Inbox.hpp
+	Internet.hpp
+	Logger.hpp
+	MfxGlobals.hpp
+	Mux.hpp
+	MuxPacket.hpp
+	SerialNum.hpp
+	Service.hpp
+	Splash.hpp
+
+	Setup Headers:
+		BaseCfg.hpp
+		BaseRegistry.hpp
+		ClientCfg.hpp
+		ServCfg.hpp
+		Setup.hpp
+
+Documentation:
+--------------
+	DvbLib.lst				// this file
+
+Project file:
+-------------
+	DvbLib.dsp
+
+Project directory:
+------------------
+	\dev\dvb\DvbLib
+
+Project dependencies
+---------------------
+	usrlib library
+
+Project settings:
+-----------------
+	General:
+		Use MFC in a Shared Dll
+	Compiler settings:
+		C++ Language:
+			Enable exception handling
+		Code generation:
+			Debug Multithreaded Dll
+			__cdecl
+			1 Byte
+		Precompiled headers:
+			Automatic use through mux.hpp
+		Additional include directories:
+			h,..\usrlib\h
+		Preprocessor:
+			Definitions:
+				WIN32,_MBCS,_DEBUG,_WINDOWS,_WIN32_WINNT=0x0400,_AFXDLL
+	Library settings:
+		..\bin\dvbD.lib
+
