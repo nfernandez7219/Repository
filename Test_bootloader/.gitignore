@@ -1,0 +1,16 @@
+firmware/test_bootloader_app.X/.generated_files
+firmware/test_bootloader_app.X/debug
+firmware/test_bootloader_app.X/nbproject/private/private.xml
+firmware/test_bootloader_app.X/build/
+firmware/test_bootloader_app.X/dist/
+firmware/test_bootloader_app.X/nbproject/private/configurations.xml
+*.swp
+*.o
+tags
+firmware/test_bootloader_app.X/nbproject/Makefile-default.mk
+firmware/test_bootloader_app.X/nbproject/Makefile-genesis.properties
+firmware/test_bootloader_app.X/nbproject/Makefile-impl.mk
+firmware/test_bootloader_app.X/nbproject/Makefile-local-default.mk
+firmware/test_bootloader_app.X/nbproject/Makefile-variables.mk
+firmware/test_bootloader_app.X/nbproject/Package-default.bash
+
