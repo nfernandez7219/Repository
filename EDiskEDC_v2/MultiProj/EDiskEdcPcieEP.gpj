@@ -1,0 +1,302 @@
+#!gbuild
+primaryTarget=arc_standalone.tgt
+[Program]
+    -G
+    -DDEBUG
+    -I..\Include\Bios
+    -I..\Include\Bios\Arc700
+    -I..\Include\Common\BaseBlk
+    -I..\Include\Common\BlkInfo
+    -I..\Include\Common\BlkRecord
+    -I..\Include\Common\CdFlushMgr
+    -I..\Include\Common\CntlData
+    -I..\Include\Common\Compact
+    -I..\Include\Common\Defects
+    -I..\Include\Common\Dir
+    -I..\Include\Common\DirPba
+    -I..\Include\Common\Disturb
+    -I..\Include\Common\Dm
+    -I..\Include\Common\DmAbort
+    -I..\Include\Common\DmCommon
+    -I..\Include\Common\DmReset
+    -I..\Include\Common\ExtDir
+    -I..\Include\Common\FlashCntl
+    -I..\Include\Common\FreeList
+    -I..\Include\Common\Log
+    -I..\Include\Common\Media
+    -I..\Include\Common\NvConfig
+    -I..\Include\Common\Reclaim
+    -I..\Include\Common\RemapCntl
+    -I..\Include\Common\RemapUser
+    -I..\Include\Common\Sanitize
+    -I..\Include\Common\Scrub
+    -I..\Include\Common\SegCache
+    -I..\Include\Common\SxnInfo
+    -I..\Include\Common\UserBadBlks
+    -I..\Include\Common\Util
+    -I..\Include\Common\ValidInfo
+    -I..\Include\Common\Verification
+    -I..\Include\Common\WearLevel
+    -I..\Include\Interface
+    -I..\Include\Interface\Ioc
+    -I..\Include\Interface\Ioc\Bit
+    -I..\Include\Interface\Ioc\Bit\Physical
+    -I..\Include\Interface\Ioc\Bit\Transport
+    -I..\Include\Interface\Ioc\Dmx
+    -I..\Include\Interface\Ioc\DmxLite
+    -I..\Include\Interface\Ioc\Dpc
+    -I..\Include\Interface\Protocol\Scsi
+    -I..\Include\Public
+    -Hldopt=EDiskEdcPcie.ld
+    -Hldopt=-xm
+    -O6
+    -Hobjdir=ObjectEdcPcieEP
+    -o ObjectEdcPcieEP\EDiskEdcPcieEP.elf
+    -Hasmcpp
+    -Hnosdata
+    -Hnocrt
+    -Hoff=Compress_asm_warn
+    -Hoff=Uncached_in_own_section
+    -Hon=Scalars_in_bss
+    -Hnocopyr
+    -Hretwc
+    -cpu=a7
+EDiskEdcPcie.ld
+
+
+#------------------------------------------------------------------------------
+# Sources
+#------------------------------------------------------------------------------
+..\Source\Bios\Arc700\Vectors.s
+..\Source\Bios\Arc700\Start.s
+..\Source\Bios\Arc700\BootStrapLoader.s
+..\Source\Bios\Arc700\BootCodeEntry.s
+..\Source\Bios\Arc700\BfcEntry.s
+..\Source\Bios\Arc700\BfcEndMark.s
+..\Source\Bios\Arc700\TaskEntry.s
+..\Source\Bios\Arc700\TaskSwitch.s
+..\Source\Bios\Arc700\Arc.c
+..\Source\Bios\Arc700\ArcIrq.c
+..\Source\Bios\Arc700\ArcTimer.c
+..\Source\Bios\Arc700\BootCodeLoaderC.c
+..\Source\Bios\Bios.c
+..\Source\Bios\EdcBoot.c
+..\Source\Bios\EdcClkPmu.c
+..\Source\Bios\EdcFprom.c
+..\Source\Bios\EdcFwVersion.c
+..\Source\Bios\EdcGpio.c
+..\Source\Bios\EdcLocks.c
+..\Source\Bios\EdcRefClk.c
+..\Source\Bios\EdcSpi.c
+..\Source\Bios\EdcTwCore.c
+..\Source\Bios\Interrupt.c
+..\Source\Bios\Ipi.c
+..\Source\Bios\IrqTable.c
+..\Source\Bios\Led.c
+..\Source\Bios\MemMgmt.c
+..\Source\Bios\NvMem.c
+..\Source\Bios\PwrMgmt.c
+..\Source\Bios\Sched.c
+..\Source\Bios\SchedNice.c
+..\Source\Bios\Sfprom.c
+..\Source\Bios\SfpromReset.c
+..\Source\Bios\SmBus.c
+..\Source\Bios\Xprom.c
+
+..\Source\Common\BaseBlk\BaseBlk.c
+..\Source\Common\BlkInfo\BlkInfo.c
+..\Source\Common\BlkRecord\BlkRecord.c
+..\Source\Common\CdFlushMgr\CdFlushMgr.c
+..\Source\Common\CntlData\CntlData.c
+..\Source\Common\Compact\Compact.c
+..\Source\Common\Defects\Defects.c
+..\Source\Common\Dir\Dir.c
+..\Source\Common\DirPba\DirPba.c
+..\Source\Common\Disturb\Disturb.c
+..\Source\Common\Dm\Dm.c
+..\Source\Common\Dm\DmBuild.c
+..\Source\Common\Dm\DmInit.c
+..\Source\Common\DmAbort\DmAbort.c
+..\Source\Common\DmReset\DmReset.c
+..\Source\Common\ExtDir\ExtDir.c
+..\Source\Common\FlashCntl\FlashCntl.c
+..\Source\Common\FreeList\FreeList.c
+..\Source\Common\Log\Log.c
+..\Source\Common\Log\LogCntl.c
+..\Source\Common\Log\LogRecovery.c
+..\Source\Common\Media\Media.c
+..\Source\Common\NvConfig\NvConfig.c
+..\Source\Common\NvConfig\NvConfigDisturb.c
+..\Source\Common\NvConfig\NvConfigRecovery.c
+..\Source\Common\Reclaim\Reclaim.c
+..\Source\Common\RemapCntl\RemapCntl.c
+..\Source\Common\RemapUser\RemapUser.c
+..\Source\Common\Sanitize\Sanitize.c
+..\Source\Common\Scrub\Scrub.c
+..\Source\Common\SegCache\SegCache.c
+..\Source\Common\SxnInfo\SxnInfo.c
+..\Source\Common\UserBadBlks\UserBadBlks.c
+..\Source\Common\Util\Err.c
+..\Source\Common\Util\IpCall.c
+..\Source\Common\Util\Message.c
+..\Source\Common\Util\Smc.c
+..\Source\Common\Util\Util.c
+..\Source\Common\ValidInfo\ValidInfo.c
+..\Source\Common\Verification\Verification.c
+..\Source\Common\WearLevel\WearLevel.c
+
+..\Source\Interface\Interface.c
+..\Source\Interface\Iop.c
+..\Source\Interface\IopMrlar.c
+..\Source\Interface\Ioc\Bit\BitPrcssCmd.c
+..\Source\Interface\Ioc\Dmx\DmxAbort.c
+..\Source\Interface\Ioc\Dmx\DmxCmd.c
+..\Source\Interface\Ioc\Dmx\DmxCommon.c
+..\Source\Interface\Ioc\Dmx\DmxError.c
+..\Source\Interface\Ioc\Dmx\DmxInit.c
+..\Source\Interface\Ioc\Dmx\DmxIntrpt.c
+..\Source\Interface\Ioc\Dmx\DmxOps.c
+..\Source\Interface\Ioc\Dmx\DmxQue.c
+..\Source\Interface\Ioc\Dmx\DmxRecovery.c
+..\Source\Interface\Ioc\Dmx\DmxReset.c
+..\Source\Interface\Ioc\DmxLite\DmxLite.c
+..\Source\Interface\Protocol\Scsi\Scsi.c
+..\Source\Interface\Protocol\Scsi\ScsiPrcssCmd.c
+..\Source\Interface\Protocol\Scsi\ScsiRes.c
+..\Source\Interface\Protocol\Scsi\ScsiSense.c
+..\Source\Interface\Protocol\Scsi\ScsiValidate.c
+..\Source\Application\DiskApp.c
+..\Source\Application\SysConfig.c
+
+
+#------------------------------------------------------------------------------
+# Includes
+#------------------------------------------------------------------------------
+..\Include\Bios\Bios.h
+..\Include\Bios\BiosI.h
+..\Include\Bios\EdcClkPmu.h
+..\Include\Bios\EdcFwVersion.h
+..\Include\Bios\EdcLocalCsr.h
+..\Include\Bios\Interrupt.h
+..\Include\Bios\Led.h
+..\Include\Bios\Sched.h
+..\Include\Bios\Sfprom.h
+
+..\Include\Common\BaseBlk\BaseBlk.h
+..\Include\Common\BaseBlk\BaseBlkI.h
+..\Include\Common\BlkInfo\BlkInfo.h
+..\Include\Common\BlkInfo\BlkInfoI.h
+..\Include\Common\BlkRecord\BlkRecord.h
+..\Include\Common\BlkRecord\BlkRecordI.h
+..\Include\Common\CdFlushMgr\CdFlushMgr.h
+..\Include\Common\CdFlushMgr\CdFlushMgrI.h
+..\Include\Common\CntlData\CntlData.h
+..\Include\Common\CntlData\CntlDataI.h
+..\Include\Common\Compact\Compact.h
+..\Include\Common\Compact\CompactI.h
+..\Include\Common\Defects\Defects.h
+..\Include\Common\Defects\DefectsI.h
+..\Include\Common\Dir\Dir.h
+..\Include\Common\Dir\DirI.h
+..\Include\Common\Disturb\Disturb.h
+..\Include\Common\Disturb\DisturbI.h
+..\Include\Common\Dm\Dm.h
+..\Include\Common\Dm\DmBuildI.h
+..\Include\Common\Dm\DmInitI.h
+..\Include\Common\DmCommon\CntlDataCommon.h
+..\Include\Common\DmCommon\DmCommon.h
+..\Include\Common\FreeList\FreeList.h
+..\Include\Common\FreeList\FreeListI.h
+..\Include\Common\Media\Media.h
+..\Include\Common\Media\MediaI.h
+..\Include\Common\NvConfig\NvConfigI.h
+..\Include\Common\Reclaim\Reclaim.h
+..\Include\Common\Reclaim\ReclaimI.h
+..\Include\Common\RemapCntl\RemapCntl.h
+..\Include\Common\RemapCntl\RemapCntlI.h
+..\Include\Common\RemapUser\RemapUser.h
+..\Include\Common\RemapUser\RemapUserI.h
+..\Include\Common\Scrub\Scrub.h
+..\Include\Common\Scrub\ScrubI.h
+..\Include\Common\SxnInfo\SxnInfo.h
+..\Include\Common\SxnInfo\SxnInfoI.h
+
+..\Include\Interface\Iop.h
+..\Include\Interface\Ioc\Bit\Physical\BitPciEpRegs.h
+..\Include\Interface\Ioc\Bit\Transport\BitIcbmRegs.h
+..\Include\Interface\Ioc\Dmx\DmxCommon.h
+..\Include\Interface\Ioc\Dmx\DmxError.h
+..\Include\Interface\Ioc\Dmx\DmxInit.h
+..\Include\Interface\Ioc\Dmx\DmxInitI.h
+..\Include\Interface\Ioc\Dmx\DmxIntrpt.h
+..\Include\Interface\Ioc\Dmx\DmxOpsI.h
+..\Include\Interface\Ioc\Dmx\DmxQue.h
+..\Include\Interface\Ioc\Dmx\DmxRecovery.h
+..\Include\Interface\Ioc\Dmx\DmxRegs.h
+..\Include\Interface\Ioc\Dmx\DmxReset.h
+..\Include\Interface\Ioc\Dmx\FbxInit.h
+..\Include\Interface\Ioc\DmxLite\DmxLite.h
+..\Include\Interface\Ioc\DmxLite\DmxLiteI.h
+..\Include\Interface\Ioc\Dpc\DpcRegs.h
+..\Include\Interface\Protocol\Scsi\Scsi.h
+..\Include\Interface\Protocol\Scsi\ScsiCdb.h
+..\Include\Interface\Protocol\Scsi\ScsiMode.h
+..\Include\Interface\Protocol\Scsi\ScsiPrcssCmd.h
+..\Include\Interface\Protocol\Scsi\ScsiReply.h
+..\Include\Interface\Protocol\Scsi\ScsiSense.h
+..\Include\Interface\Protocol\Scsi\ScsiValidate.h
+
+..\Include\Public\BitDefs.h
+..\Include\Public\Dmx.h
+..\Include\Public\Err.h
+..\Include\Public\FlashConfig.h
+..\Include\Public\IpCall.h
+..\Include\Public\NvConfig.h
+..\Include\Public\SysConfig.h
+..\Include\Public\SysProcess.h
+..\Include\Public\Util.h
+
+
+#==============================================================================
+# $Log: EDiskEdcPcieEP.gpj,v $
+# Revision 1.10  2014/05/19 05:02:10  rcantong
+# 1. DEV: Support control remap
+# 1.1 Added control remapping functions - BBantigue
+#
+# Revision 1.9  2014/05/13 13:19:51  rcantong
+# 1. DEV: Support background scrubber
+# 1.1 Added background scrubber process - PPestano
+#
+# Revision 1.8  2014/04/30 15:21:37  rcantong
+# 1. DEV: Support FlashConfig, MRLAR Hang watchdog and BlkInfo
+# 1.1 Added files FlashConfig.h, IopMrLar.c and BlkInfo.h
+#
+# Revision 1.7  2014/03/03 12:48:25  rcantong
+# 1. DEV: FID hang handler
+# 1.1 Added DmxRecovery.h and DmxReset.h - JFaustino
+#
+# Revision 1.6  2014/02/02 08:39:49  rcantong
+# 1. DEV: Support remapping and read disturb management
+# 1.1 Added header files for RemapUser and Disturb
+#
+# Revision 1.5  2014/01/08 12:42:57  rcantong
+# 1. DEV: Perform random write longevity
+# 1.1 Codes for control and user data compacting
+#
+# Revision 1.4  2013/12/05 13:06:34  rcantong
+# 1. DEV: Support data retainability
+# 1.1 Codes to run data retainability
+#
+# Revision 1.3  2013/11/11 08:20:49  rcantong
+# 1. DEV: Perform user data integrity
+# 1.1 Codes to run user data integrity
+#
+# Revision 1.2  2013/08/08 16:48:28  rcantong
+# 1. DEV: Perform iometer read and write
+# 1.1 Codes to run iometer read and write
+#
+# Revision 1.1  2013/07/15 17:56:43  rcantong
+# 1. DEV: Initial commit
+# 1.1 Template file
+#
+#==============================================================================
