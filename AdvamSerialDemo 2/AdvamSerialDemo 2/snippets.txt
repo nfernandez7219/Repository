@@ -1,0 +1,68 @@
+void SendMsg(BYTE* pbyMsgAsciiSend)
+{
+	int ret, to_send, sent;
+	char buff[3072];
+
+	memset(buff, 0, sizeof(buff));
+	to_send = HexDecode(buff, pbyMsgAsciiSend);
+	sent = 0;
+	do
+	{
+		ret = send(sd, buff + sent, to_send - sent, 0);
+		sent += ret;
+	} while(sent < to_send);
+}
+
+void RecvMsg(BYTE* pbyMsgAsciiRecv)
+{
+	int ret, to_receive, received, count;
+	char buff[3072];
+
+	memset(buff, 0, sizeof(buff));
+	to_receive = sizeof(buff);
+	received = 0;
+	count = 0;
+	do
+	{
+		ret = recv(sd, buff + received, to_receive - received, 0);
+	} while(ret <= 0 && ++count < 50000);
+	HexEncode(pbyMsgAsciiRecv, buff, ret);
+}
+
+
+
+
+static unsigned __stdcall ThreadSendRecv(void* pArgs)
+{
+	BYTE pbyTcpMsgRecv[3072];
+	TERMINAL_REQ Req;
+	T_THREAD_SR_ARGS* pArgsLocal;
+
+	pArgsLocal = (T_THREAD_SR_ARGS*)pArgs;
+
+	/*while(!pArgsLocal->FlagBreak)*/
+	while(1)
+	{
+		if(strlen(pArgsLocal->byTcpMsg))
+		{
+			SendMsg(pArgsLocal->byTcpMsg);
+			memset(pArgsLocal->byTcpMsg, 0, 3072);
+		}
+
+		//Sleep(250);
+
+		memset(pbyTcpMsgRecv, 0, sizeof(pbyTcpMsgRecv));
+		RecvMsg(pbyTcpMsgRecv);
+		if(strlen(pbyTcpMsgRecv))
+		{
+			memset(&Req, 0, sizeof(Req));
+			Req.Cmd = CMD_TCP_RECV;
+			strcpy(Req.pbyTcpSrcIpAddr, "10.5.64.23");
+			strcpy(Req.pbyTcpMsg, pbyTcpMsgRecv);
+			PMSend(&Req);
+		}
+	}
+
+	_endthreadex(0);
+	return 0;
+}
