@@ -1,0 +1,14 @@
+configName: default
+folderName: bootloader
+format_version: v1.0
+frameworkPath: C:\Users\amere\Harmony3
+processor: ATSAME51J20A
+projectName: bootloader
+settings:
+  PackageFilter: bootloader;bootloader_apps_uart;bsp;core;core_apps_sam_d5x_e5x;crypto;csp;csp_apps_sam_d5x_e5x;dev_packs;net;quick_docs;usb
+  FORCE_OPTIMIZATION: 'false'
+  GENERATE_BACKUP: 'true'
+  TRUSTZONE: 'false'
+  CMSISPath: .\dev_packs\arm\CMSIS\5.8.0
+  MERGE_STRATEGY: USER_RECENT
+  DFPPath: .\dev_packs\Microchip\SAME51_DFP\3.5.104\atdf\ATSAME51J20A.atdf

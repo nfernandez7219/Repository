@@ -1,0 +1,10 @@
+firmware/bootloader.X/.generated_files
+firmware/bootloader.X/debug
+firmware/bootloader.X/nbproject/private/private.xml
+*.swp
+*.o
+tags
+firmware/bootloader.X/build
+firmware/bootloader.X/dist
+firmware/bootloader.X/nbproject/Makefile-*
+firmware/bootloader.X/nbproject/private/
