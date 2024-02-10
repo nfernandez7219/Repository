@@ -1,0 +1,4 @@
+﻿  flexxuart.cpp
+C:\nats\flexx_aes256\flexxuart\flexxuart.cpp(106,115): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\nats\flexx_aes256\flexxuart\flexxuart.cpp(111,114): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  flexxuart.vcxproj -> C:\nats\flexx_aes256\x64\Debug\flexxuart.exe
